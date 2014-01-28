@@ -1,0 +1,3 @@
+# for Heroku
+-r requirements/development.txt
+django-toolbelt
