@@ -16,40 +16,31 @@
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
   <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-    <!--Using Flatly swatch by default -->
-    <link href="http://netdna.bootstrapcdn.com/bootswatch/3.0.3/flatly/bootstrap.min.css" rel="stylesheet">
 
-    <!--Vanilla Bootstrap
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="{% static "common/bootstrap/css/bootstrap.css" %}" rel="stylesheet">
 
-    <!--Journal Bootstrap
-    <link href="http://netdna.bootstrapcdn.com/bootswatch/3.0.3/journal/bootstrap.min.css" rel="stylesheet">
-    -->
 
-    <!--United Bootstrap
-    <link href="http://netdna.bootstrapcdn.com/bootswatch/3.0.3/united/bootstrap.min.css" rel="stylesheet">
-    -->
-
-    <!--Yeti Bootstrap
-    <link href="http://netdna.bootstrapcdn.com/bootswatch/3.0.3/yeti/bootstrap.min.css" rel="stylesheet">
-    -->
 
     <!-- uncomment for jquery-ui datetime picker widget
     <link type="text/css" href="{% static "common/css/blitzer/jquery-ui-1.10.3.custom.min.css" %}" rel="stylesheet" />
     <script src="{% static "common/js/jquery-ui-1.10.3.custom.min.js" %}" type="text/javascript"></script>
     -->
 
-    <title>{% block title %}{{ project_name }}{% endblock %}</title>
+    <title>{% block title %}MOOC with Friends{% endblock %}</title>
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+
+
+
+    {% block custom_head %}{% endblock %}
   </head>
 
   <body>
-    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="navbar navbar-default navbar-fixed-top" id="header" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -58,23 +49,20 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{% url 'core-home' %}">Brand</a>
+          <a class="navbar-brand" href="{% url 'core:home' %}">MOOC with Friends</a>
         </div>
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="{% navactive request 'core-home' %}"><a href="{% url 'core-home' %}">Home</a></li>
+        <div class="collapse navbar-collapse pull-right">
 
-            {% comment %}
-            dropdown example:
-            <li class="dropdown {% # navactive request 'url-name' %}">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Title <b class="caret"></b></a>
+          <ul class="nav navbar-nav">
+            <li><a href="/">Courses</a></li>
+            <li><a href="/">Friends</a></li>
+            <li class="dropdown {% navactive request 'core:home' %}">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Me <b class="caret"></b></a>
               <ul class="dropdown-menu">
-                <li class="{% # navactive request 'url-name' %}"><a href="{% url 'url-name' %}">Page Title</a></li>
+                <li class="{% navactive request 'core:home' %}"><a href="{% url 'core:logout' %}">Logout</a></li>
               </ul>
             </li>
-            {% endcomment %}
 
-            <li><a href="/admin">Admin</a></li>
 
           </ul>
         </div><!-- /.nav-collapse -->
@@ -82,6 +70,7 @@
     </div><!-- /.navbar -->
 
     <div class="container">
+
 
       <div class="messages">
       {% for message in messages %}
@@ -92,6 +81,23 @@
       {% block content %}{% endblock %}
 
     </div><!-- /.container -->
+
+
+     <!-- HeadRoom  -->
+    <style type="text/css">
+    .headroom {position: fixed;top: 0;left: 0;right: 0;transition: all .2s ease-in-out;}
+    .headroom--unpinned {top: -100px;}
+    .headroom--pinned {top: 0;}
+    </style>
+
+   <script  type="text/javascript"  src="https://rawgithub.com/WickyNilliams/headroom.js/master/dist/headroom.js"></script>
+
+   <script  type="text/javascript"  src="https://rawgithub.com/WickyNilliams/headroom.js/master/src/jQuery.headroom.js"></script>
+   
+    <script type="text/javascript">
+        $(".navbar-fixed-top").headroom();
+    </script>   
+
 
   </body>
 </html>

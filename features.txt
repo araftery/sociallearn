@@ -1,0 +1,54 @@
+MOOCs With Friends Features
+===========================
+
+Users
+Site Skeleton
+Courses
+	Add/drop courses
+	Track course progress
+Lectures/Assignments
+Social/Friends
+	Leaderboard
+	"Friending" in context of classes
+	Scheduling assignments w/ friends
+		GCal integration
+		Twilio integration
+Personal dashboard view
+	Show upcoming assignments + progress per course
+	How you stack up vs. friends
+Multiple Courses
+	Course searching
+Chat/more extensive social features
+	Chat
+		Facebook-like chat + messages are integrated?
+	News-feed-like view updating on when friends finish assignments
+
+Other Things
+============
+Logo/color scheme?
+
+Questions
+=========
+How deeply to integrate with EdX? (e.g., link to their content?)
+	default to no integration
+Keep track of if assignments are started, or just completed?
+	Both
+
+Django Apps
+===========
+Profiles
+	Models
+		UserProfile (extends django.auth User)
+	Views
+		Profile (public)
+		Dashboard (private)
+Courses
+	Models
+		Course
+		Assignment
+	Views
+		Course
+		Add/drop courses
+		Leaderboard (course-specific)
+		Schedule/invite friend
+		AJAX handlers

@@ -38,6 +38,8 @@ THIRD_PARTY_APPS = (
 
 MY_APPS = (
     'core',
+    'profiles',
+    'courses',
     )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + MY_APPS
