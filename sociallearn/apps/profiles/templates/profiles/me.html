@@ -1,0 +1,38 @@
+{% extends "common/base.html" %}
+{% load static %}
+
+{% block title %}Courses Dashboard{% endblock %}
+
+{% block custom_head %}
+	<link href="{% static "profiles/css/me.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<h1>My Dashboard</h1>
+</div><!-- /.row -->
+
+<div class="row">
+
+	<div class="col-md-2 col-sm-2 avatar">
+		<div class="avatar-container">
+			<img src="{{ gravatar_url }}" />
+		</div>
+	</div>
+
+</div><!-- /.row -->
+
+<style>
+	.avatar img
+	{
+		width:100%;
+	}
+
+	.avatar-container
+	{
+		border:10px solid black;
+	}
+</style>
+
+{% endblock %}

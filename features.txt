@@ -4,24 +4,32 @@ MOOCs With Friends Features
 Users
 Site Skeleton
 Courses
-	Add/drop courses
 	Track course progress
 Lectures/Assignments
+User Registration
+User Profile
+Game Features
+	Points
+	Levels
+	Streaks
+
+Personal dashboard view
+	Show upcoming assignments + progress per course
+	How you stack up vs. friends
+Multiple Courses
+	Add/drop courses
+	Course searching
 Social/Friends
 	Leaderboard
 	"Friending" in context of classes
 	Scheduling assignments w/ friends
 		GCal integration
 		Twilio integration
-Personal dashboard view
-	Show upcoming assignments + progress per course
-	How you stack up vs. friends
-Multiple Courses
-	Course searching
 Chat/more extensive social features
 	Chat
 		Facebook-like chat + messages are integrated?
 	News-feed-like view updating on when friends finish assignments
+Onboarding Tutorial
 
 Other Things
 ============

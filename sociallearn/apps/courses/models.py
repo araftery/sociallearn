@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 class Instructor(models.Model):
 	first_name = models.CharField(max_length=100)
@@ -21,9 +22,16 @@ class Course(models.Model):
 		)
 	provider = models.CharField(max_length=3, choices=providers)
 
+	@property
+	def is_active(self):
+		now = timezone.now()
+		if self.start_date <= now <= self.end_date:
+			return True
+		else:
+			return False
+
 	def __unicode__(self):
 		return self.title
-
 
 class Assignment(models.Model):
 	title = models.CharField(max_length=750)

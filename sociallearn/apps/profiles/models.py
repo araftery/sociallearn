@@ -6,7 +6,10 @@ from django.utils import timezone
 
 class Student(models.Model):
 	user = models.OneToOneField(auth.models.User)
+	phone = models.CharField(max_length=25, null=True, blank=True)
+	sex = models.CharField(max_length=1, choices=[('M', 'male'), ('F', 'female')])
 	courses = models.ManyToManyField('courses.Course')
+	# add avatar
 
 	@property
 	def name(self):

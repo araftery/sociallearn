@@ -5,25 +5,132 @@
 
 {% block custom_head %}
 	<link href="{% static "courses/css/dashboard.css" %}" rel="stylesheet">
+	<link href="{% static "common/css/square/blue.css" %}" rel="stylesheet">
+	<script src="{% static "common/js/icheck.js" %}"></script>
+	<script>
+$(document).ready(function(){
+  $('input').iCheck({
+    checkboxClass: 'icheckbox_square-blue',
+    radioClass: 'iradio_square-blue',
+    increaseArea: '50%' // optional
+  });
+});
+
+function assignment_change(status, id)
+{
+	if (status == 'complete')
+	{
+		var url = '{% url "courses:assignment_complete_noargs" %}' + id + '/';
+	}
+	else
+	{
+		var url = '{% url "courses:assignment_incomplete_noargs" %}' + id + '/';
+	}
+
+	$.ajax({
+		url: url
+	}).done(function(data) {
+		var bar = $('#week' + data.week + ' .progress .progress-bar');
+		console.log(bar);
+		bar.attr('aria-valuenow', data.percentage);
+		bar.css('width', data.percentage + '%');
+		if (data.percentage == 100)
+		{
+			bar.removeClass('progress-bar-warning');
+			bar.addClass('progress-bar-success');
+		}
+		else
+		{
+			bar.removeClass('progress-bar-success');
+			bar.addClass('progress-bar-warning');
+		}
+	});
+}
+
+$(function() {
+	$('.done_checkbox').on('ifToggled', function (event) {
+		var id = parseInt($(this).data('assignment'));
+		if ($(this).is(':checked'))
+		{
+			assignment_change('complete', id);
+			$('#assignment' + id).addClass('done');
+			$('#assignment' + id + ' .schedule-btn').attr('disabled', 'disabled');
+			$('#assignment' + id + ' .get-started-btn').attr('disabled', 'disabled');
+		}
+		else
+		{
+			assignment_change('incomplete', id);
+			$('#assignment' + id).removeClass('done');
+			$('#assignment' + id + ' .schedule-btn').removeAttr('disabled');
+			$('#assignment' + id + ' .get-started-btn').removeAttr('disabled');
+		}
+	});
+});
+</script>
 {% endblock %}
 
 {% block content %}
+
 <div class="row">
 	<h1>Courses Dashboard</h1>
 </div>
 
 <div class="row">
-	<div class="col-md-2 col-sm-2 my-courses">
+	<div class="col-md-3 col-sm-3 my-courses">
 		<h3>My Courses</h3>
 	</div>
 
-	<div class="col-md-8 col-sm-8 assignments">
+	<div class="col-md-9 col-sm-9 assignments">
 		<h2>{{ course.title }}</h2>
-	</div>
 
-	<div class="col-md-2 col-sm-2 chat">
-		<h3>Chat</h3>
-	</div>
+<div class="panel-group" id="accordion">
+		{% for week in weeks %}
+		
+
+		  <div class="panel panel-default week" id="week{{ week.num }}">
+		    <div class="panel-heading">
+		      <h4 class="panel-title">
+		      	<div class="progress">
+				  <div class="progress-bar {% if week.percentage == 100 %}progress-bar-success{% else %}progress-bar-warning{% endif %}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:{{ week.percentage }}%">
+				    <span class="sr-only">0% Complete</span>
+				  </div>
+				</div>
+		        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ week.num }}">
+		          Week {{ week.num }}
+		        </a>
+
+		      </h4>
+		    </div>
+		    <div id="collapse{{ week.num }}" class="panel-collapse collapse{% if week_in == week.num %} in{% endif %}">
+		      <div class="panel-body">
+		        <ul>
+		        	{% for assignment in week.assignments %}
+		        		<li id="assignment{{ assignment.id }}" {% if assignment.done %}class="done"{% endif %}>
+		        			
+		        			<table class="assignment_table">
+		        				<tr>
+		        				<td><span class="assignment_title">{{ assignment.title }}</span></td>
+		        			<td><div class="assignment_btns">
+		        				<a href="#" class="btn btn-success get-started-btn" {% if assignment.done %}disabled="done"{% endif %}>Get Started</a>
+		        				<a href="#" class="btn btn-primary schedule-btn" {% if assignment.done %}disabled="done"{% endif %}>Schedule</a>
+		        				<label for="done{{ assignment.id }}">Done</label>
+								    <input type="checkbox"{% if assignment.done %} checked="checked" {% endif %}data-assignment="{{ assignment.id }}" class="done_checkbox" id="done{{ assignment.id }}" name="done" />
+		        				</div>
+		        				</td>
+		        				</tr>
+		        			</table>
+
+
+		        		</li>
+		        	{% endfor %}
+		        </ul>
+		      </div>
+		    </div>
+		  </div>
+
+ 			{% endfor %}
+			</div><!-- /.accordion -->
+
+	</div><!-- /.assignments -->
 </div>
-
 {% endblock %}

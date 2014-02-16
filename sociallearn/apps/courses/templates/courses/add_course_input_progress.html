@@ -1,0 +1,96 @@
+{% extends "common/base.html" %}
+{% load static %}
+
+{% block title %}Courses Dashboard{% endblock %}
+
+{% block custom_head %}
+	<link href="{% static "courses/css/dashboard.css" %}" rel="stylesheet">
+	<link href="{% static "common/css/square/blue.css" %}" rel="stylesheet">
+	<script src="{% static "common/js/icheck.js" %}"></script>
+	<script>
+$(document).ready(function(){
+  $('input').iCheck({
+    checkboxClass: 'icheckbox_square-blue',
+    radioClass: 'iradio_square-blue',
+    increaseArea: '50%' // optional
+  });
+});
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<h1>Add a Course: {{ course.title }}</h1>
+</div>
+
+<div class="row">
+
+<form method="post">
+{% csrf_token %}
+	<div class="col-md-12 col-sm-12 assignments">
+		<h2>{{ course.title }}</h2>
+
+<div class="panel-group" id="accordion">
+		{% for week in weeks %}
+		
+
+		  <div class="panel panel-default week" id="week{{ week.num }}">
+		    <div class="panel-heading">
+		      <h4 class="panel-title">
+		        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ week.num }}">
+		          Week {{ week.num }}
+		        </a>
+
+		      </h4>
+		    </div>
+		    <div id="collapse{{ week.num }}" class="panel-collapse collapse{% if forloop.counter == 1 %} in{% endif %}">
+		      <div class="panel-body">
+		        <ul>
+		        	{% for assignment in week.assignments %}
+		        		<li id="assignment{{ assignment.id }}" {% if assignment.done %}class="done"{% endif %}>
+		        			
+		        			<table class="assignment_table">
+		        				<tr>
+		        				<td><span class="assignment_title">{{ assignment.title }}</span></td>
+		        			<td><div class="assignment_btns">
+		        				<label for="done{{ assignment.id }}">Done</label>
+								    <input type="checkbox" name="assignment{{ assignment.id }}"{% if assignment.done %} checked="checked" {% endif %}data-assignment="{{ assignment.id }}" class="done_checkbox" id="done{{ assignment.id }}" name="done" />
+		        				</div>
+		        				</td>
+		        				</tr>
+		        			</table>
+
+
+		        		</li>
+		        	{% endfor %}
+		        </ul>
+		      </div>
+		    </div>
+		  </div>
+
+ 			{% endfor %}
+			</div><!-- /.accordion -->
+
+	</div><!-- /.assignments -->
+</div>
+<div class="row">
+	<div class="col-sm-4 col-md-4 col-sm-offset-4 col-md-offset-4">
+		<div class="btns"><button type="submit" class="btn center btn-primary">Next</button></div>
+	</div><!-- /.col -->
+</div><!-- /.row -->
+</form>
+
+
+</form>
+
+<style>
+.btns
+{
+	margin:20px 0;
+	display:block;
+	text-align:center;
+}
+
+</style>
+{% endblock %}
