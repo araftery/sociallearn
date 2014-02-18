@@ -37,23 +37,24 @@ def add_course_input_progress(request, id):
 
 	time = timezone.now()
 
-	course_assignments_roots = course.assignment_set.filter(parent=None).order_by('week')
-	weeks = []
+	root_week = course.week_set.filter(parent=None).first()
+	weeks = courses.utils.get_tree(root_week)
 	week_in = None
-	for root in course_assignments_roots:
+
+	weeks_with_assignments = []
+
+	for week in weeks:
 		assignments = []
-		for assignment in courses.utils.assignment_tree(root):
+		root = week.assignment_set.filter(parent=None).first()
+		for assignment in courses.utils.get_tree(root):
 			if assignment.assignmentcompletion_set.filter(student=request.user.student):
 				assignment.done = True
 			else:
 				assignment.done = False
 			assignments.append(assignment)
 
+		weeks_with_assignments.append({'num': week.number, 'assignments': assignments})
 
-		week = {'num': root.week, 'assignments': assignments}
-		weeks.append(week)
-
-	print weeks
 
 	if request.method == 'POST':
 		request.user.student.courses.add(course)
@@ -68,7 +69,7 @@ def add_course_input_progress(request, id):
 		return redirect('courses:dashboard')
 
 
-	return render(request, 'courses/add_course_input_progress.html', { 'course': course, 'courses': courses, 'weeks': weeks })
+	return render(request, 'courses/add_course_input_progress.html', { 'course': course, 'courses': courses, 'weeks': weeks_with_assignments })
 
 @login_required
 def dashboard(request):
@@ -80,33 +81,40 @@ def dashboard(request):
 	student_courses = request.user.student.active_courses
 	course = student_courses.first()
 	if course is not None:
-		course_assignments_roots = course.assignment_set.filter(parent=None).order_by('week')
-		weeks = []
+		
+
+		root_week = course.week_set.filter(parent=None).first()
+		weeks = courses.utils.get_tree(root_week)
 		week_in = None
-		for root in course_assignments_roots:
+
+		weeks_with_assignments = []
+
+		for week in weeks:
 			assignments = []
-			for assignment in courses.utils.assignment_tree(root):
-				if assignment.assignmentcompletion_set.filter(student=request.user.student):
-					assignment.done = True
-				else:
-					assignment.done = False
-				assignments.append(assignment)
+			root = week.assignment_set.filter(parent=None).first()
+			if root:
+				for assignment in courses.utils.get_tree(root):
+					if assignment.assignmentcompletion_set.filter(student=request.user.student):
+						assignment.done = True
+					else:
+						assignment.done = False
+					assignments.append(assignment)
+
 
 			# get week completed percentage
-			week_assignments = courses.models.Assignment.objects.filter(week=root.week, course=course)
-			week_assignment_completions = courses.models.AssignmentCompletion.objects.filter(assignment__course=course, assignment__week=root.week, student=request.user.student)
+			week_assignments = courses.models.Assignment.objects.filter(week=week, course=course, required=True)
+			week_assignment_completions = courses.models.AssignmentCompletion.objects.filter(assignment__course=course, assignment__week=week, assignment__required=True, student=request.user.student)
 			if week_assignments:
 				percentage = int(float(len(week_assignment_completions)/float(len(week_assignments))) * 100)
 			else:
 				percentage = 0
 
 			if week_in is None and percentage != 100:
-				week_in = root.week
+				week_in = week.number
 
-			week = {'num': root.week, 'assignments': assignments, 'percentage': percentage}
-			weeks.append(week)
+			weeks_with_assignments.append({'num': week.number, 'assignments': assignments, 'percentage': percentage})
 		
-		return render(request, 'courses/dashboard.html', { 'course': course, 'courses': courses, 'weeks': weeks, 'week_in': week_in})
+		return render(request, 'courses/dashboard.html', { 'course': course, 'courses': courses, 'weeks': weeks_with_assignments, 'week_in': week_in})
 	else:
 		return render(request, 'courses/dashboard.html')
 
@@ -125,14 +133,14 @@ def assignment_complete(request, id):
 		assignment_completion.save()
 
 	# get week completed percentage
-	week_assignments = courses.models.Assignment.objects.filter(week=assignment.week, course=assignment.course)
-	week_assignment_completions = courses.models.AssignmentCompletion.objects.filter(assignment__course=assignment.course, assignment__week=assignment.week, student=request.user.student)
+	week_assignments = courses.models.Assignment.objects.filter(week=assignment.week, course=assignment.course, required=True)
+	week_assignment_completions = courses.models.AssignmentCompletion.objects.filter(assignment__course=assignment.course, assignment__week=assignment.week, assignment__required=True, student=request.user.student)
 	if week_assignments:
 		percentage = int(float(len(week_assignment_completions)/float(len(week_assignments))) * 100)
 	else:
 		percentage = 0
 
-	return {'week': assignment.week, 'course': assignment.course.id, 'percentage': percentage}
+	return {'week': assignment.week.number, 'course': assignment.course.id, 'percentage': percentage}
 
 
 @login_required
@@ -147,15 +155,15 @@ def assignment_incomplete(request, id):
 	courses.models.AssignmentCompletion.objects.filter(assignment=assignment, student=request.user.student).delete()
 
 	# get week completed percentage
-	week_assignments = courses.models.Assignment.objects.filter(week=assignment.week, course=assignment.course)
-	week_assignment_completions = courses.models.AssignmentCompletion.objects.filter(assignment__course=assignment.course, assignment__week=assignment.week, student=request.user.student)
-
+	week_assignments = courses.models.Assignment.objects.filter(week=assignment.week, course=assignment.course, required=True)
+	week_assignment_completions = courses.models.AssignmentCompletion.objects.filter(assignment__course=assignment.course, assignment__week=assignment.week, assignment__required=True, student=request.user.student)
+	
 	if week_assignments:
 		percentage = int(float(len(week_assignment_completions)/float(len(week_assignments))) * 100)
 	else:
 		percentage = 0
 
-	return {'week': assignment.week, 'course': assignment.course.id, 'percentage': percentage}
+	return {'week': assignment.week.number, 'course': assignment.course.id, 'percentage': percentage}
 
 
 

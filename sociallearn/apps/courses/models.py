@@ -17,6 +17,10 @@ class Course(models.Model):
 	length = models.IntegerField(max_length=2) # length in weeks
 	instructors = models.ManyToManyField(Instructor)
 	url = models.URLField(max_length=2000)
+
+	# name for sub-units (by default, 'week')
+	unit_name = models.CharField(max_length=200, default='week')
+
 	providers = (
 		('EDX', 'edX'),
 		)
@@ -36,12 +40,14 @@ class Course(models.Model):
 class Assignment(models.Model):
 	title = models.CharField(max_length=750)
 	parent = models.OneToOneField('self', null=True, blank=True, related_name='child')
+	week = models.ForeignKey('courses.Week', null=True, blank=True)
 	url = models.URLField(max_length=2000)
 	course = models.ForeignKey(Course)
-	week = models.IntegerField(max_length=2)
+	points = models.IntegerField(max_length=5)
+	required = models.BooleanField(default=True)
 
 	def __unicode__(self):
-		return '{}, Week {}: {}'.format(self.course.title, self.week, self.title)
+		return '{}, Week {}: {}'.format(self.course.title, self.week.number, self.title)
 
 class AssignmentStart(models.Model):
 	assignment = models.ForeignKey(Assignment)
@@ -52,3 +58,13 @@ class AssignmentCompletion(models.Model):
 	assignment = models.ForeignKey(Assignment)
 	student = models.ForeignKey('profiles.Student')
 	time = models.DateTimeField()
+
+class Week(models.Model):
+	number = models.IntegerField(max_length=2)
+	course = models.ForeignKey('courses.Course')
+	parent = models.OneToOneField('self', null=True, blank=True, related_name='child')
+	description = models.CharField(max_length=500, null=True, blank=True)
+
+	def __unicode__(self):
+		return '{}: {} {}'.format(self.course.title, self.course.unit_name.capitalize(), self.number)
+

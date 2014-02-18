@@ -5,3 +5,4 @@ from courses.models import *
 
 admin.site.register(Course)
 admin.site.register(Assignment)
+admin.site.register(Week)

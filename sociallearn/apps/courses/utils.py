@@ -1,6 +1,6 @@
-def assignment_tree(node, tree = None):
+def get_tree(node, tree = None):
 	"""
-	Follows children of a root assignment node recursively to get all of the assignments in a given week hierarchically.
+	Follows children of a root node recursively to get all of the nodes in the tree hierarchically.
 	Returns an ordered list.
 	"""
 	if tree is None:
@@ -9,4 +9,10 @@ def assignment_tree(node, tree = None):
 	if not hasattr(node, 'child'):
 		return tree
 	else:
-		return assignment_tree(node.child, tree)
+		return get_tree(node.child, tree)
+
+def get_level(points):
+	"""
+	Converts points to a level, using the formula level = sqrt(points/220)
+	"""
+	return int((points/220.0) ** .5)
