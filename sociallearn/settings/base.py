@@ -60,7 +60,10 @@ DEFAULT_MIDDLEWARE = (
 THIRD_PARTY_MIDDLEWARE = (
 )
 
-MIDDLEWARE_CLASSES = DEFAULT_MIDDLEWARE + THIRD_PARTY_MIDDLEWARE
+MY_MIDDLEWARE = ('core.middleware.StreaksMiddleware',
+)
+
+MIDDLEWARE_CLASSES = DEFAULT_MIDDLEWARE + THIRD_PARTY_MIDDLEWARE + MY_MIDDLEWARE
 
 ############################################################
 ##### INTERNATIONALIZATION #################################
@@ -87,7 +90,7 @@ from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as DEFAULT_T
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
-    ) + DEFAULT_TCP
+    ) + DEFAULT_TCP + ('core.context_processors.level_progress',)
 
 
 ############################################################

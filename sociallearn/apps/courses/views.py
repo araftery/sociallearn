@@ -6,6 +6,8 @@ import courses.utils
 import core.utils
 import courses.models
 import courses.forms
+import json
+import profiles.utils
 
 @login_required
 def add_course(request):
@@ -112,9 +114,24 @@ def dashboard(request):
 			if week_in is None and percentage != 100:
 				week_in = week.number
 
-			weeks_with_assignments.append({'num': week.number, 'assignments': assignments, 'percentage': percentage})
+			weeks_with_assignments.append({'num': week.number, 'assignments': assignments, 'percentage': percentage, 'description': week.description})
+
+		for week in weeks_with_assignments:
+			if (week_in == week['num'] or week['percentage']) and week['percentage'] != 100:
+				week['show_progress_bar'] = True
+			else:
+				week['show_progress_bar'] = False
+		# also, get a flat (1d) dict of assignment ids -> assignment info
+		assignments = {}
+		for week in weeks_with_assignments:
+			for assignment in week['assignments']:
+				assignments[assignment.id] = {
+					'title': assignment.title,
+				}
+		# convert the assignments dict to json
+		assignments_json = json.dumps(assignments)
 		
-		return render(request, 'courses/dashboard.html', { 'course': course, 'courses': courses, 'weeks': weeks_with_assignments, 'week_in': week_in})
+		return render(request, 'courses/dashboard.html', { 'course': course, 'courses': courses, 'weeks': weeks_with_assignments, 'week_in': week_in, 'assignments_json': assignments_json})
 	else:
 		return render(request, 'courses/dashboard.html')
 
@@ -140,30 +157,16 @@ def assignment_complete(request, id):
 	else:
 		percentage = 0
 
-	return {'week': assignment.week.number, 'course': assignment.course.id, 'percentage': percentage}
+	return {'week': assignment.week.number, 'course': assignment.course.id, 'percentage': percentage, 'points': assignment.points }
+
 
 
 @login_required
 @core.utils.json_response
-def assignment_incomplete(request, id):
-	try:
-		id = int(id)
-		assignment = courses.models.Assignment.objects.get(id=id)
-	except:
-		return {'error': 'Sorry, an error occurred.'}
+def level_progress(request):
+	points = request.user.student.points
+	level = request.user.student.level
+	level_progress = int(((float(points) - profiles.utils.get_points(level)) / profiles.utils.get_points(level + 1)) * 100)
 
-	courses.models.AssignmentCompletion.objects.filter(assignment=assignment, student=request.user.student).delete()
-
-	# get week completed percentage
-	week_assignments = courses.models.Assignment.objects.filter(week=assignment.week, course=assignment.course, required=True)
-	week_assignment_completions = courses.models.AssignmentCompletion.objects.filter(assignment__course=assignment.course, assignment__week=assignment.week, assignment__required=True, student=request.user.student)
-	
-	if week_assignments:
-		percentage = int(float(len(week_assignment_completions)/float(len(week_assignments))) * 100)
-	else:
-		percentage = 0
-
-	return {'week': assignment.week.number, 'course': assignment.course.id, 'percentage': percentage}
-
-
+	return { 'level_progress': level_progress, 'user_level': request.user.student.level }
 

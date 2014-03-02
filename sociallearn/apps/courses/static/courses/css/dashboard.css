@@ -8,7 +8,7 @@
 	display:block;
 }
 
-.assignment_btns
+.assignment-btns
 {
 	display:block;
 }
@@ -38,7 +38,7 @@
 
 .week .panel-heading .progress
 {
-	width:50%;
+	width:35%;
 	float:right;
 	margin:0;
 	box-shadow:none;
@@ -46,6 +46,15 @@
 	padding:3px;
 }
 
+.week .panel-heading .checkbox i
+{
+	float:right;
+}
+
+.checkbox
+{
+	display:inline;
+}
 .assignment_table
 {
 	width:100%;
@@ -68,4 +77,14 @@
 .optional
 {
 	color:#aaa;
+}
+
+.progress-hidden
+{
+	display:none;
+}
+
+.description
+{
+	font-size:14px;
 }

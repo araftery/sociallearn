@@ -1,3 +1,6 @@
 
 Questions
 [ ] non-required assignments?
+
+Issues
+[ ] Latin vs. Unicode encoding errors (e.g., showing Θ in CS50x week description)

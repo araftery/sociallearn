@@ -55,6 +55,9 @@ class AssignmentStart(models.Model):
 	time = models.DateTimeField()
 
 class AssignmentCompletion(models.Model):
+	# right now, not storing the point value associated with it
+	# this is fine (because it's contained in Assignment), but could cause issues
+	# if the point values change after an assignment has been completed
 	assignment = models.ForeignKey(Assignment)
 	student = models.ForeignKey('profiles.Student')
 	time = models.DateTimeField()
@@ -63,7 +66,9 @@ class Week(models.Model):
 	number = models.IntegerField(max_length=2)
 	course = models.ForeignKey('courses.Course')
 	parent = models.OneToOneField('self', null=True, blank=True, related_name='child')
-	description = models.CharField(max_length=500, null=True, blank=True)
+
+	# *brief* description, limited to 60 characters
+	description = models.CharField(max_length=60, null=True, blank=True)
 
 	def __unicode__(self):
 		return '{}: {} {}'.format(self.course.title, self.course.unit_name.capitalize(), self.number)

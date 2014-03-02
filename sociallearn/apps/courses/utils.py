@@ -10,9 +10,3 @@ def get_tree(node, tree = None):
 		return tree
 	else:
 		return get_tree(node.child, tree)
-
-def get_level(points):
-	"""
-	Converts points to a level, using the formula level = sqrt(points/220)
-	"""
-	return int((points/220.0) ** .5)

@@ -16,24 +16,24 @@ $(document).ready(function(){
   });
 });
 
+var assignments_json = '{% autoescape off %}{{ assignments_json }}{% endautoescape %}';
+var assignments = JSON.parse(assignments_json);
+
 function assignment_change(status, id)
 {
-	if (status == 'complete')
-	{
-		var url = '{% url "courses:assignment_complete_noargs" %}' + id + '/';
-		$('#assignment' + id).addClass('done');
-		$('#assignment' + id + ' .schedule-btn').attr('disabled', 'disabled');
-		$('#assignment' + id + ' .done-btn').attr('disabled', 'disabled');
-	}
-	else
-	{
-		var url = '{% url "courses:assignment_incomplete_noargs" %}' + id + '/';
-	}
+	var url = '{% url "courses:assignment_complete_noargs" %}' + id + '/';
+	$('#assignment' + id).addClass('done');
+	$('#assignment' + id + ' .schedule-btn').attr('disabled', 'disabled');
+	$('#assignment' + id + ' .done-btn').attr('disabled', 'disabled');
+	$('#assignment' + id + ' .assignment-btns').fadeOut();
+
 
 	$.ajax({
 		url: url
 	}).done(function(data) {
 		var bar = $('#week' + data.week + ' .progress .progress-bar');
+		$('#week' + data.week + ' .progress').removeClass('progress-hidden');
+		$('#week' + data.week + ' .progress').show();
 		console.log(bar);
 		bar.attr('aria-valuenow', data.percentage);
 		bar.css('width', data.percentage + '%');
@@ -41,15 +41,89 @@ function assignment_change(status, id)
 		{
 			bar.removeClass('progress-bar-warning');
 			bar.addClass('progress-bar-success');
+			$('#week' + data.week + ' .progress').hide();
+			$('#week' + data.week + ' .panel-title .checkbox').html('<i class="fa fa-check-square"></i>');
 		}
 		else
 		{
 			bar.removeClass('progress-bar-success');
 			bar.addClass('progress-bar-warning');
 		}
+
+		update_level_donut();
+		done_modal(id, data.points);
+	});
+}
+
+function done_modal(id, points)
+{
+	$('#done-modal .modal-title, #done-modal .modal-body, #done-modal .modal-footer').hide()
+	$('#done-modal .modal-title').html('Congratulations!');
+	$('#done-modal .modal-body').html('<div class="trophy"><i class="fa fa-trophy"></i></div> \
+		<div class="trophy-message">Congratulations! You\'ved earned ' + points + ' points.');
+	$('#done-modal .modal-title, #done-modal .modal-body').fadeIn();
+}
+
+function update_level_donut()
+{
+		$('canvas#level-chart').fadeOut().remove();
+		var new_canvas = $(document.createElement('canvas'));
+		new_canvas.attr('width', '60').attr('height', '60').attr('id', 'level-chart');
+		$('.canvas-container').prepend(new_canvas);
+
+		$.ajax({
+			url: '{% url "courses:level_progress" %}',
+		}).done(function(data) {
+	    var ctx = document.getElementById("level-chart").getContext("2d");
+
+	    var percentage = data.level_progress;
+	    $('.canvas-container .level').html(data.user_level);
+	    var data = [
+	      {
+	        value: percentage,
+	        color:"#FFF"
+	      },
+	      {
+	        value : 100-percentage,
+	        color : "transparent",
+	      },
+	    ]
+	    options = {
+	            segmentShowStroke : true,
+	            segmentStrokeColor : "#fff",
+	            segmentStrokeWidth : 1,
+	            percentageInnerCutout : 75,
+	            animation : false,
+	            animateRotate : true,
+	            animateScale : false,
+	            onAnimationComplete : null,
+	            labelFontFamily : "Arial",
+	            labelFontStyle : "normal",
+	            labelFontSize : 24,
+	            labelFontColor : "#666"
+	        };
+
+	    var donut = new Chart(ctx).Doughnut(data, options);
 	});
 }
 </script>
+
+<style>
+.trophy
+{
+	font-size:100px;
+	text-align:center;
+	color:gold;
+	line-height:20px;
+	margin-bottom:20px;
+	display:block;
+}
+
+.trophy-message
+{
+	text-align:center;
+}
+</style>
 {% endblock %}
 
 {% block content %}
@@ -59,11 +133,8 @@ function assignment_change(status, id)
 </div>
 
 <div class="row">
-	<div class="col-md-3 col-sm-3 my-courses">
-		<h3>My Courses</h3>
-	</div>
 
-	<div class="col-md-9 col-sm-9 assignments">
+	<div class="col-md-12 col-sm- assignments">
 		<h2>{{ course.title }}</h2>
 
 <div class="panel-group" id="accordion">
@@ -73,13 +144,18 @@ function assignment_change(status, id)
 		  <div class="panel panel-default week" id="week{{ week.num }}">
 		    <div class="panel-heading">
 		      <h4 class="panel-title">
-		      	<div class="progress">
-				  <div class="progress-bar {% if week.percentage == 100 %}progress-bar-success{% else %}progress-bar-warning{% endif %}" role="progressbar" aria-valuenow="{{ week.percentage }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ week.percentage }}%">
+		      	{% if week.percentage != 100 %}
+		      	<div class="progress{% if not week.show_progress_bar %} progress-hidden{% endif %}">
+				  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{ week.percentage }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ week.percentage }}%">
 				    <span class="sr-only">0% Complete</span>
 				  </div>
-				</div>
+				  </div>
+				  <span class="checkbox"></span>
+				  {% else %}
+				  <span class="checkbox"><i class="fa fa-check-square"></i></span>
+				  {% endif %}
 		        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ week.num }}">
-		          {{ course.unit_name|title }} {{ week.num }}
+		          {{ course.unit_name|title }} {{ week.num }}{% if week.description %}:<span class="description"> {{ week.description }}</span>{% endif %}
 		        </a>
 
 		      </h4>
@@ -93,10 +169,12 @@ function assignment_change(status, id)
 		        			<table class="assignment_table">
 		        				<tr>
 		        				<td><span class="assignment_title {% if not assignment.required %}optional{% endif %}">{{ assignment.title }}{% if not assignment.required %} (optional){% endif %}</span></td>
-		        				<td><div class="assignment_btns">
+		        				<td>{% if not assignment.done %}
+		        				<div class="assignment-btns">
 		        				<button class="btn btn-primary schedule-btn" {% if assignment.done %}disabled="done"{% endif %}>Schedule</button>
 		        				<button class="btn btn-success done-btn" data-assignment="{{ assignment.id }}"  {% if assignment.done %}disabled="done"{% endif %}>Done</button>
 		        				</div>
+		        				{% endif %}
 		        				</td>
 		        				</tr>
 		        			</table>
@@ -119,8 +197,10 @@ function assignment_change(status, id)
 $(function(){
 	$('.done-btn').on('click', function(event){
 		var id = parseInt($(this).data('assignment'));
-		$('#done-modal .modal-title').html('Assignment ' + id)
-		$('#done-modal .modal-body').html('Are you sure you completed Assignment ' + id + '?');
+		var assignment = assignments[id];
+		$('#done-modal *').show()
+		$('#done-modal .modal-title').html(assignment.title)
+		$('#done-modal .modal-body').html('Are you sure you completed ' + assignment.title + '?');
 		$('#done_modal_yes_btn').data('assignment_id', id);
 		$('#done-modal').modal('show');
 	});
@@ -128,7 +208,6 @@ $(function(){
 	$('#done_modal_yes_btn').on('click', function(event){
 		var id = parseInt($(this).data('assignment_id'));
 		assignment_change('complete', id);
-		$('#done-modal').modal('hide');
 	});
 });
 </script>
