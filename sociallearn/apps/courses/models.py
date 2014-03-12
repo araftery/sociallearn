@@ -9,6 +9,9 @@ class Instructor(models.Model):
 	def name(self):
 	    return '{} {}'.format(self.first_name, self.last_name)
 
+	def __unicode__(self):
+		return self.name
+
 
 class Course(models.Model):
 	title = models.CharField(max_length=500)
@@ -17,6 +20,8 @@ class Course(models.Model):
 	length = models.IntegerField(max_length=2) # length in weeks
 	instructors = models.ManyToManyField(Instructor)
 	url = models.URLField(max_length=2000)
+	description = models.CharField(max_length=1000, null=True, blank=True)
+	cover_photo = models.URLField(max_length=2000, null=True, blank=True)
 
 	# name for sub-units (by default, 'week')
 	unit_name = models.CharField(max_length=200, default='week')
@@ -62,13 +67,16 @@ class AssignmentCompletion(models.Model):
 	student = models.ForeignKey('profiles.Student')
 	time = models.DateTimeField()
 
+	def __unicode__(self):
+		return 'Completion by {}: {} on {} at {}'.format(self.student, self.assignment, self.time.strftime('%m/%d/%y'), self.time.strftime('%I:%M %p'))
+
 class Week(models.Model):
 	number = models.IntegerField(max_length=2)
 	course = models.ForeignKey('courses.Course')
 	parent = models.OneToOneField('self', null=True, blank=True, related_name='child')
 
 	# *brief* description, limited to 60 characters
-	description = models.CharField(max_length=60, null=True, blank=True)
+	description = models.CharField(max_length=80, null=True, blank=True)
 
 	def __unicode__(self):
 		return '{}: {} {}'.format(self.course.title, self.course.unit_name.capitalize(), self.number)

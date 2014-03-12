@@ -60,3 +60,4 @@ class Visit(models.Model):
 
 	def __unicode__(self):
 		return 'Visit by {} at {}'.format(self.student.name, self.date.strftime('%m/%d/%y %I:%M %p'))
+		

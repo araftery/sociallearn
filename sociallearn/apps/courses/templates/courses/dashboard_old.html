@@ -1,0 +1,112 @@
+{% extends "common/base.html" %}
+{% load static %}
+
+{% block title %}Courses Dashboard{% endblock %}
+
+{% block custom_head %}
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+	<h1>Courses Dashboard</h1>
+</div>
+
+<div class="row">
+
+	<div class="col-md-3 col-sm-3 streak_heatmap">
+		<h2>Progress</h2>
+	</div><!-- /.streak_heatmap -->
+
+	{% for course in courses %}
+	<div class="col-md-9 col-sm-9 cards">
+		<div class="row">
+			<div class="col-md-6 col-sm-6">
+				<div class="panel panel-default card">
+					<div class="panel-heading">
+	    				<h3 class="panel-title">{{ course.title }}</h3>
+					</div>
+				  <div class="panel-body">
+				  <img src="{{ course.cover_photo }}" />
+				    <p class="description">{{ course.description }}</p>
+
+				    <div class="progress">
+				  		<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width:25%">
+				    		<span class="sr-only">25% Complete</span>
+				  		</div>
+				  	</div><!-- /.progress -->
+
+				  	<a class="btn btn-primary btn-block" href="{% url "courses:course" 1 %}">Continue <i class="fa fa-chevron-circle-right"></i></a>
+				  </div>
+				</div><!-- /.card -->
+			</div><!-- /.col -->
+	{% endfor %}
+			
+			<div class="col-md-6 col-sm-6">
+				<div class="panel panel-default card">
+					<div class="panel-heading">
+	    				<h3 class="panel-title">Panel title</h3>
+					</div>
+				  <div class="panel-body">
+				    Basic panel example
+				  </div>
+				</div><!-- /.card -->
+			</div><!-- /.col -->
+
+			<div class="col-md-6 col-sm-6">
+				<div class="panel panel-default card add-new-card">
+				   	<div><a href="#" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add a New Class</a></div>
+				</div><!-- /.card -->
+			</div><!-- /.col -->
+
+		</div><!-- /.row -->
+		
+	</div><!-- /.cards -->
+
+</div><!-- /.row -->
+
+<style>
+.card
+{
+	margin-bottom:30px;
+}
+
+.panel, .panel-body
+{
+	border-radius:5px;
+}
+
+.panel-heading.test
+{
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+}
+.card
+{
+	width:100%;
+	min-height:175px;
+	height:auto;
+}
+
+.add-new-card 
+{
+	border: 1px dashed #ccc;
+	height:175px;
+	display:table;
+}
+
+.add-new-card div
+{
+	display:table-cell;
+	vertical-align:middle;
+	text-align:center;
+}
+
+.card img
+{
+	width:100%;
+	display:block;
+	margin:5px 0;
+}
+</style>
+{% endblock %}

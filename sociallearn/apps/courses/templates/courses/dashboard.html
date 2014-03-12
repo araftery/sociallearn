@@ -4,232 +4,300 @@
 {% block title %}Courses Dashboard{% endblock %}
 
 {% block custom_head %}
-	<link href="{% static "courses/css/dashboard.css" %}" rel="stylesheet">
-	<link href="{% static "common/css/square/blue.css" %}" rel="stylesheet">
-	<script src="{% static "common/js/icheck.js" %}"></script>
-	<script>
-$(document).ready(function(){
-  $('input').iCheck({
-    checkboxClass: 'icheckbox_square-blue',
-    radioClass: 'iradio_square-blue',
-    increaseArea: '50%' // optional
-  });
-});
-
-var assignments_json = '{% autoescape off %}{{ assignments_json }}{% endautoescape %}';
-var assignments = JSON.parse(assignments_json);
-
-function assignment_change(status, id)
-{
-	var url = '{% url "courses:assignment_complete_noargs" %}' + id + '/';
-	$('#assignment' + id).addClass('done');
-	$('#assignment' + id + ' .schedule-btn').attr('disabled', 'disabled');
-	$('#assignment' + id + ' .done-btn').attr('disabled', 'disabled');
-	$('#assignment' + id + ' .assignment-btns').fadeOut();
-
-
-	$.ajax({
-		url: url
-	}).done(function(data) {
-		var bar = $('#week' + data.week + ' .progress .progress-bar');
-		$('#week' + data.week + ' .progress').removeClass('progress-hidden');
-		$('#week' + data.week + ' .progress').show();
-		console.log(bar);
-		bar.attr('aria-valuenow', data.percentage);
-		bar.css('width', data.percentage + '%');
-		if (data.percentage == 100)
-		{
-			bar.removeClass('progress-bar-warning');
-			bar.addClass('progress-bar-success');
-			$('#week' + data.week + ' .progress').hide();
-			$('#week' + data.week + ' .panel-title .checkbox').html('<i class="fa fa-check-square"></i>');
-		}
-		else
-		{
-			bar.removeClass('progress-bar-success');
-			bar.addClass('progress-bar-warning');
-		}
-
-		update_level_donut();
-		done_modal(id, data.points);
-	});
-}
-
-function done_modal(id, points)
-{
-	$('#done-modal .modal-title, #done-modal .modal-body, #done-modal .modal-footer').hide()
-	$('#done-modal .modal-title').html('Congratulations!');
-	$('#done-modal .modal-body').html('<div class="trophy"><i class="fa fa-trophy"></i></div> \
-		<div class="trophy-message">Congratulations! You\'ved earned ' + points + ' points.');
-	$('#done-modal .modal-title, #done-modal .modal-body').fadeIn();
-}
-
-function update_level_donut()
-{
-		$('canvas#level-chart').fadeOut().remove();
-		var new_canvas = $(document.createElement('canvas'));
-		new_canvas.attr('width', '60').attr('height', '60').attr('id', 'level-chart');
-		$('.canvas-container').prepend(new_canvas);
-
-		$.ajax({
-			url: '{% url "courses:level_progress" %}',
-		}).done(function(data) {
-	    var ctx = document.getElementById("level-chart").getContext("2d");
-
-	    var percentage = data.level_progress;
-	    $('.canvas-container .level').html(data.user_level);
-	    var data = [
-	      {
-	        value: percentage,
-	        color:"#FFF"
-	      },
-	      {
-	        value : 100-percentage,
-	        color : "transparent",
-	      },
-	    ]
-	    options = {
-	            segmentShowStroke : true,
-	            segmentStrokeColor : "#fff",
-	            segmentStrokeWidth : 1,
-	            percentageInnerCutout : 75,
-	            animation : false,
-	            animateRotate : true,
-	            animateScale : false,
-	            onAnimationComplete : null,
-	            labelFontFamily : "Arial",
-	            labelFontStyle : "normal",
-	            labelFontSize : 24,
-	            labelFontColor : "#666"
-	        };
-
-	    var donut = new Chart(ctx).Doughnut(data, options);
-	});
-}
-</script>
-
-<style>
-.trophy
-{
-	font-size:100px;
-	text-align:center;
-	color:gold;
-	line-height:20px;
-	margin-bottom:20px;
-	display:block;
-}
-
-.trophy-message
-{
-	text-align:center;
-}
-</style>
+	<link rel="stylesheet" href="{% static "courses/css/cal-heatmap.css" %}" />
+	<script type="text/javascript" src="{% static "courses/js/cal-heatmap.js" %}"></script>
 {% endblock %}
 
 {% block content %}
 
-<div class="row">
-	<h1>Courses Dashboard</h1>
-</div>
 
 <div class="row">
 
-	<div class="col-md-12 col-sm- assignments">
-		<h2>{{ course.title }}</h2>
+	<div class="col-md-3 col-sm-3 streak_heatmap">
+		<h2>Activity</h2>
+		<div class="streak">
+			<div class="streak-icon"></div><div class="streak-text">Current streak: {{ user.student.completion_streak }}</div>
+		</div>
+		<div class="heatmap">
+			<div id="cal-heatmap"></div>
+		</div>
+	</div><!-- /.streak_heatmap -->
 
-<div class="panel-group" id="accordion">
-		{% for week in weeks %}
+	<div class="col-md-9 col-sm-9 cards">
+	<h2>Courses</h2>
+		<div class="row">
+		{% for course in courses %}
+			<div class="col-md-6 col-sm-6">
+				<div class="panel panel-default card" data-courseurl="{% url "courses:course" course.id %}">
+
+				<div class="card-heading">
+					<img src="{{ course.cover_photo }}" />
+					<div class="overlay">
+						<div class="overlay-text-container">
+							<div class="overlay-text">
+
+							</div><!-- /.overlay-text -->
+						</div><!-- /.overlay-text-container -->
+					</div>
+				</div><!--  /.card-heading -->
+
+				  <div class="card-body">
+				  	<h2>{{ course.title }}</h2>
+
+				    <div class="progress">
+				  		<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{ course.percentage_completed }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ course.percentage_completed }}%">
+				    		<span class="sr-only">{{ course.percentage_completed }}% Complete</span>
+				  		</div>
+				  	</div><!-- /.progress -->
+
+				  </div><!-- /.card-body -->
+				</div><!-- /.card -->
+			</div><!-- /.col -->
+	{% endfor %}
+			
+
+			<div class="col-md-6 col-sm-6">
+				<div class="panel panel-default card add-new-card">
+				   	<div><a href="{% url "courses:add_course" %}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Add a New Course</a></div>
+				</div><!-- /.card -->
+			</div><!-- /.col -->
+
+		</div><!-- /.row -->
 		
+	</div><!-- /.cards -->
 
-		  <div class="panel panel-default week" id="week{{ week.num }}">
-		    <div class="panel-heading">
-		      <h4 class="panel-title">
-		      	{% if week.percentage != 100 %}
-		      	<div class="progress{% if not week.show_progress_bar %} progress-hidden{% endif %}">
-				  <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{ week.percentage }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ week.percentage }}%">
-				    <span class="sr-only">0% Complete</span>
-				  </div>
-				  </div>
-				  <span class="checkbox"></span>
-				  {% else %}
-				  <span class="checkbox"><i class="fa fa-check-square"></i></span>
-				  {% endif %}
-		        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ week.num }}">
-		          {{ course.unit_name|title }} {{ week.num }}{% if week.description %}:<span class="description"> {{ week.description }}</span>{% endif %}
-		        </a>
+</div><!-- /.row -->
 
-		      </h4>
-		    </div>
-		    <div id="collapse{{ week.num }}" class="panel-collapse collapse{% if week_in == week.num %} in{% endif %}">
-		      <div class="panel-body">
-		        <ul>
-		        	{% for assignment in week.assignments %}
-		        		<li id="assignment{{ assignment.id }}" {% if assignment.done %}class="done"{% endif %}>
-		        			
-		        			<table class="assignment_table">
-		        				<tr>
-		        				<td><span class="assignment_title {% if not assignment.required %}optional{% endif %}">{{ assignment.title }}{% if not assignment.required %} (optional){% endif %}</span></td>
-		        				<td>{% if not assignment.done %}
-		        				<div class="assignment-btns">
-		        				<button class="btn btn-primary schedule-btn" {% if assignment.done %}disabled="done"{% endif %}>Schedule</button>
-		        				<button class="btn btn-success done-btn" data-assignment="{{ assignment.id }}"  {% if assignment.done %}disabled="done"{% endif %}>Done</button>
-		        				</div>
-		        				{% endif %}
-		        				</td>
-		        				</tr>
-		        			</table>
+<style>
+.card
+{
+	margin-bottom:30px;
+	border-radius:5px;
+}
 
+.panel-heading.test
+{
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+}
+.card
+{
+	width:100%;
+	min-height:300px;
+	height:auto;
+	/*-webkit-box-shadow: 3px 3px 0px 0px rgba(50, 50, 50, 0.4);
+	-moz-box-shadow:    3px 3px 0px 0px rgba(50, 50, 50, 0.4);*/
+	box-shadow:         2px 2px 10px 0px rgba(50, 50, 50, 0.1);
+}
 
-		        		</li>
-		        	{% endfor %}
-		        </ul>
-		      </div>
-		    </div>
-		  </div>
+.add-new-card 
+{
+	border: 1px dashed #ccc;
+	height:175px;
+	display:table;
+}
 
- 			{% endfor %}
-			</div><!-- /.accordion -->
+.add-new-card div
+{
+	display:table-cell;
+	vertical-align:middle;
+	text-align:center;
+}
 
-	</div><!-- /.assignments -->
-</div>
+.card-heading
+{
+	display:block;
+}
 
-<script>
-$(function(){
-	$('.done-btn').on('click', function(event){
-		var id = parseInt($(this).data('assignment'));
-		var assignment = assignments[id];
-		$('#done-modal *').show()
-		$('#done-modal .modal-title').html(assignment.title)
-		$('#done-modal .modal-body').html('Are you sure you completed ' + assignment.title + '?');
-		$('#done_modal_yes_btn').data('assignment_id', id);
-		$('#done-modal').modal('show');
+.card-heading img
+{
+	position:relative;
+	width:100%;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+}
+
+.overlay
+{
+	position:relative;
+	width:100%;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+	background:rgba(0, 0, 0, .25);
+
+}
+
+.overlay-text-container
+{
+	padding-top:13%;
+	display:block;
+	text-align:center;
+}
+
+/*
+.overlay-text
+{
+	color:#000;
+	background:#fff;
+	font-weight:bold;
+	font-size:24px;
+	padding:4px 10px;
+	display:inline;
+	border-radius:30px;
+	border:solid 1px #fff;
+}
+*/
+
+.overlay-text
+{
+	border-radius:40px;
+	width:150px;
+	height:37px;
+	background:URL('/static/courses/img/continue.png');
+	margin:auto;
+	background-size: 100% auto;
+}
+
+.card-body h2
+{
+	text-align:center;
+	width:100%;
+	font-weight:bold;
+	color:black;
+	font-size:50px;
+	margin-top:15px;
+	display:block;
+}
+
+.card-body
+{
+	padding:10px 20px 20px 20px;
+}
+
+.cards
+{
+	margin-top:0px;
+}
+
+.card:not(.add-new-card)
+{
+	cursor: pointer; cursor: hand;
+}
+
+.streak
+{
+	display:block;
+	margin-top:30px;
+
+}
+.streak-icon
+{
+	width:32px;
+	height:32px;
+	float:left;
+	background:URL('/static/courses/img/fire-icon.png');
+}
+
+.streak-text
+{
+	padding-top:7px;
+	margin-left:5px;
+	float:left;
+}
+
+.heatmap
+{
+	clear:both;
+	margin-top:30px;
+	display:block;
+	float:left;
+}
+
+.q1
+{
+	fill:#ffead1;
+}
+
+.q2
+{
+	fill:#ffd0a6;
+}
+
+.q3
+{
+	fill:#f0ad4e;
+}
+
+.q4
+{
+	fill:#cb8132;
+}
+
+.q5
+{
+	fill:#b45f03;
+}
+
+</style>
+
+<script type="text/javascript">
+	var cal = new CalHeatMap();
+	cal.init({
+		start: new Date(2014, 2),
+		range: 1,
+		domain: "month",
+		subDomain: "x_day",
+		data: "{% url "courses:assignment_completions_data_noargs" %}",
+		highlight: "now",
+		legend: [1, 3, 5, 7],
+		tooltip: true,
+		cellSize: 20,
+		cellPadding: 5,
+		domainGutter: 20,
+		label: {
+			position: "right",
+			rotate: "left",
+			offset: {
+				x: 0,
+				y: 15
+			}
+		},
+
 	});
 
-	$('#done_modal_yes_btn').on('click', function(event){
-		var id = parseInt($(this).data('assignment_id'));
-		assignment_change('complete', id);
+	$('.card .overlay').hide();
+
+	$('.card:not(.add-new-card)').on('mouseenter', function(){
+		resize_overlays();
+		$(this).find('.overlay').fadeIn('fast');
 	});
-});
+
+	$('.card:not(.add-new-card)').on('mouseleave', function(){
+		$(this).find('.overlay').fadeOut('fast');
+	});
+
+	$('.card:not(.add-new-card)').on('click', function(){
+		document.location = $(this).data('courseurl');
+	});
+
+	function resize_overlays()
+	{
+		var cards = $('.card:not(.add-new-card)');
+		cards.each(function(){
+			var height = $(this).find('img').height();
+			var width = $(this).find('img').width();
+			console.log(height, width);
+			$(this).find('.overlay').width(width).height(height).css('margin-top', '-' + height + 'px');
+		});
+	}
+
+	$(window).on('resize', function(){
+		resize_overlays();
+	});
+
+	$(document).on('ready', function(){
+		resize_overlays();
+	});
+
 </script>
-
-
-
-<!-- Modal -->
-<div class="modal fade" id="done-modal" tabindex="-1" role="dialog" aria-labelledby="done_modal_label" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="done_modal_label">Done</h4>
-      </div>
-      <div class="modal-body">
-        Body
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="done_modal_close_btn" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-        <button type="button" id="done_modal_yes_btn" class="btn btn-primary">Yes!</button>
-      </div>
-    </div>
-  </div>
-</div>
 {% endblock %}

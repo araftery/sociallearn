@@ -1,0 +1,96 @@
+.assignments h2
+{
+	font-weight:bold;
+}
+
+.assignment_title
+{
+	display:block;
+}
+
+.assignment-btns
+{
+	display:block;
+}
+
+.week ul
+{
+	list-style-type:none;
+	padding:0;
+	margin:0;
+}
+
+.week li
+{
+	padding:20px;
+	font-size:18px;
+}
+
+.week li:not(:first-child)
+{
+	border-top:1px dotted #bbb;
+}
+
+.week .panel-title
+{
+	font-size:20px;
+}
+
+.week .panel-heading .progress
+{
+	width:35%;
+	float:right;
+	margin:0;
+	box-shadow:none;
+	border:1px #aaa solid;
+	padding:3px;
+}
+
+.week .panel-heading .checkbox i
+{
+	float:right;
+}
+
+.checkbox
+{
+	display:inline;
+}
+.assignment_table
+{
+	width:100%;
+}
+.assignment_table td:nth-child(1)
+{
+	width:50%;
+}
+.assignment_table td:nth-child(2)
+{
+	text-align:right;
+}
+
+.done table td:nth-child(1)
+{
+	text-decoration:line-through;
+	color:#aaa;
+}
+
+.optional
+{
+	color:#aaa;
+}
+
+.progress-hidden
+{
+	display:none;
+}
+
+.description
+{
+	font-size:14px;
+}
+
+
+.assignment-btns-cell
+{
+	height:37px;
+}

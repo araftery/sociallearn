@@ -9,3 +9,10 @@ def navactive(request, urls):
     if resolve(request.path).url_name in [url.strip() for url in urls.split(',')]:
         return "active"
     return ''
+
+# usage: {% navactive_namespace request 'comma-separated-list,of-name-spaces,to-match'}
+@register.simple_tag
+def navactive_namespace(request, urls):
+    if resolve(request.path).namespace in [url.strip() for url in urls.split(',')]:
+        return "active"
+    return ''

@@ -17,24 +17,36 @@ def get_login_streak(student):
 	"""
 	Gets the current login streak in days for a given student.
 	"""
-	now = django.utils.timezone.now()
-	visit = student.visit_set.filter(time__day=now.day)
+	yesterday = django.utils.timezone.now() - datetime.timedelta(1)
+	visit = student.visit_set.filter(time__day=yesterday.day)
 	streak = 0
 	while visit:
 		streak += 1
-		time = now - datetime.timedelta(streak)
+		time = yesterday - datetime.timedelta(streak)
 		visit = student.visit_set.filter(time__day=time.day)
+	
+	# add 1 if you've visited today
+	now = django.utils.timezone.now()
+	if student.visit_set.filter(time__day=now.day):
+		streak += 1
+
 	return streak
 
 def get_completion_streak(student):
 	"""
 	Gets the current completion streak in days for a given student.
 	"""
-	now = django.utils.timezone.now()
-	completion = student.assignmentcompletion_set.filter(time__day=now.day)
+	yesterday = django.utils.timezone.now() - datetime.timedelta(1)
+	completion = student.assignmentcompletion_set.filter(time__day=yesterday.day)
 	streak = 0
 	while completion:
 		streak += 1
-		time = now - datetime.timedelta(streak)
+		time = yesterday - datetime.timedelta(streak)
 		completion = student.assignmentcompletion_set.filter(time__day=time.day)
+	
+	# add 1 if you've completed an assignment today
+	now = django.utils.timezone.now()
+	if student.assignmentcompletion_set.filter(time__day=now.day):
+		streak += 1
+	
 	return streak

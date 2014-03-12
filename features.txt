@@ -16,15 +16,15 @@ Game Features
 Personal dashboard view
 	Show upcoming assignments + progress per course
 	How you stack up vs. friends
-Multiple Courses
-	Add/drop courses
-	Course searching
 Social/Friends
 	Leaderboard
 	"Friending" in context of classes
 	Scheduling assignments w/ friends
 		GCal integration
 		Twilio integration
+Multiple Courses
+	Add/drop courses
+	Course searching
 Chat/more extensive social features
 	Chat
 		Facebook-like chat + messages are integrated?
