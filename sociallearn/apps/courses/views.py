@@ -3,7 +3,6 @@ from django.http import Http404, HttpResponse
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.utils import timezone
 import courses.utils
-import core.utils
 import courses.models
 import courses.forms
 import json
@@ -154,7 +153,6 @@ def dashboard(request):
 	return render(request, 'courses/dashboard.html', {'courses': student_courses})
 
 @login_required
-@core.utils.json_response
 def assignment_complete(request, id):
 	try:
 		id = int(id)
@@ -180,7 +178,6 @@ def assignment_complete(request, id):
 
 
 @login_required
-@core.utils.json_response
 def level_progress(request):
 	points = request.user.student.points
 	level = request.user.student.level
@@ -190,7 +187,6 @@ def level_progress(request):
 
 
 @login_required
-@core.utils.json_response
 def assignment_completions_data(request, month=None, year=None):
 	if (month is None or year is None):
 		now = timezone.now()
