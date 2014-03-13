@@ -2,13 +2,10 @@ from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponse
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.utils import timezone
-import courses.utils
-from core.utils import json_response
-import courses.models
-import courses.forms
-import courses.utils
+import core
+import courses
 import json
-import profiles.utils
+import profiles
 import calendar
 from itertools import chain
 import datetime
@@ -155,7 +152,7 @@ def dashboard(request):
 	return render(request, 'courses/dashboard.html', {'courses': student_courses})
 
 @login_required
-@json_response
+@core.utils.json_response
 def assignment_complete(request, id):
 	try:
 		id = int(id)
@@ -181,7 +178,7 @@ def assignment_complete(request, id):
 
 
 @login_required
-@json_response
+@core.utils.json_response
 def level_progress(request):
 	points = request.user.student.points
 	level = request.user.student.level
@@ -191,7 +188,7 @@ def level_progress(request):
 
 
 @login_required
-@json_response
+@core.utils.json_response
 def assignment_completions_data(request, month=None, year=None):
 	if (month is None or year is None):
 		now = timezone.now()
