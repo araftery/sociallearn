@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponse
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.utils import timezone
-import core
-import courses
+import courses.utils
+import core.utils
+import courses.models
+import courses.forms
 import json
-import profiles
+import profiles.utils
 import calendar
 from itertools import chain
 import datetime
