@@ -3,7 +3,7 @@ from django.http import Http404, HttpResponse
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
 from django.utils import timezone
 import courses.utils
-import core.utils
+import core
 import courses.models
 import courses.forms
 import courses.utils
