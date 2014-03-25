@@ -28,6 +28,7 @@ DEFAULT_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     )
 
 THIRD_PARTY_APPS = (
@@ -40,6 +41,7 @@ MY_APPS = (
     'core',
     'profiles',
     'courses',
+    'social',
     )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + MY_APPS
@@ -90,7 +92,7 @@ from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as DEFAULT_T
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.request',
-    ) + DEFAULT_TCP + ('core.context_processors.level_progress',)
+    ) + DEFAULT_TCP + ('core.context_processors.level_progress','core.context_processors.notifications',)
 
 
 ############################################################

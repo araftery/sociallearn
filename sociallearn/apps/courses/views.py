@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponse
 from django.contrib.auth.decorators import login_required, permission_required, user_passes_test
+import django.contrib.auth.models
 from django.utils import timezone
 import courses.utils
+import core.utils
 import courses.models
 import courses.forms
 import json
@@ -11,6 +13,7 @@ import calendar
 from itertools import chain
 import datetime
 import pytz
+from dateutil.relativedelta import relativedelta
 
 @login_required
 def add_course(request):
@@ -153,6 +156,7 @@ def dashboard(request):
 	return render(request, 'courses/dashboard.html', {'courses': student_courses})
 
 @login_required
+@core.utils.json_response
 def assignment_complete(request, id):
 	try:
 		id = int(id)
@@ -178,6 +182,7 @@ def assignment_complete(request, id):
 
 
 @login_required
+@core.utils.json_response
 def level_progress(request):
 	points = request.user.student.points
 	level = request.user.student.level
@@ -187,7 +192,11 @@ def level_progress(request):
 
 
 @login_required
-def assignment_completions_data(request, month=None, year=None):
+@core.utils.json_response
+def assignment_completions_data(request, username=None, month=None, year=None, last_three=False):
+	if last_three is not False and last_three is not True:
+		last_three = last_three == 'True'
+
 	if (month is None or year is None):
 		now = timezone.now()
 		month = now.month
@@ -199,14 +208,34 @@ def assignment_completions_data(request, month=None, year=None):
 	except:
 		return Http404()
 
+	if username is None:
+		user = request.user
+	else:
+		try:
+			user = django.contrib.auth.models.User.objects.get(username=username)
+		except:
+			raise Http404()
+
 	cal = calendar.Calendar()
 
-	month_dates = [i for i in chain.from_iterable(cal.monthdatescalendar(year,month)) if i.month == month]
+	if last_three:
+		months = []
+		# latest 3 months:
+		for i in range(3):
+			new = datetime.datetime(year, month, 1) - relativedelta(months=i)
+			months.append((new.month, new.year))
+
+		month_dates = []
+		for x in months:
+			month_dates += [i for i in chain.from_iterable(cal.monthdatescalendar(x[1],x[0])) if i.month == x[0]]
+
+	else:
+		month_dates = [i for i in chain.from_iterable(cal.monthdatescalendar(year,month)) if i.month == month]
 	
 	data = {}
 
 	for date in month_dates:
-		num_completions = courses.models.AssignmentCompletion.objects.filter(student=request.user.student, time__year=date.year, time__month=date.month, time__day=date.day).count()
+		num_completions = courses.models.AssignmentCompletion.objects.filter(student=user.student, time__year=date.year, time__month=date.month, time__day=date.day).count()
 		
 		date = datetime.datetime.combine(date, datetime.datetime.min.time())
 

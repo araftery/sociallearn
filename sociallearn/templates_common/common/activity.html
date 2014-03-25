@@ -1,0 +1,6 @@
+{% load humanize %}
+{% for item in activity %}
+	<div class="feed-item">
+		<a href="{% url 'profiles:profile' item.student.user.username %}">{{ item.student.name }}</a> completed {{ item.assignment.title }} in {{ item.assignment.course.title|title }} {{ item.time|naturaltime }}
+	</div>
+{% endfor %}

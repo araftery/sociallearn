@@ -9,6 +9,7 @@ urlpatterns = patterns('',
 
     url(r'^admin/', include(admin.site.urls)),
     url('', include('core.urls', namespace="core")),
-    url(r'^profile/', include('profiles.urls', namespace="profiles")),
+    url(r'^profiles/', include('profiles.urls', namespace="profiles")),
     url(r'^courses/', include('courses.urls', namespace="courses")),
+    url(r'^social/', include('social.urls', namespace="social")),
 )

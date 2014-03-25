@@ -1,0 +1,81 @@
+{% extends "common/base.html" %}
+{% load static %}
+
+{% block title %}Courses Dashboard{% endblock %}
+
+{% block custom_head %}
+
+{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+
+	<div class="col-md-3 col-sm-3 leaderboards">
+		<h2>Leaderboard</h2>
+
+		<div class="leaderboard">
+			<h4>Overall</h4>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Rank</th>
+							<th>Name</th>
+							<th>Points</th>
+						</tr>
+					</thead>
+					<tbody>
+					{% for student in friends_plus_self %}
+						<tr{% if student == user.student %} class="me"{% endif %}>
+							<td>{{ forloop.counter }}</td>
+							<td>{{ student.name }}</td>
+							<td>{{ student.points }}</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+
+				</table>
+			</div>
+
+		{% for course in active_courses %}
+			<div class="leaderboard">
+			<h4>{{ course }}</h4>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Rank</th>
+							<th>Name</th>
+							<th>Points</th>
+						</tr>
+					</thead>
+					<tbody>
+					{% for row in course.leaderboard %}
+						<tr{% if row.person == user.student %} class="me"{% endif %}>
+							<td>{{ forloop.counter }}</td>
+							<td>{{ row.person.name }}</td>
+							<td>{{ row.points }}</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+
+				</table>
+			</div>
+		{% endfor %}
+	</div><!-- /.leaderboard -->
+
+	<div class="col-md-9 col-sm-9 updates">
+	<h2>Updates</h2>
+	{% for item in recent_items %}
+		{{ item }}<br />
+	{% endfor %}
+	</div><!-- /.updates -->
+</div><!-- /.row -->
+<style>
+.me
+{
+	font-weight:bold;
+}
+</style>
+
+{% endblock %}

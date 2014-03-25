@@ -4,14 +4,346 @@
 {% block title %}Courses Dashboard{% endblock %}
 
 {% block custom_head %}
-	<link href="{% static "profiles/css/profile.css" %}" rel="stylesheet">
+	<link href="{% static "profiles/css/profile.css" %}" rel="stylesheet" />
+	{% if request.user.student != student %}
+		<script>
+		$(function(){
+			$('#friend_request').on('click', function(){
+				var url = '{% url "social:send_friend_request_noargs" %}' + {{ student.id }} + '/';
+			$.ajax({
+				url: url
+			}).done(function(data) {
+				if (data.result == 'success')
+				{
+					$('#friend_request').removeClass('btn-success')
+										.addClass('btn-primary')
+										.attr('disabled', 'disabled')
+										.html('Request Sent');
+				}
+				else
+				{
+					$('#friend_request').removeClass('btn-success')
+						.addClass('btn-danger')
+						.html('Request Failed');
+				}
+			});
+
+			});
+		});
+		</script>
+	{% endif %}
+
+		<link rel="stylesheet" href="{% static "courses/css/cal-heatmap.css" %}" />
+		<link rel="stylesheet" href="{% static "common/css/tabs-left.css" %}" />
+		<link rel="stylesheet" href="{% static "common/css/activity.css" %}" />
+		<script type="text/javascript" src="{% static "courses/js/cal-heatmap.js" %}"></script>
 {% endblock %}
 
 {% block content %}
 
+<div class="row">
+	<div class="col-md-3 col-sm-3">
+		<h1>{{ student.name }}</h1>
+	</div>
+</div>
 
+<div class="row">
+	<div class="col-md-3 col-sm-3 info-box">
+		<div class="avatar-container">
+			<img src="{{ student.gravatar_url }}" />
+		</div>
+		<div>Level: {{ student.level }}</div>
+
+
+	</div>
+
+	<div class="col-md-6 col-sm-6">
+			<div class="heatmap"><div id="cal-heatmap"></div></div>
+	</div>
+
+	<div class="col-sm-3 col-sm-3 streak-container">
+		<div class="streak">
+			<div class="streak-icon"></div><div class="streak-text">Current streak: {{ student.completion_streak }}</div>
+		</div>
+	</div>
+</div><!-- /.row -->
+
+<div class="row content">
+	<div class="col-sm-12 col-md-12">
+		<div class="tabbable tabs-left">
+		  <ul class="nav nav-tabs" data-tabs="tabs">
+		    <li class="active">
+		      <a href="#activityTab" data-toggle="tab">
+		    Activity</a></li>
+		    <li class="">
+		      <a href="#coursesTab" data-toggle="tab">
+		    Courses</a></li>
+		    <li class="">
+		      <a href="#friendsTab" data-toggle="tab">
+		    Friends</a></li>
+		  </ul>
+		  <div class="tab-content">
+		    <div class="tab-pane fade in active" id="activityTab">
+		    	{% include "common/activity.html" with activity=activity %}
+		    </div>
+		    <div class="tab-pane fade" id="coursesTab">
+		    	<div class="row">
+		      {% for course in courses %}
+		      <div class="col-md-5 col-sm-5">
+			    <div class="panel panel-default card" data-courseurl="{% url "courses:course" course.id %}">
+					<div class="card-heading">
+						<img src="{{ course.cover_photo }}" />
+					</div><!--  /.card-heading -->
+
+					  <div class="card-body">
+					  	<h2>{{ course.title }}</h2>
+
+					    <div class="progress">
+					  		<div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="{{ course.percentage_completed }}" aria-valuemin="0" aria-valuemax="100" style="width:{{ course.percentage_completed }}%">
+					    		<span class="sr-only">{{ course.percentage_completed }}% Complete</span>
+					  		</div>
+					  	</div><!-- /.progress -->
+
+					  </div><!-- /.card-body -->
+				</div><!-- /.card -->
+				</div>
+			{% endfor %}
+			</div>
+
+
+
+
+
+
+
+		    </div>
+		    <div class="tab-pane fade" id="friendsTab">
+		    	{% for friend in friends %}
+		    		<div class="friend col-md-2 col-sm-2">
+		    		<a href="{% url 'profiles:profile' friend.user.username %}">
+		    			<div class="friend-pic">
+		    				<img src="{{ friend.gravatar_url }}" />
+		    			</div>
+		    			{{ friend.name }}
+		    		</a>
+		    		</div>
+		    	{% endfor %}
+
+		      
+		    </div>
+		  </div>
+		</div>
+	</div>
+</div><!-- /.row -->
 
 <style>
+	.avatar-container img
+	{
+		width:auto;
+		max-width:100%;
+	}
+	.friend
+	{
+		text-align:center;
+	}
+
+	.friend-pic img
+	{
+		max-width:100%;
+		width:auto !important;
+		margin-bottom:3px;
+	}
+
+	.row.content
+	{
+		margin-top:50px;
+	}
+
+	.avatar img
+	{
+		width:100%;
+	}
+
+	.level-progress h3
+	{
+		display:block;
+		text-align:center;
+		margin:20px 0;
+	}
+
+	.student-info
+	{
+		margin-top:10px;
+		display:block;
+	}
+
+	.student-info span
+	{
+		display:block;
+		font-size:16px;
+	}
+
+
+
+	.streak
+{
+	display:block;
+	margin-top:30px;
+
+}
+.streak-icon
+{
+	width:32px;
+	height:32px;
+	float:left;
+	background:URL('/static/courses/img/fire-icon.png');
+}
+
+.streak-text
+{
+	padding-top:7px;
+	margin-left:5px;
+	float:left;
+}
+
+.heatmap
+{
+	clear:both;
+	margin-top:30px;
+	display:block;
+	float:left;
+}
+
+.q1
+{
+	fill:#ffead1;
+}
+
+.q2
+{
+	fill:#ffd0a6;
+}
+
+.q3
+{
+	fill:#f0ad4e;
+}
+
+.q4
+{
+	fill:#cb8132;
+}
+
+.q5
+{
+	fill:#b45f03;
+}
+
+
+
+
+
+.card
+{
+	margin-bottom:30px;
+	border-radius:5px;
+}
+
+.panel-heading.test
+{
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+}
+.card
+{
+	width:100%;
+	min-height:300px;
+	height:auto;
+	/*-webkit-box-shadow: 3px 3px 0px 0px rgba(50, 50, 50, 0.4);
+	-moz-box-shadow:    3px 3px 0px 0px rgba(50, 50, 50, 0.4);*/
+	box-shadow:         2px 2px 10px 0px rgba(50, 50, 50, 0.1);
+}
+
+.add-new-card 
+{
+	border: 1px dashed #ccc;
+	height:175px;
+	display:table;
+}
+
+.add-new-card div
+{
+	display:table-cell;
+	vertical-align:middle;
+	text-align:center;
+}
+
+.card-heading
+{
+	display:block;
+}
+
+.card-heading img
+{
+	position:relative;
+	width:100%;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
+}
+
+.card-body h2
+{
+	text-align:center;
+	width:100%;
+	font-weight:bold;
+	color:black;
+	font-size:50px;
+	margin-top:15px;
+	display:block;
+}
+
+.card-body
+{
+	padding:10px 20px 20px 20px;
+}
+
+.cards
+{
+	margin-top:0px;
+}
+
+
+.card
+{
+	margin-left:50px;
+}
+
 </style>
+
+<script type="text/javascript">
+	var cal = new CalHeatMap();
+	cal.init({
+		start: new Date({{ heatmap_start.year }}, {{ heatmap_start.month }}),
+		range: 3,
+		domain: "month",
+		subDomain: "x_day",
+		data: "{% url 'courses:assignment_completions_data_nomonth' student.user.username 'True'  %}",
+		highlight: "now",
+		legend: [1, 3, 5, 7],
+		tooltip: true,
+		cellSize: 20,
+		cellPadding: 5,
+		domainGutter: 10,
+		label: {
+			position: "top",
+			rotate: "left",
+			offset: {
+				x: 0,
+				y: 0
+			}
+		},
+
+	});
+</script>
 
 {% endblock %}

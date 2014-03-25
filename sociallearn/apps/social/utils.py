@@ -1,6 +1,5 @@
 import django.utils.timezone, datetime
 import courses.models
-from django.db.models import Sum
 
 def get_level(points):
 	"""
@@ -13,19 +12,6 @@ def get_points(level):
 	Converts level to points, using the formula points = (level^2 * 220)
 	"""
 	return int((level ** 2) * 220)
-
-def get_points_in_course(student, course):
-	"""
-	Gets the points earned by a user in a particular course
-	"""
-	points_result = courses.models.AssignmentCompletion.objects.filter(assignment__course=course, student=student).aggregate(Sum('assignment__points'))
-
-	# note: this could break if there were more than one element in this dict
-	total_points = points_result.itervalues().next()
-	if total_points is None:
-		total_points = 0
-
-	return int(total_points)
 
 def get_login_streak(student):
 	"""

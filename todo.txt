@@ -1,6 +1,14 @@
-
 Questions
 [ ] non-required assignments?
 
 Issues
 [ ] Latin vs. Unicode encoding errors (e.g., showing Θ in CS50x week description)
+[ ] Register flow
+	[ ] Email validation on register form (look up the proper field type)
+	[ ] Make sex a choice field in register form
+	[ ] Placeholders in fields
+	[ ] Name for fields (so that validation errors make more sense)
+	[ ] Password + confirm pass fields
+	[ ] Validate email + username by checking to see if it exists
+	[ ] restrict characters in username
+	[ ] include form-wide errors in register form

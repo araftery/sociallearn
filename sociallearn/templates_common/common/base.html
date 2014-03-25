@@ -10,9 +10,6 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <link rel="stylesheet" href="{% static "common/css/base.css" %}"  />
-
-    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 
     <script src="{% static "common/js/jquery.min.js" %}"></script>
     <script src="{% static "common/js/Chart.js" %}"></script>
@@ -20,8 +17,13 @@
 
     <link href="{% static "common/bootstrap/css/bootstrap.css" %}" rel="stylesheet">
 
+    <link rel="stylesheet" href="{% static "common/css/base.css" %}"  />
+
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+
 
     <script type="text/javascript" src="{% static "common/js/d3.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "common/js/to-title-case.js" %}"></script>
 
 
     <!-- uncomment for jquery-ui datetime picker widget
@@ -77,6 +79,30 @@
                 <li class="{% navactive request 'core:home' %}"><a href="{% url 'core:logout' %}">Logout</a></li>
               </ul>
             </li>
+
+
+            {% if notifications %}
+            <li>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Requests
+
+                <span class="fa-stack fa-lg notif-badge">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-notanicon fa-stack-1x">{{ notifications.num }}</i>
+                </span>
+    </a>
+
+              <ul class="dropdown-menu notifications_dropdown">
+                
+              {% for notification in notifications.objects %}
+                <li><a href="#" data-notifid="{{ notification.object.id }}" data-notiftype="{{ notification.type }}" data-message="{{ notification.type|title }} from {{ notification.sender.name }}">{{ notification.type|title }} from {{ notification.sender.name }}</a></li>
+              {% endfor %}
+              
+              </ul>
+
+            </li>
+            {% endif %}
+
+
             <li>
             {% if user %}
               <div class="canvas-container">
@@ -92,6 +118,91 @@
     </div><!-- /.navbar -->
 
     <div class="container">
+
+    {% if notifications %}
+
+      <!-- Modal -->
+      <div class="modal fade" id="notif-modal" tabindex="-1" role="dialog" aria-labelledby="notif_modal_label" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="notif_modal_label">Notification</h4>
+            </div>
+            <div class="modal-body">
+              Body
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="notif_modal_accept_btn" class="btn btn-primary">Accept</button>
+              <button type="button" id="notif_modal_reject_btn" class="btn btn-danger" data-dismiss="modal">Reject</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <script>
+      $(function(){
+        $('.notifications_dropdown a').click(function(){
+          var type = $(this).data('notiftype');
+          var id = $(this).data('notifid');
+          var message = $(this).data('message');
+          $('#notif_modal_label').html(type.toLowerCase().toTitleCase());
+          $('#notif-modal .modal-body').html('Respond to this ' + message);
+          $('#notif_modal_accept_btn').data('notifid', id);
+          $('#notif_modal_accept_btn').data('notiftype', type);
+          $('#notif_modal_reject_btn').data('notifid', id);
+          $('#notif_modal_reject_btn').data('notiftype', type);
+          $('#notif-modal').modal('show');
+          console.log('show');
+        });
+      });
+
+      function accept_notification()
+      {
+        var id = $(this).data('notifid');
+        console.log($(this));
+        var type = $(this).data('notiftype');
+        if (type == 'friend request')
+        {
+          $.ajax({
+            url: '{% url "social:friend_request_response_noargs" %}' + id + '/accept/'
+          }).done(function(data) {
+
+            if (data.status == 'success')
+            {
+              $('#notif-modal').modal('hide');
+            }
+
+          });
+        }
+      }
+
+      function reject_notification()
+      {
+        var id = $(this).data('notifid');
+        var type = $(this).data('notiftype');
+        if (type == 'friend request')
+        {
+          $.ajax({
+            url: '{% url "social:friend_request_response_noargs" %}' + id + '/reject/'
+          }).done(function(data) {
+
+            if (data.status == 'success')
+            {
+              $('#notif-modal').modal('hide');
+            }
+            
+          });
+        }
+      }
+
+
+        $('#notif_modal_accept_btn').click(accept_notification);
+        $('#notif_modal_reject_btn').click(reject_notification);
+
+      </script>
+
+    {% endif %}
 
 
       <div class="messages">

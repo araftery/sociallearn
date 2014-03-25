@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+import courses
 
 class Instructor(models.Model):
 	first_name = models.CharField(max_length=100)
@@ -30,6 +31,10 @@ class Course(models.Model):
 		('EDX', 'edX'),
 		)
 	provider = models.CharField(max_length=3, choices=providers)
+
+	@property
+	def total_points(self):
+		return courses.utils.total_points_in_course(self)
 
 	@property
 	def is_active(self):

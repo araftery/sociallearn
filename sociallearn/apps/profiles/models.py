@@ -4,6 +4,7 @@ from django.utils import timezone
 from courses.models import AssignmentCompletion
 from django.db.models import Sum
 import profiles.utils
+import urllib, hashlib
 
 # Create your models here.
 
@@ -11,7 +12,8 @@ class Student(models.Model):
 	user = models.OneToOneField(auth.models.User)
 	phone = models.CharField(max_length=25, null=True, blank=True)
 	sex = models.CharField(max_length=1, choices=[('M', 'male'), ('F', 'female')])
-	courses = models.ManyToManyField('courses.Course')
+	courses = models.ManyToManyField('courses.Course', blank=True)
+	friends = models.ManyToManyField('self', blank=True)
 	# add avatar
 
 	@property
@@ -49,6 +51,16 @@ class Student(models.Model):
 	@property
 	def completion_streak(self):
 	    return profiles.utils.get_completion_streak(self)
+
+	def gravatar_url(self, size=200):
+
+		size = 200
+		gravatar_url = "http://www.gravatar.com/avatar/" + hashlib.md5(self.user.email.lower()).hexdigest() + "?"
+		gravatar_url += urllib.urlencode({'d': 'http://www.arayaclean.com/images/default-avatar.png', 's':str(size)})
+		return gravatar_url
+
+	def recent_activity(self, max=10):
+		return self.assignmentcompletion_set.order_by('-time')[:max]
 	
 
 	def __unicode__(self):
@@ -59,5 +71,5 @@ class Visit(models.Model):
 	student = models.ForeignKey(Student)
 
 	def __unicode__(self):
-		return 'Visit by {} at {}'.format(self.student.name, self.date.strftime('%m/%d/%y %I:%M %p'))
+		return 'Visit by {} at {}'.format(self.student.name, self.time.strftime('%m/%d/%y %I:%M %p'))
 		
