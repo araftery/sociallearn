@@ -124,17 +124,51 @@ function update_level_donut()
 	text-align:center;
 }
 
+
+.me
+{
+	font-weight:bold;
+}
+
 </style>
 {% endblock %}
 
 {% block content %}
 
 <div class="row">
-	<a href="{% url "courses:dashboard" %}"><i class="fa fa-chevron-circle-left"> Back</i></a> <h1>{{ course.title }}</h1>
+	<a href="{% url "core:home" %}"><i class="fa fa-chevron-circle-left"> Back</i></a> <h1>{{ course.title }}</h1>
 </div>
 
 <div class="row">
-	<div class="col-md-12 col-sm- assignments">
+<div class="col-md-3 col-sm-3 left-side">
+<h3>Leaderboard</h3>
+
+	<div class="leaderboard">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Rank</th>
+					<th>Name</th>
+					<th>Points</th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for student in friends_plus_self %}
+				<tr{% if student == user.student %} class="me"{% endif %}>
+					<td>{{ student.rank }}</td>
+					<td><a href="{% url 'profiles:profile' student.user.username %}">{{ student.name }}</a></td>
+					<td>{{ student.points_in_course }}</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+
+		</table>
+	</div><!-- /.leaderboard -->
+
+</div><!-- /.left-side -->
+
+
+	<div class="col-md-9 col-sm-9 assignments">
 
 <div class="panel-group" id="accordion">
 		{% for week in weeks %}

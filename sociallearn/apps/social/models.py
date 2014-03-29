@@ -21,9 +21,6 @@ class FriendRequest(models.Model):
 				self.requester.friends.add(self.target)
 			if not self.target.friends.filter(id=self.requester.id):
 				self.target.friends.add(self.requester)
-		elif self.accepted is False:
-			self.requester.friends.remove(self.target)
-			self.target.friends.remove(self.requester)
 
 	def __unicode__(self):
 		if self.accepted is None:

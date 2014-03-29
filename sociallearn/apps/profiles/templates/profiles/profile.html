@@ -13,12 +13,19 @@
 			$.ajax({
 				url: url
 			}).done(function(data) {
-				if (data.result == 'success')
+				if (data.result == 'success' && data.friends == true)
 				{
 					$('#friend_request').removeClass('btn-success')
 										.addClass('btn-primary')
 										.attr('disabled', 'disabled')
-										.html('Request Sent');
+										.html('Friends');
+				}
+				else if (data.result == 'success')
+				{
+						$('#friend_request').removeClass('btn-success')
+						.addClass('btn-primary')
+						.attr('disabled', 'disabled')
+						.html('Request Sent');
 				}
 				else
 				{
@@ -53,7 +60,9 @@
 			<img src="{{ student.gravatar_url }}" />
 		</div>
 		<div>Level: {{ student.level }}</div>
-
+		{% if not student == user.student %}
+		<div><a href="#" id="friend_request" class="btn btn-block {{ friend_request_btn.class }}"{{ friend_request_btn.disabled }}>{{ friend_request_btn.text }}</a></div>
+		{% endif %}
 
 	</div>
 
@@ -261,7 +270,7 @@
 	height:auto;
 	/*-webkit-box-shadow: 3px 3px 0px 0px rgba(50, 50, 50, 0.4);
 	-moz-box-shadow:    3px 3px 0px 0px rgba(50, 50, 50, 0.4);*/
-	box-shadow:         2px 2px 10px 0px rgba(50, 50, 50, 0.1);
+	box-shadow:         2px 2px 10px 0px rgba(50, 50, 50, 0.05);
 }
 
 .add-new-card 
@@ -317,6 +326,7 @@
 {
 	margin-left:50px;
 }
+
 
 </style>
 

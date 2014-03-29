@@ -139,8 +139,18 @@ def course(request, course_id):
 			}
 	# convert the assignments dict to json
 	assignments_json = json.dumps(assignments)
+
+
+
+	# get the course leaderboard
+	friends_plus_self = list(request.user.student.friends.filter(courses=course))
+	friends_plus_self.append(request.user.student)
+	for student in friends_plus_self:
+		student.points_in_course = profiles.utils.get_points_in_course(student, course)
+	core.utils.rank_descending(friends_plus_self, key=lambda x: x.points_in_course)
+
 	
-	return render(request, 'courses/course.html', { 'course': course, 'courses': student_courses, 'weeks': weeks_with_assignments, 'week_in': week_in, 'assignments_json': assignments_json})
+	return render(request, 'courses/course.html', { 'course': course, 'friends_plus_self': friends_plus_self, 'courses': student_courses, 'weeks': weeks_with_assignments, 'week_in': week_in, 'assignments_json': assignments_json})
 
 
 @login_required

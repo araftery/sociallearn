@@ -56,8 +56,8 @@
 					<tbody>
 					{% for student in friends_plus_self %}
 						<tr{% if student == user.student %} class="me"{% endif %}>
-							<td>{{ forloop.counter }}</td>
-							<td>{{ student.name }}</td>
+							<td>{{ student.rank }}</td>
+							<td><a href="{% url 'profiles:profile' student.user.username %}">{{ student.name }}</a></td>
 							<td>{{ student.points }}</td>
 						</tr>
 					{% endfor %}

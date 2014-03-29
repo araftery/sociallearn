@@ -4,7 +4,7 @@ from django.contrib import auth
 from django.http import Http404
 import profiles.models
 import core.forms
-import courses.models, courses.utils
+import courses.models, courses.utils, core.utils
 
 @login_required
 def home(request):
@@ -43,7 +43,7 @@ def dashboard(request):
 	# overall leaderboard
 	friends_plus_self = list(request.user.student.friends.all())
 	friends_plus_self.append(request.user.student)
-	friends_plus_self.sort(key=lambda x: x.points, reverse=True)
+	friends_plus_self = core.utils.rank_descending(friends_plus_self, key=lambda x: x.points)
 
 
 	recent_items = courses.models.AssignmentCompletion.objects.filter(student__in=request.user.student.friends.all()).order_by('-time')[:10]

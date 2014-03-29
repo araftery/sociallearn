@@ -52,6 +52,13 @@ def send_friend_request(request, id):
 
 	now = timezone.now()
 
+	pending_requests = social.models.FriendRequest.objects.filter(requester=target, target=requester, accepted=None)
+	if pending_requests:
+		for friend_request in pending_requests:
+			friend_request.accepted = True
+			friend_request.save()
+		return { 'result': 'success', 'friends': True }
+
 	friend_request = None
 	if not social.models.FriendRequest.objects.filter(requester=requester, target=target):
 		friend_request = social.models.FriendRequest(requester=requester, target=target, time_requested=now)
