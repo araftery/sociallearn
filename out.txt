@@ -1,0 +1,4419 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET client_encoding = 'LATIN1';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE auth_group (
+    id integer NOT NULL,
+    name character varying(80) NOT NULL
+);
+
+
+ALTER TABLE public.auth_group OWNER TO moocs_with_friends;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE auth_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE auth_group_id_seq OWNED BY auth_group.id;
+
+
+--
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_group_permissions OWNER TO moocs_with_friends;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_group_permissions_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE auth_group_permissions_id_seq OWNED BY auth_group_permissions.id;
+
+
+--
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE auth_permission (
+    id integer NOT NULL,
+    name character varying(50) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.auth_permission OWNER TO moocs_with_friends;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE auth_permission_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_permission_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE auth_permission_id_seq OWNED BY auth_permission.id;
+
+
+--
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE auth_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone NOT NULL,
+    is_superuser boolean NOT NULL,
+    username character varying(30) NOT NULL,
+    first_name character varying(30) NOT NULL,
+    last_name character varying(30) NOT NULL,
+    email character varying(75) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.auth_user OWNER TO moocs_with_friends;
+
+--
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE auth_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_groups OWNER TO moocs_with_friends;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE auth_user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_groups_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE auth_user_groups_id_seq OWNED BY auth_user_groups.id;
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE auth_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE auth_user_id_seq OWNED BY auth_user.id;
+
+
+--
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE auth_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE public.auth_user_user_permissions OWNER TO moocs_with_friends;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE auth_user_user_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.auth_user_user_permissions_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE auth_user_user_permissions_id_seq OWNED BY auth_user_user_permissions.id;
+
+
+--
+-- Name: courses_assignment; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE courses_assignment (
+    id integer NOT NULL,
+    title character varying(750) NOT NULL,
+    parent_id integer,
+    url character varying(2000) NOT NULL,
+    course_id integer NOT NULL,
+    points integer NOT NULL,
+    required boolean NOT NULL,
+    week_id integer
+);
+
+
+ALTER TABLE public.courses_assignment OWNER TO moocs_with_friends;
+
+--
+-- Name: courses_assignment_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE courses_assignment_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.courses_assignment_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: courses_assignment_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE courses_assignment_id_seq OWNED BY courses_assignment.id;
+
+
+--
+-- Name: courses_assignmentcompletion; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE courses_assignmentcompletion (
+    id integer NOT NULL,
+    assignment_id integer NOT NULL,
+    student_id integer NOT NULL,
+    "time" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.courses_assignmentcompletion OWNER TO moocs_with_friends;
+
+--
+-- Name: courses_assignmentcompletion_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE courses_assignmentcompletion_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.courses_assignmentcompletion_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: courses_assignmentcompletion_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE courses_assignmentcompletion_id_seq OWNED BY courses_assignmentcompletion.id;
+
+
+--
+-- Name: courses_assignmentstart; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE courses_assignmentstart (
+    id integer NOT NULL,
+    assignment_id integer NOT NULL,
+    student_id integer NOT NULL,
+    "time" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.courses_assignmentstart OWNER TO moocs_with_friends;
+
+--
+-- Name: courses_assignmentstart_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE courses_assignmentstart_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.courses_assignmentstart_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: courses_assignmentstart_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE courses_assignmentstart_id_seq OWNED BY courses_assignmentstart.id;
+
+
+--
+-- Name: courses_course; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE courses_course (
+    id integer NOT NULL,
+    title character varying(500) NOT NULL,
+    start_date date NOT NULL,
+    end_date date NOT NULL,
+    length integer NOT NULL,
+    url character varying(2000) NOT NULL,
+    provider character varying(3) NOT NULL,
+    unit_name character varying(200) NOT NULL,
+    description character varying(1000),
+    cover_photo character varying(2000)
+);
+
+
+ALTER TABLE public.courses_course OWNER TO moocs_with_friends;
+
+--
+-- Name: courses_course_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE courses_course_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.courses_course_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: courses_course_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE courses_course_id_seq OWNED BY courses_course.id;
+
+
+--
+-- Name: courses_course_instructors; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE courses_course_instructors (
+    id integer NOT NULL,
+    course_id integer NOT NULL,
+    instructor_id integer NOT NULL
+);
+
+
+ALTER TABLE public.courses_course_instructors OWNER TO moocs_with_friends;
+
+--
+-- Name: courses_course_instructors_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE courses_course_instructors_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.courses_course_instructors_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: courses_course_instructors_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE courses_course_instructors_id_seq OWNED BY courses_course_instructors.id;
+
+
+--
+-- Name: courses_instructor; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE courses_instructor (
+    id integer NOT NULL,
+    first_name character varying(100) NOT NULL,
+    last_name character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.courses_instructor OWNER TO moocs_with_friends;
+
+--
+-- Name: courses_instructor_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE courses_instructor_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.courses_instructor_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: courses_instructor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE courses_instructor_id_seq OWNED BY courses_instructor.id;
+
+
+--
+-- Name: courses_week; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE courses_week (
+    id integer NOT NULL,
+    number integer NOT NULL,
+    course_id integer NOT NULL,
+    description character varying(80),
+    parent_id integer
+);
+
+
+ALTER TABLE public.courses_week OWNER TO moocs_with_friends;
+
+--
+-- Name: courses_week_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE courses_week_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.courses_week_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: courses_week_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE courses_week_id_seq OWNED BY courses_week.id;
+
+
+--
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    user_id integer NOT NULL,
+    content_type_id integer,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE public.django_admin_log OWNER TO moocs_with_friends;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE django_admin_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_admin_log_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE django_admin_log_id_seq OWNED BY django_admin_log.id;
+
+
+--
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE django_content_type (
+    id integer NOT NULL,
+    name character varying(100) NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.django_content_type OWNER TO moocs_with_friends;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE django_content_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.django_content_type_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE django_content_type_id_seq OWNED BY django_content_type.id;
+
+
+--
+-- Name: django_session; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.django_session OWNER TO moocs_with_friends;
+
+--
+-- Name: profiles_student; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE profiles_student (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    phone character varying(25),
+    sex character varying(1) NOT NULL
+);
+
+
+ALTER TABLE public.profiles_student OWNER TO moocs_with_friends;
+
+--
+-- Name: profiles_student_courses; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE profiles_student_courses (
+    id integer NOT NULL,
+    student_id integer NOT NULL,
+    course_id integer NOT NULL
+);
+
+
+ALTER TABLE public.profiles_student_courses OWNER TO moocs_with_friends;
+
+--
+-- Name: profiles_student_courses_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE profiles_student_courses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.profiles_student_courses_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: profiles_student_courses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE profiles_student_courses_id_seq OWNED BY profiles_student_courses.id;
+
+
+--
+-- Name: profiles_student_friends; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE profiles_student_friends (
+    id integer NOT NULL,
+    from_student_id integer NOT NULL,
+    to_student_id integer NOT NULL
+);
+
+
+ALTER TABLE public.profiles_student_friends OWNER TO moocs_with_friends;
+
+--
+-- Name: profiles_student_friends_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE profiles_student_friends_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.profiles_student_friends_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: profiles_student_friends_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE profiles_student_friends_id_seq OWNED BY profiles_student_friends.id;
+
+
+--
+-- Name: profiles_student_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE profiles_student_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.profiles_student_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: profiles_student_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE profiles_student_id_seq OWNED BY profiles_student.id;
+
+
+--
+-- Name: profiles_visit; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE profiles_visit (
+    id integer NOT NULL,
+    student_id integer NOT NULL,
+    "time" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.profiles_visit OWNER TO moocs_with_friends;
+
+--
+-- Name: profiles_visit_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE profiles_visit_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.profiles_visit_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: profiles_visit_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE profiles_visit_id_seq OWNED BY profiles_visit.id;
+
+
+--
+-- Name: social_friendrequest; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE social_friendrequest (
+    id integer NOT NULL,
+    requester_id integer NOT NULL,
+    target_id integer NOT NULL,
+    time_requested timestamp with time zone NOT NULL,
+    time_responded timestamp with time zone,
+    accepted boolean
+);
+
+
+ALTER TABLE public.social_friendrequest OWNER TO moocs_with_friends;
+
+--
+-- Name: social_friendrequest_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE social_friendrequest_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.social_friendrequest_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: social_friendrequest_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE social_friendrequest_id_seq OWNED BY social_friendrequest.id;
+
+
+--
+-- Name: south_migrationhistory; Type: TABLE; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE TABLE south_migrationhistory (
+    id integer NOT NULL,
+    app_name character varying(255) NOT NULL,
+    migration character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.south_migrationhistory OWNER TO moocs_with_friends;
+
+--
+-- Name: south_migrationhistory_id_seq; Type: SEQUENCE; Schema: public; Owner: moocs_with_friends
+--
+
+CREATE SEQUENCE south_migrationhistory_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.south_migrationhistory_id_seq OWNER TO moocs_with_friends;
+
+--
+-- Name: south_migrationhistory_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER SEQUENCE south_migrationhistory_id_seq OWNED BY south_migrationhistory.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY auth_group ALTER COLUMN id SET DEFAULT nextval('auth_group_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY auth_permission ALTER COLUMN id SET DEFAULT nextval('auth_permission_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY auth_user ALTER COLUMN id SET DEFAULT nextval('auth_user_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY auth_user_groups ALTER COLUMN id SET DEFAULT nextval('auth_user_groups_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY courses_assignment ALTER COLUMN id SET DEFAULT nextval('courses_assignment_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY courses_assignmentcompletion ALTER COLUMN id SET DEFAULT nextval('courses_assignmentcompletion_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY courses_assignmentstart ALTER COLUMN id SET DEFAULT nextval('courses_assignmentstart_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY courses_course ALTER COLUMN id SET DEFAULT nextval('courses_course_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY courses_course_instructors ALTER COLUMN id SET DEFAULT nextval('courses_course_instructors_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY courses_instructor ALTER COLUMN id SET DEFAULT nextval('courses_instructor_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY courses_week ALTER COLUMN id SET DEFAULT nextval('courses_week_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY django_admin_log ALTER COLUMN id SET DEFAULT nextval('django_admin_log_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY django_content_type ALTER COLUMN id SET DEFAULT nextval('django_content_type_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY profiles_student ALTER COLUMN id SET DEFAULT nextval('profiles_student_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY profiles_student_courses ALTER COLUMN id SET DEFAULT nextval('profiles_student_courses_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY profiles_student_friends ALTER COLUMN id SET DEFAULT nextval('profiles_student_friends_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY profiles_visit ALTER COLUMN id SET DEFAULT nextval('profiles_visit_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY social_friendrequest ALTER COLUMN id SET DEFAULT nextval('social_friendrequest_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY south_migrationhistory ALTER COLUMN id SET DEFAULT nextval('south_migrationhistory_id_seq'::regclass);
+
+
+--
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY auth_group (id, name) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('auth_group_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY auth_group_permissions (id, group_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('auth_group_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY auth_permission (id, name, content_type_id, codename) FROM stdin;
+1	Can add log entry	1	add_logentry
+2	Can change log entry	1	change_logentry
+3	Can delete log entry	1	delete_logentry
+4	Can add permission	2	add_permission
+5	Can change permission	2	change_permission
+6	Can delete permission	2	delete_permission
+7	Can add group	3	add_group
+8	Can change group	3	change_group
+9	Can delete group	3	delete_group
+10	Can add user	4	add_user
+11	Can change user	4	change_user
+12	Can delete user	4	delete_user
+13	Can add content type	5	add_contenttype
+14	Can change content type	5	change_contenttype
+15	Can delete content type	5	delete_contenttype
+16	Can add session	6	add_session
+17	Can change session	6	change_session
+18	Can delete session	6	delete_session
+19	Can add migration history	7	add_migrationhistory
+20	Can change migration history	7	change_migrationhistory
+21	Can delete migration history	7	delete_migrationhistory
+22	Can add student	8	add_student
+23	Can change student	8	change_student
+24	Can delete student	8	delete_student
+25	Can add instructor	9	add_instructor
+26	Can change instructor	9	change_instructor
+27	Can delete instructor	9	delete_instructor
+28	Can add course	10	add_course
+29	Can change course	10	change_course
+30	Can delete course	10	delete_course
+31	Can add assignment	11	add_assignment
+32	Can change assignment	11	change_assignment
+33	Can delete assignment	11	delete_assignment
+34	Can add assignment start	12	add_assignmentstart
+35	Can change assignment start	12	change_assignmentstart
+36	Can delete assignment start	12	delete_assignmentstart
+37	Can add assignment completion	13	add_assignmentcompletion
+38	Can change assignment completion	13	change_assignmentcompletion
+39	Can delete assignment completion	13	delete_assignmentcompletion
+40	Can add week	14	add_week
+41	Can change week	14	change_week
+42	Can delete week	14	delete_week
+43	Can add visit	15	add_visit
+44	Can change visit	15	change_visit
+45	Can delete visit	15	delete_visit
+46	Can add friend request	16	add_friendrequest
+47	Can change friend request	16	change_friendrequest
+48	Can delete friend request	16	delete_friendrequest
+49	Can add friend request	17	add_friendrequest
+50	Can change friend request	17	change_friendrequest
+51	Can delete friend request	17	delete_friendrequest
+\.
+
+
+--
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('auth_permission_id_seq', 51, true);
+
+
+--
+-- Data for Name: auth_user; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
+5	pbkdf2_sha256$12000$mRiZHeogfbQj$VamNN1hO4kT668zRdSl9jWHaWYjVAGeCUWi3ABo/2U4=	2014-03-25 20:17:03.542818+00	f	testuser	Test	User	testuser@gmail.com	f	t	2014-03-15 19:51:23.494434+00
+6	pbkdf2_sha256$12000$CsCtZJGhWHCr$lbNJ2sd0o9PyybL2qKy8Bu35fQNuz39SP+vvRNAjMXg=	2014-03-25 20:20:27.719917+00	f	testuser2	Test	User2	testuser@gmaill.com	f	t	2014-03-24 23:22:35.279942+00
+1	pbkdf2_sha256$12000$byHwhyKd6MB4$lW/tP20rxSSzRIQ7p8It3Q0joWxWNoXfkzlrRHjGkXs=	2014-03-30 17:32:30.618566+00	t	araftery	Andrew	Raftery	andrewraftery@gmail.com	t	t	2014-02-05 04:57:11+00
+\.
+
+
+--
+-- Data for Name: auth_user_groups; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY auth_user_groups (id, user_id, group_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('auth_user_groups_id_seq', 1, false);
+
+
+--
+-- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('auth_user_id_seq', 6, true);
+
+
+--
+-- Data for Name: auth_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY auth_user_user_permissions (id, user_id, permission_id) FROM stdin;
+\.
+
+
+--
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('auth_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- Data for Name: courses_assignment; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY courses_assignment (id, title, parent_id, url, course_id, points, required, week_id) FROM stdin;
+26	Surprise	25	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/bbb733f5fdb743bc96e16af8ce7ce46a/1f73fab30cc74fce931b9ebef10ad36b/	1	0	f	5
+64	Section 2: Space	63	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/683bd1daee7f42b3bca2868f1401f67f/9bf2693aa37045b8b08be5224bd04488/	2	30	t	12
+62	Introduction: Time, Space, and Identity	\N	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/683bd1daee7f42b3bca2868f1401f67f/32b3ad25d11f4e79a56fc0cad39f1fe2/	2	30	t	12
+1	Lecture	\N	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/b2f7d86728354866a2c4438e76c3ec55/99a3e898bd0c43aab9757d71b114529f/	1	75	t	1
+11	Shorts	10	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/b2f7d86728354866a2c4438e76c3ec55/4e7caab4e40f4e539ba6d1031d808972/	1	0	f	2
+9	Walkthroughs	8	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/b2f7d86728354866a2c4438e76c3ec55/0ffad411b33144f99d29a48e20a8a109/	1	0	f	2
+10	Section	9	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/b2f7d86728354866a2c4438e76c3ec55/1c9bf196aa814998813103227b398bca/	1	0	f	2
+12	Problem Set 1	11	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/b2f7d86728354866a2c4438e76c3ec55/6fcf595364684ca6a79af7989044a80b/	1	350	t	2
+7	Lecture	\N	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/b2f7d86728354866a2c4438e76c3ec55/99a3e898bd0c43aab9757d71b114529f/	1	75	t	2
+8	Lecture, continued	7	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/b2f7d86728354866a2c4438e76c3ec55/92f0ffe3349d430abd577474c4afb5e7/	1	75	t	2
+17	Shorts	16	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/c0986764d695405f9d995f43b7c10676/5194906ad75c4edb9ecd401df372b8f3/	1	0	f	3
+15	Walkthroughs	14	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/c0986764d695405f9d995f43b7c10676/5c59d3187ac34f2e965302aba87300e5/	1	0	f	3
+16	Section	15	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/c0986764d695405f9d995f43b7c10676/a50f28f1a34546a9a2b271d5879c3e55/	1	0	f	3
+18	Problem Set 2	17	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/c0986764d695405f9d995f43b7c10676/0e75f080042c4b5096e809521a2b177b/	1	350	t	3
+13	Lecture	\N	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/c0986764d695405f9d995f43b7c10676/57a35ec149944271b63a4d45db110bf4/	1	75	t	3
+14	Lecture, continued	13	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/c0986764d695405f9d995f43b7c10676/802ed5e3e89d4666b5faba8bc90164fa/	1	75	t	3
+23	Shorts	22	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/cdf0594e6a80402bbe902bb107fd2976/22251a2b00ac42788c70ca6f6ccbe7fd/	1	0	f	4
+21	Walkthroughs	20	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/cdf0594e6a80402bbe902bb107fd2976/9c5b7855f24d4666b499a29b91226d0c/	1	0	f	4
+22	Section	21	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/cdf0594e6a80402bbe902bb107fd2976/8b279b3001e3416d8d3a54736bebd6e7/	1	0	f	4
+24	Problem Set 3	23	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/cdf0594e6a80402bbe902bb107fd2976/1db1dee38e2e4418b0d44f4287b8e4ec/	1	350	t	4
+19	Lecture	\N	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/cdf0594e6a80402bbe902bb107fd2976/36cf1515bf0a4e858d79158c44dca5dc/	1	75	t	4
+20	Lecture, continued	19	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/cdf0594e6a80402bbe902bb107fd2976/6f8f6927e96342c2b3b7192d655b2e52/	1	75	t	4
+30	Shorts	29	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/bbb733f5fdb743bc96e16af8ce7ce46a/43ecf4566f074e54b263660fbaaaf346/	1	0	f	5
+28	Walkthroughs	27	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/bbb733f5fdb743bc96e16af8ce7ce46a/0d0f61ba360140c3b8476ca44d8c6e94/	1	0	f	5
+29	Section	28	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/bbb733f5fdb743bc96e16af8ce7ce46a/4403b653e58d4e42b01c6f8c8c1c9d16/	1	0	f	5
+31	Problem Set 4	30	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/bbb733f5fdb743bc96e16af8ce7ce46a/b1a3b74abd924a0d8c8bb68d9592eb7b/	1	350	t	5
+25	Lecture	\N	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/bbb733f5fdb743bc96e16af8ce7ce46a/38663afb27d04b918b44249e18579eb3/	1	75	t	5
+27	Lecture, continued	26	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/bbb733f5fdb743bc96e16af8ce7ce46a/a7552b3c65d6483c8308944cc7710045/	1	75	t	5
+36	Shorts	35	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/64d663a6575948a2af846695b4042f60/8c9df54ceedc4d0e8ea690e65d0cd43e/	1	0	f	6
+34	Walkthroughs	33	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/64d663a6575948a2af846695b4042f60/e3ea6d4b381148afa08e627f4dc2a130/	1	0	f	6
+35	Section	34	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/64d663a6575948a2af846695b4042f60/ec5000e1775a478c8c7a88a517be92be/	1	0	f	6
+32	Lecture	\N	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/64d663a6575948a2af846695b4042f60/180269d87034405db1555b4d45691ddd/	1	75	t	6
+33	Lecture, continued	32	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/64d663a6575948a2af846695b4042f60/2fa5752f4dd54a13a3c3d71ba2c6661c/	1	75	t	6
+39	Walkthroughs	38	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/4112040f92094edeba0e5e49b7f1fffe/67c3d981b20f41a69692839397966f2a/	1	0	f	7
+40	Section	39	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/4112040f92094edeba0e5e49b7f1fffe/9671a01f99624cd2976f248cf0b877dc/	1	0	f	7
+37	Lecture	\N	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/4112040f92094edeba0e5e49b7f1fffe/2f0842359c174676a3bacf446dcbb046/	1	75	t	7
+38	Lecture, continued	37	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/4112040f92094edeba0e5e49b7f1fffe/79774117a6ed4b33ab1281ef5f18ab3b/	1	75	t	7
+43	Lecture	\N	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/3a40d8018feb4a9fa4ee8f79215dd035/226529f457e34d0299b7e428ced7a822/	1	75	t	8
+58	Lecture	\N	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/cc39cb09f7d44276a11359287078d104/2da00a04aff7435194695995da2f893f/	1	75	t	11
+59	Seminars	58	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/cc39cb09f7d44276a11359287078d104/dd7cc580bdfa4e24a955051325bf8139/	1	0	f	11
+71	Section 4: What Archaeology Tells Us	70	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/0b3eaee136b54789a76a71f8231a30c2/024570126409414eb9f00084f7d736f3/	2	30	t	13
+60	Final Project	59	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/cc39cb09f7d44276a11359287078d104/daff78395af845798f118663420d4c03/	1	1125	t	11
+63	Section 1: Time	62	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/683bd1daee7f42b3bca2868f1401f67f/ebc92d6d3b3f489fb77465c7ef6e0b70/	2	30	t	12
+65	Section 3: Identity	64	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/683bd1daee7f42b3bca2868f1401f67f/9ffda64e4ec8496e86611e304cc6b783/	2	30	t	12
+66	Section 4: China's History Mapped	65	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/683bd1daee7f42b3bca2868f1401f67f/1ecdbbd883ef4419ba57f2ba8d6d9cc2/	2	30	t	12
+67	Historical Overview	\N	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/683bd1daee7f42b3bca2868f1401f67f/c07614b4e4ad4ddfacfbc61cd555c390/	2	30	t	13
+69	Section 2: How We Tell Our Stories: Artifacts vs. Texts	68	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/0b3eaee136b54789a76a71f8231a30c2/ca3c4026564b43f59cd10ef50504763b/	2	30	t	13
+68	Section 1: Introduction: Origin Stories	67	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/0b3eaee136b54789a76a71f8231a30c2/00e385fb89474b91bc90b2d0a677d3f4/	2	30	t	13
+70	Section 3: Culture Heroes and Sage Kings	69	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/0b3eaee136b54789a76a71f8231a30c2/8cfca16718324944bb4d83dde881e798/	2	30	t	13
+72	Section 5: The History of the Two Stories	71	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/0b3eaee136b54789a76a71f8231a30c2/cbf04a73b76647edbf78fe4d403ec1ef/	2	30	t	13
+73	Section 6: Interview with Professor Rowan Flad	72	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/0b3eaee136b54789a76a71f8231a30c2/7acceca4a64742979539e51f9dcfe66f/	2	30	t	13
+74	Discussion Check	73	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/0b3eaee136b54789a76a71f8231a30c2/08e377093ec046918f8d96bd3c10b521/	2	30	t	13
+75	Week 1 Office Hours	66	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/f63e03e1836643ad9f59df4c2d9dc237/9193a16d743a47b38e687827d0d494fa/	2	0	f	12
+76	Week 2 Office Hours	74	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/35a66a2705f6461cb051f1674f746183/3b8ed9626d7f4244aebebabc84742ca1/	2	0	f	13
+3	Walkthroughs	2	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/b2f7d86728354866a2c4438e76c3ec55/0ffad411b33144f99d29a48e20a8a109/	1	0	f	1
+2	Lecture, continued	1	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/b2f7d86728354866a2c4438e76c3ec55/92f0ffe3349d430abd577474c4afb5e7/	1	75	t	1
+41	Shorts	40	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/4112040f92094edeba0e5e49b7f1fffe/56548d9d20994776b3887ce4f2dfca2e/	1	0	f	7
+42	Problem Set 5	41	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/4112040f92094edeba0e5e49b7f1fffe/eae9a684807b4dd6a84dbb8821e37302/	1	350	t	7
+44	Lecture, continued	43	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/3a40d8018feb4a9fa4ee8f79215dd035/34358febe99646f6a76346d9222aef5b/	1	75	t	8
+46	Shorts	45	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/3a40d8018feb4a9fa4ee8f79215dd035/6ef7d4262dd84b5787783953d6c5c961/	1	0	f	8
+45	Section	44	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/3a40d8018feb4a9fa4ee8f79215dd035/98e006aa8f7141e8bc1b66487eb438b8/	1	0	f	8
+47	Problem Set 6	46	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/3a40d8018feb4a9fa4ee8f79215dd035/5b64cf256c3046099ca86c81e2a57f1d/	1	350	t	8
+48	Lecture	\N	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/9fbae839c3154ce79f5467fb66182881/3adc12fd45594995b6f1aaa084fe6a9c/	1	75	t	9
+52	Shorts	51	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/9fbae839c3154ce79f5467fb66182881/bd1d950a8ff9442b869c4de0994f38cd/	1	0	f	9
+50	Walkthroughs	49	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/9fbae839c3154ce79f5467fb66182881/e96fe581fb1a49958faac998fed0a50a/	1	0	f	9
+51	Section	50	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/9fbae839c3154ce79f5467fb66182881/d7c1c274d9ba4671a1bfe7eb0004c194/	1	0	f	9
+53	Problem Set 7	52	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/9fbae839c3154ce79f5467fb66182881/23f471bdd23749ce93fede82b946bc93/	1	350	t	9
+49	Lecture, continued	48	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/9fbae839c3154ce79f5467fb66182881/c21b38c2f1f042aa9801c5dab1f9d06b/	1	75	t	9
+56	Section	55	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/178c4caec63b4a17b047df3a24a971cb/558b5a7fd44340e6a428176f70faed5e/	1	0	f	10
+57	Problem Set 8	56	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/178c4caec63b4a17b047df3a24a971cb/30a07f78fa354e2f8ce95c71468c004f/	1	350	t	10
+54	Lecture	\N	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/178c4caec63b4a17b047df3a24a971cb/fa21abcb6a4043519526f5e0ab60760e/	1	75	t	10
+55	Lecture, continued	54	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/178c4caec63b4a17b047df3a24a971cb/a47247da4c2f4fd685ebc4a53d73cc58/	1	75	t	10
+83	Historical Overview	\N	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/1c0ecfac733c463f8cdbf3daae55fc70/5750d8272a1141c89f1caa5d28f7b071/	2	30	t	14
+85	Section 1: Introduction	83	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/1c0ecfac733c463f8cdbf3daae55fc70/14748f69973e4eccbbfd5180839b78f5/	2	30	t	14
+90	Section 6: Zhou Bronzes	89	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/1c0ecfac733c463f8cdbf3daae55fc70/5bd893fcb71740c2a51fedf5fa72996c/	2	0	f	14
+86	Section 2: The Shang System and Its Sources	85	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/1c0ecfac733c463f8cdbf3daae55fc70/632fa1a794594f208b968c7a1d0d548d/	2	30	t	14
+87	Section 3: Sources of Shang I - How to Read a Bronze Vessel?	86	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/1c0ecfac733c463f8cdbf3daae55fc70/0ef1078fa876439387eef4abf8cd4ebc/	2	30	t	14
+88	Section 4: Sources of Shang II - Origin of Writing	87	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/1c0ecfac733c463f8cdbf3daae55fc70/d41adf4f81d74237824cf516fbb58a18/	2	30	t	14
+89	Section 5: The Zhou System and Its Sources	88	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/1c0ecfac733c463f8cdbf3daae55fc70/09c055bc30bf454e82095012bb16a895/	2	30	t	14
+91	Section 7: Conclusion - Zhou Moves East	90	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/1c0ecfac733c463f8cdbf3daae55fc70/270fa3aa86ef46d3938bc68db2ead647/	2	30	t	14
+92	Forum Discussion	91	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/1c0ecfac733c463f8cdbf3daae55fc70/c33eb77dd2bd4d14bbca9bb567e51c5d/	2	30	t	14
+93	Week 3 Office Hours	92	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/1c0ecfac733c463f8cdbf3daae55fc70/c33eb77dd2bd4d14bbca9bb567e51c5d/	2	0	f	14
+94	Section 1: Discussion One Interpretation of the Nature of Chinese Civilization	\N	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/c34856d348db45359a1454a0b0a7378e/524234d39f87446dbf66dc9122c53ed2/	2	30	t	15
+95	Section 2: Professor Bol and Kirby Discuss "Early Civilization in China: Reflections on How It Became Chinese"	94	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/c34856d348db45359a1454a0b0a7378e/89e01283799f4420960f59a929d9f0c3/	2	30	t	15
+96	Discussion Check	95	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/c34856d348db45359a1454a0b0a7378e/5ec5b6978ccc44f7ab237aa55cf6966d/	2	30	t	15
+98	Historical Overview	\N	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/6435f3abf67e4718a3bfc3ad576bba0e/1f586479105141c8b37faaf4ee863f41/	2	30	t	16
+99	Section 1: The Many Faces of Confucianism	98	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/6435f3abf67e4718a3bfc3ad576bba0e/dcb9e81a9e2e493b8fe1ae06b1c68f51/	2	30	t	16
+100	Section 2: Confucius of the Analects	99	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/6435f3abf67e4718a3bfc3ad576bba0e/38217338946e4f1f85703c70629acdc4/	2	30	t	16
+101	Section 3: Reading the Analects	100	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/6435f3abf67e4718a3bfc3ad576bba0e/ee1e776fe56c428eb3f4d0c9434b1cd3/	2	30	t	16
+102	Section 4: Confucius' Successors	101	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/6435f3abf67e4718a3bfc3ad576bba0e/11b24fa1075542509de588b8bab51496/	2	30	t	16
+103	Discussion Forum	102	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/6435f3abf67e4718a3bfc3ad576bba0e/04d23151765a44119c0523fe66d1d7e8/	2	30	t	16
+104	Section 5: The Confucian Path	103	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/6435f3abf67e4718a3bfc3ad576bba0e/f19b10d5b6cb48b9a724f8b78519cbe9/	2	30	t	16
+106	Discussion Check	105	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/6435f3abf67e4718a3bfc3ad576bba0e/d9bd192ffafb4f3488a7f73408e7d7e7/	2	30	t	16
+105	Section 6: Professor Puett on Zhuangzi	104	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/6435f3abf67e4718a3bfc3ad576bba0e/ff9950559e1e4440ba304218b24f4ff8/	2	0	f	16
+107	Week 5 Office Hours	106	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/6435f3abf67e4718a3bfc3ad576bba0e/d9bd192ffafb4f3488a7f73408e7d7e7/	2	0	f	16
+108	Section 1: The Hundred Schools of Thought	\N	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/7c4a7bf359a14906b55d6c09fc1cd0bc/43e4c677054342bb9bb5f438d6c73929/	2	30	t	17
+109	Section 2: Strategies for Doing Good	108	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/7c4a7bf359a14906b55d6c09fc1cd0bc/e0ace8fdb3794f3d93b8c7e1b998964c/	2	30	t	17
+110	Section 3: Strategies for Survival	109	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/7c4a7bf359a14906b55d6c09fc1cd0bc/89da18b8e3734c4aaf8336ce5bfeb57e/	2	30	t	17
+111	Section 4: Strategies for Gaining Control	110	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/7c4a7bf359a14906b55d6c09fc1cd0bc/744fec5d7bd844e2b90b9d42ec71988e/	2	30	t	17
+112	Section 5: Conclusion	111	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/7c4a7bf359a14906b55d6c09fc1cd0bc/f41f61877a8242f9b4a17dc15caaf60a/	2	30	t	17
+113	Section 6: Professor Puett on Zhuangzi	112	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/7c4a7bf359a14906b55d6c09fc1cd0bc/1b5c8608c5e44c4b8b4e42cb3851cc74/	2	0	f	17
+114	Section 7: Professor Puett on Zhuangzi in Relation to Confucius	113	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/7c4a7bf359a14906b55d6c09fc1cd0bc/11a6da27ec4846b79ad918f9dfe41769/	2	0	f	17
+115	Section 8: Professor Puett on Laozi	114	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/7c4a7bf359a14906b55d6c09fc1cd0bc/333db8d2c1834b3e98c5cc5d555a5ed8/	2	30	t	17
+116	Discussion Forum: Confucian Thinkers and the Hundred Masters	115	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/7c4a7bf359a14906b55d6c09fc1cd0bc/edca4cf223914b739f6d2da3b4a67b19/	2	30	t	17
+117	Week 6 Office Hours	116	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/7c4a7bf359a14906b55d6c09fc1cd0bc/7bada39e4e154bd5b1cb4a396ffaae49/	2	0	f	17
+118	Final Assessment	\N	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/e1611702f62a43e5a8aea6bad7a9d710/5adbb8387cb14822932cd95bf079e16f/	2	500	t	18
+119	Mini-Course 1 Conclusion	118	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/courseware/4ed968ed9df64a9a8293df55892e7def/f5ff311e60cf40a5970f72f3ab58308d/	2	0	f	18
+\.
+
+
+--
+-- Name: courses_assignment_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('courses_assignment_id_seq', 119, true);
+
+
+--
+-- Data for Name: courses_assignmentcompletion; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY courses_assignmentcompletion (id, assignment_id, student_id, "time") FROM stdin;
+450	65	2	2014-03-12 16:53:38.729011+00
+451	66	2	2014-03-12 16:53:40.54243+00
+452	67	2	2014-03-12 16:53:44.366042+00
+453	68	2	2014-03-12 16:53:48.001418+00
+454	7	2	2014-03-12 16:53:56.691728+00
+455	8	2	2014-03-12 16:53:58.594835+00
+456	12	2	2014-03-12 16:54:01.816569+00
+457	13	2	2014-03-12 16:54:06.226258+00
+458	14	2	2014-03-12 16:54:08.669829+00
+445	1	2	2014-03-09 16:53:19+00
+446	2	2	2014-03-09 16:53:21+00
+447	62	2	2014-03-10 16:53:33+00
+448	63	2	2014-03-11 16:53:35+00
+449	64	2	2014-03-11 16:53:36+00
+459	69	2	2014-03-12 16:55:58.007463+00
+460	70	2	2014-03-12 17:12:47.874754+00
+461	71	2	2014-03-12 17:28:11.427834+00
+462	72	2	2014-03-12 20:15:07.465977+00
+463	73	2	2014-03-12 20:16:01.039448+00
+464	74	2	2014-03-13 01:31:22.436183+00
+465	83	2	2014-03-13 01:34:26.349822+00
+466	85	2	2014-03-13 01:34:32.94133+00
+467	86	2	2014-03-13 01:39:57.992106+00
+468	87	2	2014-03-13 01:40:09.988406+00
+469	88	2	2014-03-13 01:45:55.24526+00
+470	89	2	2014-03-13 01:46:07.924664+00
+471	91	2	2014-03-13 02:41:51.04285+00
+472	92	2	2014-03-13 02:42:00.950057+00
+473	94	2	2014-03-13 02:53:27.668989+00
+474	95	2	2014-03-13 02:53:39.678677+00
+475	96	2	2014-03-13 19:19:36.299792+00
+476	98	2	2014-03-13 19:28:18.188584+00
+482	99	2	2014-03-13 22:35:22.684753+00
+486	100	2	2014-03-23 08:40:19.120937+00
+487	62	6	2014-03-24 19:46:50.305489+00
+488	1	7	2014-03-24 23:24:03.094795+00
+489	2	7	2014-03-24 23:24:05.159139+00
+490	62	7	2014-03-25 20:30:27.263328+00
+491	63	7	2014-03-25 20:53:27.757184+00
+492	64	7	2014-03-25 20:53:30.873915+00
+493	65	7	2014-03-29 05:03:52.021354+00
+494	66	7	2014-03-30 17:32:46.171855+00
+495	101	2	2014-03-30 17:34:05.019916+00
+496	102	2	2014-03-30 17:35:42.063679+00
+\.
+
+
+--
+-- Name: courses_assignmentcompletion_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('courses_assignmentcompletion_id_seq', 496, true);
+
+
+--
+-- Data for Name: courses_assignmentstart; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY courses_assignmentstart (id, assignment_id, student_id, "time") FROM stdin;
+\.
+
+
+--
+-- Name: courses_assignmentstart_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('courses_assignmentstart_id_seq', 1, false);
+
+
+--
+-- Data for Name: courses_course; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY courses_course (id, title, start_date, end_date, length, url, provider, unit_name, description, cover_photo) FROM stdin;
+2	ChinaX 1	2014-03-10	2014-04-21	7	https://courses.edx.org/courses/HarvardX/SW12x/2013_SOND/info	EDX	week	Modern China presents a dual image: a society transforming itself through economic development and infrastructure investment that aspires to global leadership; and the world's largest and oldest bureaucratic state, with multiple traditions in its cultural, economic, and political life. The modern society and state that is emerging in China bears the indelible imprint of China's historical experience, of its patterns of philosophy and religion, and of its social and political thought. These themes are discussed in order to understand China in the twenty-first century and as a great world civilization that developed along lines different from those of the Mediterranean.	http://localhost:8888/static/common/img/chinax_banner.jpg
+1	CS50x	2014-01-01	2014-12-31	12	https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/	EDX	week	An introduction to the intellectual enterprises of computer science and the art of programming.	http://localhost:8888/static/common/img/cs50x-course-detail-banner_0.jpg
+\.
+
+
+--
+-- Name: courses_course_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('courses_course_id_seq', 2, true);
+
+
+--
+-- Data for Name: courses_course_instructors; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY courses_course_instructors (id, course_id, instructor_id) FROM stdin;
+10	2	2
+11	2	3
+12	1	1
+\.
+
+
+--
+-- Name: courses_course_instructors_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('courses_course_instructors_id_seq', 12, true);
+
+
+--
+-- Data for Name: courses_instructor; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY courses_instructor (id, first_name, last_name) FROM stdin;
+1	David J.	Malan
+2	Peter K.	Bol
+3	William C.	Kirby
+\.
+
+
+--
+-- Name: courses_instructor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('courses_instructor_id_seq', 3, true);
+
+
+--
+-- Data for Name: courses_week; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY courses_week (id, number, course_id, description, parent_id) FROM stdin;
+2	1	1	Linux. C. Compiling. Libraries. Types. Standard output.	1
+5	4	1	Merge sort. Recursion. Pointers. Dynamic memory allocation.	4
+7	7	1	File I/O. Linked lists. Hash tables. Tries.	6
+8	8	1	Stacks. Queues. Trees. HTTP.	7
+9	9	1	HTML. CSS. PHP. SQL.	8
+10	10	1	JavaScript. Ajax.	9
+11	12	1	Life after 50.	10
+1	0	1	Binary. ASCII. Algorithms. Pseudocode. Source code. Compiler	\N
+3	2	1	Casting. Imprecision. Switches. Scope. Strings. Arrays.	2
+4	3	1	Debugging. Security. Searching. Sorting. Bubble sort.	3
+6	5	1	Stack. Heap. Stack overflow. Pre-processing. Compiling.	5
+12	1	2	The Big Picture	\N
+13	2	2	Origin Stories	12
+14	3	2	Legitimation of Power in Antiquity	13
+15	4	2	Discussing One Interpretation of the Nature of Chinese Civilization	14
+16	5	2	Confucius and Confucianism	15
+17	6	2	Competing Schools and Warring States	16
+18	7	2	Final Assessment	17
+\.
+
+
+--
+-- Name: courses_week_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('courses_week_id_seq', 18, true);
+
+
+--
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY django_admin_log (id, action_time, user_id, content_type_id, object_id, object_repr, action_flag, change_message) FROM stdin;
+1	2014-02-05 05:09:48.118556+00	1	11	1	Assignment object	1	
+2	2014-02-05 05:11:14.65936+00	1	11	2	CS50x, Week 0: Lecture, continued	1	
+3	2014-02-05 05:11:29.527083+00	1	11	3	CS50x, Week 0: Walkthroughs	1	
+4	2014-02-05 05:11:43.243723+00	1	11	4	CS50x, Week 0: Section	1	
+5	2014-02-05 05:11:56.83791+00	1	11	5	CS50x, Week 0: Shorts	1	
+6	2014-02-05 05:14:42.756362+00	1	11	6	CS50x, Week 0: https://courses.edx.org/courses/HarvardX/CS50x/2014_T1/courseware/b2f7d86728354866a2c4438e76c3ec55/6fcf595364684ca6a79af7989044a80b/	1	
+7	2014-02-05 05:14:57.622184+00	1	11	6	CS50x, Week 0: Problem Set 1	2	Changed title.
+8	2014-02-07 03:40:44.911293+00	1	11	7	CS50x, Week 1: Lecture	1	
+9	2014-02-07 03:41:01.703593+00	1	11	8	CS50x, Week 1: Lecture, continued	1	
+10	2014-02-07 03:41:17.25463+00	1	11	9	CS50x, Week 1: Walkthroughs	1	
+11	2014-02-07 03:41:27.721193+00	1	11	10	CS50x, Week 1: Section	1	
+12	2014-02-07 03:41:59.916776+00	1	11	11	CS50x, Week 1: Shorts	1	
+13	2014-02-07 03:42:12.554392+00	1	11	12	CS50x, Week 1: Problem Set 1	1	
+14	2014-02-07 03:42:27.048904+00	1	11	13	CS50x, Week 2: Lecture	1	
+15	2014-02-07 03:42:42.170364+00	1	11	14	CS50x, Week 2: Lecture, continued	1	
+16	2014-02-07 03:42:58.107009+00	1	11	15	CS50x, Week 2: Walkthroughs	1	
+17	2014-02-07 03:43:16.193223+00	1	11	16	CS50x, Week 2: Section	1	
+18	2014-02-07 03:43:28.732496+00	1	11	17	CS50x, Week 2: Shorts	1	
+19	2014-02-07 03:43:51.337727+00	1	11	18	CS50x, Week 2: Problem Set 2	1	
+20	2014-02-07 03:47:09.880386+00	1	11	19	CS50x, Week 3: Lecture	1	
+21	2014-02-07 03:47:22.907783+00	1	11	20	CS50x, Week 3: Lecture, continued	1	
+22	2014-02-07 03:47:44.854504+00	1	11	21	CS50x, Week 3: Walkthroughs	1	
+23	2014-02-07 03:47:57.019761+00	1	11	22	CS50x, Week 3: Section	1	
+24	2014-02-07 03:48:11.823299+00	1	11	23	CS50x, Week 3: Shorts	1	
+25	2014-02-07 03:48:24.22195+00	1	11	24	CS50x, Week 3: Problem Set 3	1	
+26	2014-02-07 03:48:38.820448+00	1	11	25	CS50x, Week 4: Lecture	1	
+27	2014-02-07 03:48:54.343829+00	1	11	26	CS50x, Week 4: Surprise	1	
+28	2014-02-07 03:49:08.722601+00	1	11	27	CS50x, Week 4: Lecture, continued	1	
+29	2014-02-07 03:49:23.454754+00	1	11	28	CS50x, Week 4: Walkthroughs	1	
+30	2014-02-07 03:49:35.298274+00	1	11	29	CS50x, Week 4: Section	1	
+31	2014-02-07 03:49:48.998571+00	1	11	30	CS50x, Week 4: Shorts	1	
+32	2014-02-07 03:50:04.704957+00	1	11	31	CS50x, Week 4: Problem Set 4	1	
+33	2014-02-07 03:52:43.673603+00	1	11	32	CS50x, Week 5: Lecture	1	
+34	2014-02-07 03:53:01.282228+00	1	11	33	CS50x, Week 5: Lecture, continued	1	
+35	2014-02-07 03:53:13.08654+00	1	11	34	CS50x, Week 5: Walkthroughs	1	
+36	2014-02-07 03:53:27.824049+00	1	11	35	CS50x, Week 5: Section	1	
+37	2014-02-07 03:53:39.483421+00	1	11	36	CS50x, Week 5: Shorts	1	
+38	2014-02-07 03:53:52.224337+00	1	11	37	CS50x, Week 7: Lecture	1	
+39	2014-02-07 03:54:14.220597+00	1	11	38	CS50x, Week 7: Lecture, continued	1	
+40	2014-02-07 03:55:02.694865+00	1	11	39	CS50x, Week 7: Walkthroughs	1	
+41	2014-02-07 03:55:17.056945+00	1	11	40	CS50x, Week 7: Section	1	
+42	2014-02-07 03:55:36.205455+00	1	11	41	CS50x, Week 7: Shorts	1	
+43	2014-02-07 03:55:51.120998+00	1	11	42	CS50x, Week 7: Problem Set 5	1	
+44	2014-02-07 03:56:19.181276+00	1	11	43	CS50x, Week 8: Lecture	1	
+45	2014-02-07 03:56:38.92771+00	1	11	44	CS50x, Week 8: Lecture, continued	1	
+46	2014-02-07 03:56:58.005342+00	1	11	45	CS50x, Week 8: Section	1	
+47	2014-02-07 03:57:09.985915+00	1	11	46	CS50x, Week 8: Shorts	1	
+48	2014-02-07 03:57:25.73441+00	1	11	47	CS50x, Week 8: Problem Set 6	1	
+49	2014-02-07 03:58:00.591069+00	1	11	48	CS50x, Week 9: Lecture	1	
+50	2014-02-07 03:58:11.085162+00	1	11	49	CS50x, Week 9: Lecture, continued	1	
+51	2014-02-07 03:58:25.218797+00	1	11	50	CS50x, Week 9: Walkthroughs	1	
+52	2014-02-07 03:58:38.227864+00	1	11	51	CS50x, Week 9: Section	1	
+53	2014-02-07 03:58:50.505926+00	1	11	52	CS50x, Week 9: Shorts	1	
+54	2014-02-07 03:59:06.539027+00	1	11	53	CS50x, Week 9: Problem Set 7	1	
+55	2014-02-07 03:59:21.901715+00	1	11	54	CS50x, Week 10: Lecture	1	
+56	2014-02-07 03:59:34.845002+00	1	11	55	CS50x, Week 10: Lecture, continued	1	
+57	2014-02-07 03:59:46.99473+00	1	11	56	CS50x, Week 10: Section	1	
+58	2014-02-07 03:59:57.92061+00	1	11	57	CS50x, Week 10: Problem Set 8	1	
+59	2014-02-07 04:00:12.060044+00	1	11	58	CS50x, Week 12: Lecture	1	
+60	2014-02-07 04:00:38.200301+00	1	11	59	CS50x, Week 12: Seminars	1	
+61	2014-02-07 04:00:52.476516+00	1	11	60	CS50x, Week 12: Final Project	1	
+62	2014-02-07 06:07:57.96621+00	1	8	1	 	1	
+63	2014-02-07 06:09:07.847651+00	1	8	1	Student object	2	No fields changed.
+64	2014-02-07 06:09:33.089218+00	1	4	1	araftery	2	Changed first_name and last_name.
+65	2014-02-16 20:56:57.482767+00	1	11	59	CS50x, Week 12: Seminars	2	Changed required.
+66	2014-02-16 20:57:37.991735+00	1	11	60	CS50x, Week 12: Final Project	2	Changed points.
+67	2014-02-16 21:00:12.98569+00	1	11	61	CS50x, Week 20: Problem Set 10	1	
+68	2014-02-16 21:01:07.124704+00	1	11	61	CS50x, Week 20: Problem Set 10	3	
+69	2014-02-16 22:16:36.962451+00	1	11	6	CS50x, Week 0: Problem Set 0	2	Changed title.
+70	2014-02-16 22:32:23.584712+00	1	11	4	CS50x, Week 0: Section	3	
+71	2014-02-17 00:15:57.666238+00	1	11	60	CS50x, Week 12: Final Project	2	Changed points.
+72	2014-02-17 00:19:55.753594+00	1	11	60	CS50x, Week 12: Final Project	2	Changed points.
+73	2014-03-02 07:54:23.697302+00	1	11	26	CS50x, Week 4: Surprise	2	Changed required.
+74	2014-03-02 21:32:40.299864+00	1	15	1	Visit object	1	
+75	2014-03-02 21:32:51.041447+00	1	15	2	Visit object	1	
+76	2014-03-02 21:35:34.385051+00	1	15	3	Visit by Andrew Raftery at 02/06/14 04:50 PM	1	
+77	2014-03-02 21:35:48.381673+00	1	15	4	Visit by Andrew Raftery at 03/01/14 04:50 PM	1	
+78	2014-03-02 21:36:05.721231+00	1	15	3	Visit by Andrew Raftery at 02/06/14 09:50 PM	3	
+79	2014-03-02 21:36:05.724688+00	1	15	2	Visit by Andrew Raftery at 03/02/14 09:47 PM	3	
+80	2014-03-02 21:36:05.7266+00	1	15	1	Visit by Andrew Raftery at 03/02/14 09:47 PM	3	
+81	2014-03-02 21:36:11.432447+00	1	15	4	Visit by Andrew Raftery at 03/01/14 09:50 PM	3	
+82	2014-03-02 22:22:10.748635+00	1	14	1	CS50x: Week 0	2	Changed description.
+83	2014-03-02 22:24:12.069865+00	1	14	1	CS50x: Week 0	2	Changed description.
+84	2014-03-02 22:24:18.573441+00	1	14	2	CS50x: Week 1	2	Changed description.
+85	2014-03-02 22:24:24.783375+00	1	14	3	CS50x: Week 2	2	Changed description.
+86	2014-03-02 22:24:40.23376+00	1	14	4	CS50x: Week 3	2	Changed description.
+87	2014-03-02 22:25:40.442984+00	1	14	5	CS50x: Week 4	2	Changed description.
+88	2014-03-02 22:25:47.499494+00	1	14	6	CS50x: Week 5	2	Changed description.
+89	2014-03-02 22:25:53.642305+00	1	14	7	CS50x: Week 7	2	Changed description.
+90	2014-03-02 22:26:36.065137+00	1	14	8	CS50x: Week 8	2	Changed description.
+91	2014-03-02 22:26:51.579991+00	1	14	9	CS50x: Week 9	2	Changed description.
+92	2014-03-02 22:27:02.889194+00	1	14	8	CS50x: Week 8	2	No fields changed.
+93	2014-03-02 22:27:08.414089+00	1	14	9	CS50x: Week 9	2	Changed description.
+94	2014-03-02 22:27:13.346866+00	1	14	10	CS50x: Week 10	2	Changed description.
+95	2014-03-02 22:27:19.716542+00	1	14	11	CS50x: Week 12	2	Changed description.
+96	2014-03-02 22:31:19.9655+00	1	14	1	CS50x: Week 0	2	Changed description.
+97	2014-03-02 22:33:42.097131+00	1	14	3	CS50x: Week 2	2	Changed description.
+98	2014-03-02 22:33:47.153409+00	1	14	4	CS50x: Week 3	2	Changed description.
+99	2014-03-02 22:33:57.420678+00	1	14	6	CS50x: Week 5	2	Changed description.
+100	2014-03-09 19:08:38.704948+00	1	10	1	CS50x	2	Changed description and cover_photo.
+101	2014-03-09 19:10:25.45697+00	1	10	1	CS50x	2	Changed cover_photo.
+102	2014-03-12 04:02:26.790816+00	1	9	2	Peter K. Bol	1	
+103	2014-03-12 04:02:34.113313+00	1	9	3	William C. Kirby	1	
+104	2014-03-12 04:12:53.453145+00	1	10	2	ChinaX	1	
+105	2014-03-12 04:13:57.673171+00	1	14	12	ChinaX: Week 1	1	
+106	2014-03-12 04:14:11.892128+00	1	14	13	ChinaX: Week 2	1	
+107	2014-03-12 04:14:28.860651+00	1	14	14	ChinaX: Week 3	1	
+108	2014-03-12 04:16:03.828559+00	1	14	15	ChinaX: Week 4	1	
+109	2014-03-12 04:16:21.247208+00	1	14	16	ChinaX: Week 5	1	
+110	2014-03-12 04:16:35.647882+00	1	14	17	ChinaX: Week 6	1	
+111	2014-03-12 04:16:36.870582+00	1	14	17	ChinaX: Week 6	2	No fields changed.
+112	2014-03-12 04:16:53.070381+00	1	14	18	ChinaX: Week 7	1	
+113	2014-03-12 04:17:12.19833+00	1	10	2	ChinaX	2	Changed length.
+114	2014-03-12 04:20:17.251335+00	1	11	62	ChinaX, Week 1: Introduction: Time, Space, and Identity	1	
+115	2014-03-12 04:20:35.346667+00	1	11	62	ChinaX, Week 1: Introduction: Time, Space, and Identity	2	Changed url.
+116	2014-03-12 04:21:03.914861+00	1	11	62	ChinaX, Week 1: Introduction: Time, Space, and Identity	2	Changed points.
+117	2014-03-12 04:21:41.324604+00	1	11	63	ChinaX, Week 1: Section 1: Time	1	
+118	2014-03-12 04:22:09.780659+00	1	11	64	ChinaX, Week 1: Section 2: Space	1	
+119	2014-03-12 04:22:33.445647+00	1	11	65	ChinaX, Week 1: Section 3: Identity	1	
+120	2014-03-12 04:23:08.181262+00	1	11	66	ChinaX, Week 1: Section 4: China's History Mapped	1	
+121	2014-03-12 04:55:16.379564+00	1	11	67	ChinaX, Week 2: Historical Overview	1	
+122	2014-03-12 04:56:24.514758+00	1	11	68	ChinaX, Week 2: Section 1: Introduction: Origin Stories	1	
+123	2014-03-12 04:57:07.663964+00	1	11	69	ChinaX, Week 2: Section 2: How We Tell Our Stories: Artifacts vs. Texts	1	
+124	2014-03-12 04:57:25.204136+00	1	11	68	ChinaX, Week 2: Section 1: Introduction: Origin Stories	2	Changed url.
+125	2014-03-12 04:57:51.605629+00	1	11	70	ChinaX, Week 2: Section 3: Culture Heroes and Sage Kings	1	
+126	2014-03-12 04:58:39.147478+00	1	11	71	ChinaX, Week 2: Section 4: What Archaeology Tells Us	1	
+127	2014-03-12 04:59:19.668505+00	1	11	72	ChinaX, Week 2: Section 5: The History of the Two Stories	1	
+128	2014-03-12 04:59:48.764322+00	1	11	73	ChinaX, Week 2: Section 6: Interview with Professor Rowan Flad	1	
+129	2014-03-12 05:00:29.132729+00	1	11	74	ChinaX, Week 2: Discussion Check	1	
+130	2014-03-12 05:02:00.449298+00	1	11	75	ChinaX, Week 1: Week 1 Office Hours	1	
+131	2014-03-12 05:02:32.567572+00	1	11	76	ChinaX, Week 2: Week 2 Office Hours	1	
+132	2014-03-12 05:43:36.149945+00	1	11	83	CS50x, Week 3: Historical Overview	1	
+133	2014-03-12 05:43:45.912518+00	1	11	83	ChinaX, Week 3: Historical Overview	2	Changed course.
+134	2014-03-12 05:45:14.781309+00	1	11	83	ChinaX, Week 3: Historical Overview	2	No fields changed.
+135	2014-03-12 05:45:32.396068+00	1	11	85	ChinaX, Week 3: Section 1: Introduction	1	
+136	2014-03-12 05:45:55.160794+00	1	11	85	ChinaX, Week 3: Section 1: Introduction	2	Changed url.
+137	2014-03-12 05:46:14.645379+00	1	11	86	ChinaX, Week 3: Section 2: The Shang System and Its Sources	1	
+138	2014-03-12 05:46:39.71261+00	1	11	87	ChinaX, Week 3: Section 3: Sources of Shang I - How to Read a Bronze Vessel?	1	
+139	2014-03-12 05:47:05.664895+00	1	11	88	ChinaX, Week 3: Section 4: Sources of Shang II - Origin of Writing	1	
+140	2014-03-12 05:47:28.694606+00	1	11	89	ChinaX, Week 3: Section 5: The Zhou System and Its Sources	1	
+141	2014-03-12 05:47:50.877885+00	1	11	90	ChinaX, Week 3: Section 6: Zhou Bronzes	1	
+142	2014-03-12 05:48:16.079574+00	1	11	91	ChinaX, Week 3: Section 7: Conclusion - Zhou Moves East	1	
+143	2014-03-12 05:48:31.144838+00	1	11	92	ChinaX, Week 3: Forum Discussion	1	
+144	2014-03-12 05:48:57.069881+00	1	11	93	ChinaX, Week 3: Week 3 Office Hours	1	
+145	2014-03-12 05:50:46.399015+00	1	11	94	ChinaX, Week 4: Section 1: Discussion One Interpretation of the Nature of Chinese Civilization	1	
+146	2014-03-12 05:51:23.672416+00	1	11	95	ChinaX, Week 4: Section 2: Professor Bol and Kirby Discuss "Early Civilization in China: Reflections on How It Became Chinese"	1	
+147	2014-03-12 05:51:46.599859+00	1	11	96	ChinaX, Week 4: Discussion Check	1	
+148	2014-03-12 05:52:13.738974+00	1	11	98	ChinaX, Week 5: Historical Overview	1	
+149	2014-03-12 05:52:35.216171+00	1	11	99	ChinaX, Week 5: Section 1: The Many Faces of Confucianism	1	
+150	2014-03-12 05:52:59.740369+00	1	11	100	ChinaX, Week 5: Section 2: Confucius of the Analects	1	
+151	2014-03-12 05:53:21.946264+00	1	11	101	ChinaX, Week 5: Section 3: Reading the Analects	1	
+152	2014-03-12 05:53:43.84606+00	1	11	102	ChinaX, Week 5: Section 4: Confucius' Successors	1	
+153	2014-03-12 05:54:02.848624+00	1	11	103	ChinaX, Week 5: Discussion Forum	1	
+154	2014-03-12 05:54:19.382896+00	1	11	104	ChinaX, Week 5: Section 5: The Confucian Path	1	
+155	2014-03-12 05:55:26.697733+00	1	11	105	ChinaX, Week 5: Section 6: Professor Puett on Zhuangzi	1	
+156	2014-03-12 05:55:52.469722+00	1	11	106	ChinaX, Week 5: Discussion Check	1	
+157	2014-03-12 05:56:02.731427+00	1	11	105	ChinaX, Week 5: Section 6: Professor Puett on Zhuangzi	2	Changed points and required.
+158	2014-03-12 05:56:22.223287+00	1	11	107	ChinaX, Week 5: Week 5 Office Hours	1	
+159	2014-03-12 05:56:44.608373+00	1	11	108	ChinaX, Week 6: Section 1: The Hundred Schools of Thought	1	
+160	2014-03-12 05:57:07.669877+00	1	11	109	ChinaX, Week 6: Section 2: Strategies for Doing Good	1	
+161	2014-03-12 05:57:15.510416+00	1	11	109	ChinaX, Week 6: Section 2: Strategies for Doing Good	2	Changed url.
+162	2014-03-12 05:57:43.028763+00	1	11	110	ChinaX, Week 6: Section 3: Strategies for Survival	1	
+163	2014-03-12 05:58:23.441057+00	1	11	111	ChinaX, Week 6: Section 4: Strategies for Gaining Control	1	
+164	2014-03-12 05:58:44.847762+00	1	11	112	ChinaX, Week 6: Section 5: Conclusion	1	
+165	2014-03-12 05:59:08.502249+00	1	11	113	ChinaX, Week 6: Section 6: Professor Puett on Zhuangzi	1	
+166	2014-03-12 05:59:38.011452+00	1	11	114	ChinaX, Week 6: Section 7: Professor Puett on Zhuangzi in Relation to Confucius	1	
+167	2014-03-12 05:59:55.632605+00	1	11	115	ChinaX, Week 6: Section 8: Professor Puett on Laozi	1	
+168	2014-03-12 06:00:19.565886+00	1	11	116	ChinaX, Week 6: Discussion Forum: Confucian Thinkers and the Hundred Masters	1	
+169	2014-03-12 06:00:35.599737+00	1	11	117	ChinaX, Week 6: Week 6 Office Hours	1	
+170	2014-03-12 06:01:08.824074+00	1	11	118	ChinaX, Week 7: Final Assessment	1	
+171	2014-03-12 06:01:28.567156+00	1	11	119	ChinaX, Week 7: Mini-Course 1 Conclusion	1	
+172	2014-03-12 07:50:17.269448+00	1	10	2	ChinaX 1	2	Changed title.
+173	2014-03-12 08:00:57.621336+00	1	13	433	Completion by Andrew Raftery: CS50x, Week 0: Lecture on 03/10/14 at 03:38 AM	2	Changed time.
+174	2014-03-12 08:01:05.784836+00	1	13	438	Completion by Andrew Raftery: ChinaX 1, Week 1: Introduction: Time, Space, and Identity on 03/11/14 at 03:38 AM	2	Changed time.
+175	2014-03-12 08:01:13.834488+00	1	13	434	Completion by Andrew Raftery: CS50x, Week 0: Lecture, continued on 03/11/14 at 03:38 AM	2	Changed time.
+176	2014-03-12 08:01:40.763057+00	1	13	435	Completion by Andrew Raftery: CS50x, Week 1: Lecture on 03/11/14 at 03:38 AM	2	Changed time.
+177	2014-03-12 08:01:58.46708+00	1	13	436	Completion by Andrew Raftery: CS50x, Week 1: Lecture, continued on 03/11/14 at 03:38 AM	2	Changed time.
+178	2014-03-12 08:02:32.097343+00	1	13	437	Completion by Andrew Raftery: CS50x, Week 1: Walkthroughs on 03/09/14 at 03:38 AM	2	Changed time.
+179	2014-03-12 16:54:26.454526+00	1	13	445	Completion by Andrew Raftery: CS50x, Week 0: Lecture on 03/09/14 at 12:53 PM	2	Changed time.
+180	2014-03-12 16:54:31.944051+00	1	13	446	Completion by Andrew Raftery: CS50x, Week 0: Lecture, continued on 03/09/14 at 12:53 PM	2	Changed time.
+181	2014-03-12 16:54:37.521738+00	1	13	447	Completion by Andrew Raftery: ChinaX 1, Week 1: Introduction: Time, Space, and Identity on 03/10/14 at 12:53 PM	2	Changed time.
+182	2014-03-12 16:54:45.034424+00	1	13	448	Completion by Andrew Raftery: ChinaX 1, Week 1: Section 1: Time on 03/11/14 at 12:53 PM	2	Changed time.
+183	2014-03-12 16:54:51.621852+00	1	13	449	Completion by Andrew Raftery: ChinaX 1, Week 1: Section 2: Space on 03/11/14 at 12:53 PM	2	Changed time.
+184	2014-03-13 22:19:43.651802+00	1	13	481	Completion by Andrew Raftery: ChinaX 1, Week 5: Discussion Forum on 03/13/14 at 08:32 PM	3	
+185	2014-03-13 22:19:43.654335+00	1	13	480	Completion by Andrew Raftery: ChinaX 1, Week 5: Section 4: Confucius' Successors on 03/13/14 at 08:24 PM	3	
+186	2014-03-13 22:19:43.656318+00	1	13	479	Completion by Andrew Raftery: ChinaX 1, Week 5: Section 3: Reading the Analects on 03/13/14 at 08:18 PM	3	
+187	2014-03-13 22:19:43.658861+00	1	13	478	Completion by Andrew Raftery: ChinaX 1, Week 5: Section 2: Confucius of the Analects on 03/13/14 at 07:47 PM	3	
+188	2014-03-13 22:19:43.660753+00	1	13	477	Completion by Andrew Raftery: ChinaX 1, Week 5: Section 1: The Many Faces of Confucianism on 03/13/14 at 07:39 PM	3	
+189	2014-03-15 12:36:42.297257+00	1	10	2	ChinaX 1	2	Changed cover_photo.
+190	2014-03-15 12:37:01.29771+00	1	10	1	CS50x	2	Changed cover_photo.
+191	2014-03-15 18:51:46.67221+00	1	4	2	testuser	3	
+192	2014-03-15 18:51:46.674877+00	1	4	3	testuser2	3	
+193	2014-03-15 18:51:46.676884+00	1	4	4	testuser2234	3	
+194	2014-03-15 20:06:28.723639+00	1	16	1	Test User requesting Andrew Raftery at 03/15/14 07:51 PM, answer: None	3	
+195	2014-03-15 20:07:16.365353+00	1	16	2	Andrew Raftery requesting Test User at 03/15/14 08:07 PM, answer: None	3	
+196	2014-03-15 20:08:35.928829+00	1	16	3	Andrew Raftery requesting Test User at 03/15/14 04:07 PM, answer: accepted	2	Changed accepted.
+197	2014-03-15 20:09:01.140914+00	1	8	2	Andrew Raftery	2	Changed friends.
+198	2014-03-15 20:09:04.488897+00	1	8	2	Andrew Raftery	2	No fields changed.
+199	2014-03-15 20:09:39.361044+00	1	16	3	Andrew Raftery requesting Test User at 03/15/14 08:07 PM, answer: accepted	3	
+200	2014-03-23 04:34:38.505964+00	1	16	4	Andrew Raftery requesting Test User at 03/22/14 04:12 AM, answer: None	3	
+201	2014-03-23 06:43:28.558155+00	1	16	5	Andrew Raftery requesting Test User at 03/23/14 04:35 AM, answer: accepted	3	
+202	2014-03-23 06:44:58.452074+00	1	8	2	Andrew Raftery	2	Changed friends.
+203	2014-03-23 06:45:04.444632+00	1	8	2	Andrew Raftery	2	No fields changed.
+204	2014-03-23 07:21:37.116763+00	1	8	2	Andrew Raftery	2	Changed friends.
+205	2014-03-23 07:22:07.315883+00	1	8	6	Test User	2	Changed friends.
+206	2014-03-23 07:23:26.705276+00	1	16	6	Andrew Raftery requesting Test User at 03/23/14 06:45 AM, answer: accepted	3	
+207	2014-03-23 07:28:38.730585+00	1	16	7	Andrew Raftery requesting Test User at 03/23/14 07:24 AM, answer: accepted	3	
+208	2014-03-23 07:28:47.512851+00	1	8	6	Test User	2	Changed friends.
+209	2014-03-23 07:29:42.203837+00	1	16	8	Andrew Raftery requesting Test User at 03/23/14 07:28 AM, answer: denied	3	
+210	2014-03-25 20:12:33.430006+00	1	17	2	Test User2 requesting Andrew Raftery at 03/24/14 11:23 PM, answer: accepted	3	
+211	2014-03-25 20:12:33.437905+00	1	17	1	Andrew Raftery requesting Test User at 03/23/14 09:49 PM, answer: accepted	3	
+212	2014-03-25 20:12:46.024487+00	1	8	2	Andrew Raftery	2	Changed friends.
+213	2014-03-25 20:12:48.782191+00	1	8	6	Test User	2	No fields changed.
+214	2014-03-25 20:12:54.775259+00	1	8	7	Test User2	2	Changed sex.
+\.
+
+
+--
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('django_admin_log_id_seq', 214, true);
+
+
+--
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY django_content_type (id, name, app_label, model) FROM stdin;
+1	log entry	admin	logentry
+2	permission	auth	permission
+3	group	auth	group
+4	user	auth	user
+5	content type	contenttypes	contenttype
+6	session	sessions	session
+7	migration history	south	migrationhistory
+8	student	profiles	student
+9	instructor	courses	instructor
+10	course	courses	course
+11	assignment	courses	assignment
+12	assignment start	courses	assignmentstart
+13	assignment completion	courses	assignmentcompletion
+14	week	courses	week
+15	visit	profiles	visit
+16	friend request	profiles	friendrequest
+17	friend request	social	friendrequest
+\.
+
+
+--
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('django_content_type_id_seq', 17, true);
+
+
+--
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY django_session (session_key, session_data, expire_date) FROM stdin;
+2eqk7e0kd2qwhwpq5nqk7gx638ylm1yg	ZDYwNjJkMDQ0ZGNlNjVmMDYwMWU0YmM4NjZiN2UzN2RlNTUwZTA4Mzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=	2014-04-13 17:32:30.621178+00
+cz1m6zpd3steei5fqrcddnl9oo6e8i9u	ZDYwNjJkMDQ0ZGNlNjVmMDYwMWU0YmM4NjZiN2UzN2RlNTUwZTA4Mzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=	2014-02-19 05:05:01.795932+00
+9un0qiq63gfydcmwiyq2qagdu3m31hor	ZDYwNjJkMDQ0ZGNlNjVmMDYwMWU0YmM4NjZiN2UzN2RlNTUwZTA4Mzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=	2014-02-23 04:46:43.549271+00
+uit5y9cgzs67w5lqvy8q5y12c318wip1	ZDYwNjJkMDQ0ZGNlNjVmMDYwMWU0YmM4NjZiN2UzN2RlNTUwZTA4Mzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=	2014-03-27 02:40:16.476021+00
+cwx2y02f4bc7r052hdhu92glne1kpwpi	ZDYwNjJkMDQ0ZGNlNjVmMDYwMWU0YmM4NjZiN2UzN2RlNTUwZTA4Mzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=	2014-03-27 19:18:57.83175+00
+bp5xyqm9ssfwnoja12lvss2sa63vadwy	ZDYwNjJkMDQ0ZGNlNjVmMDYwMWU0YmM4NjZiN2UzN2RlNTUwZTA4Mzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=	2014-02-27 04:13:39.261632+00
+zuy64ag27dndkh7w1rmwscrz4dhfjgem	ZDYwNjJkMDQ0ZGNlNjVmMDYwMWU0YmM4NjZiN2UzN2RlNTUwZTA4Mzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=	2014-03-05 03:39:22.376111+00
+grg9qdptkbb6p9zetg6wkexc971wk3ya	ZDYwNjJkMDQ0ZGNlNjVmMDYwMWU0YmM4NjZiN2UzN2RlNTUwZTA4Mzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=	2014-03-11 22:49:12.148199+00
+2384m6hob79gpfedjzq3s6fxfvgqismm	ZDYwNjJkMDQ0ZGNlNjVmMDYwMWU0YmM4NjZiN2UzN2RlNTUwZTA4Mzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=	2014-03-16 07:52:18.26966+00
+i1kg3itb6gtjveofntxh7ipc8238898u	YjM5M2JkMDIzNjM0MDExZWZmZTY3YWE3ZGFmY2Q2OTRjZGYyY2YwNDp7fQ==	2014-03-23 19:00:44.521095+00
+2uhmiopb0hkmaqrper3hnub687myfahp	YjM5M2JkMDIzNjM0MDExZWZmZTY3YWE3ZGFmY2Q2OTRjZGYyY2YwNDp7fQ==	2014-03-23 19:00:45.258458+00
+tsp7f6g0muvhh181p5t7u92yz4bn5uqa	ZDYwNjJkMDQ0ZGNlNjVmMDYwMWU0YmM4NjZiN2UzN2RlNTUwZTA4Mzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=	2014-03-23 19:01:32.258033+00
+yp85ntb91s1vb5xt72fnzaeea1exiicw	ZDYwNjJkMDQ0ZGNlNjVmMDYwMWU0YmM4NjZiN2UzN2RlNTUwZTA4Mzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=	2014-03-26 08:17:06.03063+00
+cfoqjexs6nzavedr36nnx7xtxdj2cjxi	ZDYwNjJkMDQ0ZGNlNjVmMDYwMWU0YmM4NjZiN2UzN2RlNTUwZTA4Mzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=	2014-03-26 15:58:01.414255+00
+vaw5pw1f01nuunebgy5ufmtjm3hh13nt	ZDYwNjJkMDQ0ZGNlNjVmMDYwMWU0YmM4NjZiN2UzN2RlNTUwZTA4Mzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6MX0=	2014-03-26 17:05:27.228634+00
+zcx20nt9zz5x72rou5p9pl622qmuy96x	ZWY2YTViYzU3NDM2OTkzYTY1MDljMTg1ODY5Yjk1MzZkNzVmZjE5Mzp7Il9hdXRoX3VzZXJfYmFja2VuZCI6ImRqYW5nby5jb250cmliLmF1dGguYmFja2VuZHMuTW9kZWxCYWNrZW5kIiwiX2F1dGhfdXNlcl9pZCI6Nn0=	2014-04-08 20:20:27.722317+00
+\.
+
+
+--
+-- Data for Name: profiles_student; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY profiles_student (id, user_id, phone, sex) FROM stdin;
+2	1	6178997127	M
+6	5	34	M
+7	6	0001112233	M
+\.
+
+
+--
+-- Data for Name: profiles_student_courses; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY profiles_student_courses (id, student_id, course_id) FROM stdin;
+27	2	1
+28	2	2
+29	6	1
+30	6	2
+31	7	1
+32	7	2
+\.
+
+
+--
+-- Name: profiles_student_courses_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('profiles_student_courses_id_seq', 32, true);
+
+
+--
+-- Data for Name: profiles_student_friends; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY profiles_student_friends (id, from_student_id, to_student_id) FROM stdin;
+13	6	2
+14	2	6
+15	6	7
+16	7	6
+17	2	7
+18	7	2
+\.
+
+
+--
+-- Name: profiles_student_friends_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('profiles_student_friends_id_seq', 18, true);
+
+
+--
+-- Name: profiles_student_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('profiles_student_id_seq', 7, true);
+
+
+--
+-- Data for Name: profiles_visit; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY profiles_visit (id, student_id, "time") FROM stdin;
+2022	2	2014-03-12 16:51:21.406376+00
+2023	2	2014-03-12 16:51:23.612565+00
+2024	2	2014-03-12 16:51:23.702957+00
+2025	2	2014-03-12 16:51:23.991476+00
+2026	2	2014-03-12 16:51:30.219152+00
+2027	2	2014-03-12 16:51:30.250903+00
+2028	2	2014-03-12 16:51:30.471046+00
+2029	2	2014-03-12 16:52:28.61548+00
+2030	2	2014-03-12 16:52:29.074272+00
+2031	2	2014-03-12 16:52:30.451443+00
+2032	2	2014-03-12 16:52:32.421316+00
+2033	2	2014-03-12 16:53:06.794338+00
+2034	2	2014-03-12 16:53:10.452041+00
+2035	2	2014-03-12 16:53:10.484016+00
+2036	2	2014-03-12 16:53:10.710404+00
+2037	2	2014-03-12 16:53:12.338052+00
+2038	2	2014-03-12 16:53:14.151832+00
+2039	2	2014-03-12 16:53:14.222017+00
+2040	2	2014-03-12 16:53:19.123062+00
+2041	2	2014-03-12 16:53:19.191805+00
+2042	2	2014-03-12 16:53:21.56624+00
+2043	2	2014-03-12 16:53:21.640097+00
+2044	2	2014-03-12 16:53:22.873959+00
+2045	2	2014-03-12 16:53:22.905177+00
+2046	2	2014-03-12 16:53:23.161416+00
+2047	2	2014-03-12 16:53:29.537892+00
+2048	2	2014-03-12 16:53:33.184848+00
+2049	2	2014-03-12 16:53:33.255282+00
+2050	2	2014-03-12 16:53:35.04997+00
+2051	2	2014-03-12 16:53:35.121089+00
+2052	2	2014-03-12 16:53:36.664953+00
+2053	2	2014-03-12 16:53:36.740252+00
+2054	2	2014-03-12 16:53:38.716908+00
+2055	2	2014-03-12 16:53:38.783275+00
+2056	2	2014-03-12 16:53:40.532403+00
+2057	2	2014-03-12 16:53:40.593476+00
+2058	2	2014-03-12 16:53:44.357168+00
+2059	2	2014-03-12 16:53:44.437831+00
+2060	2	2014-03-12 16:53:47.991689+00
+2061	2	2014-03-12 16:53:48.051195+00
+2062	2	2014-03-12 16:53:49.810996+00
+2063	2	2014-03-12 16:53:50.012089+00
+2064	2	2014-03-12 16:53:53.481957+00
+2065	2	2014-03-12 16:53:56.682301+00
+2066	2	2014-03-12 16:53:56.761138+00
+2067	2	2014-03-12 16:53:58.584825+00
+2068	2	2014-03-12 16:53:58.654194+00
+2069	2	2014-03-12 16:54:01.809084+00
+2070	2	2014-03-12 16:54:01.880357+00
+2071	2	2014-03-12 16:54:06.217172+00
+2072	2	2014-03-12 16:54:06.293793+00
+2073	2	2014-03-12 16:54:08.661132+00
+2074	2	2014-03-12 16:54:08.730788+00
+2075	2	2014-03-12 16:54:12.036838+00
+2076	2	2014-03-12 16:54:15.46519+00
+2077	2	2014-03-12 16:54:15.718046+00
+2078	2	2014-03-12 16:54:19.019038+00
+2079	2	2014-03-12 16:54:19.489092+00
+2080	2	2014-03-12 16:54:26.422579+00
+2081	2	2014-03-12 16:54:26.482938+00
+2082	2	2014-03-12 16:54:26.721816+00
+2083	2	2014-03-12 16:54:28.052307+00
+2084	2	2014-03-12 16:54:28.562302+00
+2085	2	2014-03-12 16:54:31.915957+00
+2086	2	2014-03-12 16:54:31.972508+00
+2087	2	2014-03-12 16:54:32.285984+00
+2088	2	2014-03-12 16:54:33.402649+00
+2089	2	2014-03-12 16:54:33.889351+00
+2090	2	2014-03-12 16:54:37.49637+00
+2091	2	2014-03-12 16:54:37.546195+00
+2092	2	2014-03-12 16:54:37.785673+00
+2093	2	2014-03-12 16:54:39.519003+00
+2094	2	2014-03-12 16:54:39.977733+00
+2095	2	2014-03-12 16:54:45.007393+00
+2096	2	2014-03-12 16:54:45.064136+00
+2097	2	2014-03-12 16:54:45.29202+00
+2098	2	2014-03-12 16:54:47.394502+00
+2099	2	2014-03-12 16:54:47.839056+00
+2100	2	2014-03-12 16:54:51.598534+00
+2101	2	2014-03-12 16:54:51.649685+00
+2102	2	2014-03-12 16:54:51.881386+00
+2103	2	2014-03-12 16:54:55.335062+00
+2104	2	2014-03-12 16:54:55.361312+00
+2105	2	2014-03-12 16:54:55.646002+00
+2106	2	2014-03-12 16:55:23.765747+00
+2107	2	2014-03-12 16:55:33.393779+00
+2108	2	2014-03-12 16:55:42.161468+00
+2109	2	2014-03-12 16:55:42.414137+00
+2110	2	2014-03-12 16:55:53.931689+00
+2111	2	2014-03-12 16:55:57.998544+00
+2112	2	2014-03-12 16:55:58.065148+00
+2113	2	2014-03-12 16:56:01.400702+00
+2114	2	2014-03-12 16:56:01.609444+00
+2115	2	2014-03-12 17:00:24.073138+00
+2116	2	2014-03-12 17:00:29.716196+00
+2117	2	2014-03-12 17:05:27.25582+00
+2118	2	2014-03-12 17:05:27.281309+00
+2119	2	2014-03-12 17:05:27.636291+00
+2120	2	2014-03-12 17:11:57.009213+00
+2121	2	2014-03-12 17:11:57.041326+00
+2122	2	2014-03-12 17:11:57.345199+00
+2123	2	2014-03-12 17:12:33.422468+00
+2124	2	2014-03-12 17:12:47.86392+00
+2125	2	2014-03-12 17:12:47.956516+00
+2126	2	2014-03-12 17:12:57.778926+00
+2127	2	2014-03-12 17:12:57.975892+00
+2128	2	2014-03-12 17:21:09.534185+00
+2129	2	2014-03-12 17:21:09.863967+00
+2130	2	2014-03-12 17:21:18.606437+00
+2131	2	2014-03-12 17:21:22.001989+00
+2132	2	2014-03-12 17:21:22.174064+00
+2133	2	2014-03-12 17:21:31.515731+00
+2134	2	2014-03-12 17:21:42.257182+00
+2135	2	2014-03-12 17:27:38.504385+00
+2136	2	2014-03-12 17:27:38.557232+00
+2137	2	2014-03-12 17:27:38.841102+00
+2138	2	2014-03-12 17:27:56.804034+00
+2139	2	2014-03-12 17:28:11.419777+00
+2140	2	2014-03-12 17:28:11.479744+00
+2141	2	2014-03-12 17:28:20.872048+00
+2142	2	2014-03-12 17:28:21.137989+00
+2143	2	2014-03-12 20:14:38.684277+00
+2144	2	2014-03-12 20:14:38.908095+00
+2145	2	2014-03-12 20:14:39.254491+00
+2146	2	2014-03-12 20:14:52.431222+00
+2147	2	2014-03-12 20:15:07.456972+00
+2148	2	2014-03-12 20:15:07.508062+00
+2149	2	2014-03-12 20:15:21.78407+00
+2150	2	2014-03-12 20:15:21.91038+00
+2151	2	2014-03-12 20:15:40.089804+00
+2152	2	2014-03-12 20:15:40.127898+00
+2153	2	2014-03-12 20:15:40.307716+00
+2154	2	2014-03-12 20:15:42.00794+00
+2155	2	2014-03-12 20:16:01.028648+00
+2156	2	2014-03-12 20:16:01.079913+00
+2157	2	2014-03-13 01:31:04.804046+00
+2158	2	2014-03-13 01:31:04.826623+00
+2159	2	2014-03-13 01:31:04.982728+00
+2160	2	2014-03-13 01:31:11.514179+00
+2161	2	2014-03-13 01:31:14.539082+00
+2162	2	2014-03-13 01:31:14.563064+00
+2163	2	2014-03-13 01:31:14.669374+00
+2164	2	2014-03-13 01:31:18.254073+00
+2165	2	2014-03-13 01:31:22.428147+00
+2166	2	2014-03-13 01:31:22.482759+00
+2167	2	2014-03-13 01:31:28.108519+00
+2168	2	2014-03-13 01:31:28.13333+00
+2169	2	2014-03-13 01:31:28.244472+00
+2170	2	2014-03-13 01:34:03.672724+00
+2171	2	2014-03-13 01:34:26.326678+00
+2172	2	2014-03-13 01:34:26.858499+00
+2173	2	2014-03-13 01:34:32.763597+00
+2174	2	2014-03-13 01:34:33.329825+00
+2175	2	2014-03-13 01:35:49.945383+00
+2176	2	2014-03-13 01:35:50.130888+00
+2177	2	2014-03-13 01:35:54.031765+00
+2178	2	2014-03-13 01:36:38.453692+00
+2179	2	2014-03-13 01:36:38.590992+00
+2180	2	2014-03-13 01:36:39.563887+00
+2181	2	2014-03-13 01:37:19.894852+00
+2182	2	2014-03-13 01:37:28.323475+00
+2183	2	2014-03-13 01:37:28.363774+00
+2184	2	2014-03-13 01:37:57.973137+00
+2185	2	2014-03-13 01:37:58.033079+00
+2186	2	2014-03-13 01:37:58.868318+00
+2187	2	2014-03-13 01:38:01.50358+00
+2188	2	2014-03-13 01:38:12.231795+00
+2189	2	2014-03-13 01:38:12.326925+00
+2190	2	2014-03-13 01:38:12.803186+00
+2191	2	2014-03-13 01:39:04.944823+00
+2192	2	2014-03-13 01:39:57.973502+00
+2193	2	2014-03-13 01:39:58.15205+00
+2194	2	2014-03-13 01:40:09.956275+00
+2195	2	2014-03-13 01:40:10.140026+00
+2196	2	2014-03-13 01:40:42.983488+00
+2197	2	2014-03-13 01:40:43.304596+00
+2198	2	2014-03-13 01:42:33.201322+00
+2199	2	2014-03-13 01:42:33.236554+00
+2200	2	2014-03-13 01:42:33.665544+00
+2201	2	2014-03-13 01:42:58.41088+00
+2202	2	2014-03-13 01:43:42.090776+00
+2203	2	2014-03-13 01:43:43.03323+00
+2204	2	2014-03-13 01:44:01.657607+00
+2205	2	2014-03-13 01:44:01.919719+00
+2206	2	2014-03-13 01:44:02.009416+00
+2207	2	2014-03-13 01:44:02.552337+00
+2208	2	2014-03-13 01:45:11.436806+00
+2209	2	2014-03-13 01:45:55.230012+00
+2210	2	2014-03-13 01:45:55.357868+00
+2211	2	2014-03-13 01:46:07.900336+00
+2212	2	2014-03-13 01:46:08.043622+00
+2213	2	2014-03-13 01:46:18.040705+00
+2214	2	2014-03-13 01:46:18.273245+00
+2215	2	2014-03-13 01:46:40.671252+00
+2216	2	2014-03-13 02:40:16.506045+00
+2217	2	2014-03-13 02:40:16.530264+00
+2218	2	2014-03-13 02:40:16.680975+00
+2219	2	2014-03-13 02:41:30.112164+00
+2220	2	2014-03-13 02:41:51.036027+00
+2221	2	2014-03-13 02:41:51.110596+00
+2222	2	2014-03-13 02:42:00.9433+00
+2223	2	2014-03-13 02:42:01.000323+00
+2224	2	2014-03-13 02:42:03.281299+00
+2225	2	2014-03-13 02:42:03.306738+00
+2226	2	2014-03-13 02:42:03.429724+00
+2227	2	2014-03-13 02:53:09.37056+00
+2228	2	2014-03-13 02:53:27.660345+00
+2229	2	2014-03-13 02:53:27.729345+00
+2230	2	2014-03-13 02:53:39.671322+00
+2231	2	2014-03-13 02:53:39.73986+00
+2232	2	2014-03-13 02:53:45.257366+00
+2233	2	2014-03-13 02:53:45.284013+00
+2234	2	2014-03-13 02:53:45.42364+00
+2235	2	2014-03-13 05:04:34.973208+00
+2236	2	2014-03-13 19:18:57.855065+00
+2237	2	2014-03-13 19:18:57.878384+00
+2238	2	2014-03-13 19:18:58.029169+00
+2239	2	2014-03-13 19:19:24.177585+00
+2240	2	2014-03-13 19:19:36.291629+00
+2241	2	2014-03-13 19:19:36.34339+00
+2242	2	2014-03-13 19:19:49.154677+00
+2243	2	2014-03-13 19:19:49.184661+00
+2244	2	2014-03-13 19:19:49.267113+00
+2245	2	2014-03-13 19:27:49.376113+00
+2246	2	2014-03-13 19:27:49.4184+00
+2247	2	2014-03-13 19:27:49.638107+00
+2248	2	2014-03-13 19:28:09.090124+00
+2249	2	2014-03-13 19:28:18.180291+00
+2250	2	2014-03-13 19:28:18.234143+00
+2251	2	2014-03-13 19:28:28.668982+00
+2252	2	2014-03-13 19:28:28.696085+00
+2253	2	2014-03-13 19:28:28.792153+00
+2254	2	2014-03-13 19:38:35.711804+00
+2255	2	2014-03-13 19:38:35.793769+00
+2256	2	2014-03-13 19:38:35.934095+00
+2257	2	2014-03-13 19:38:57.298824+00
+2258	2	2014-03-13 19:39:07.71323+00
+2259	2	2014-03-13 19:39:07.765077+00
+2260	2	2014-03-13 19:46:53.129459+00
+2261	2	2014-03-13 19:46:53.203472+00
+2262	2	2014-03-13 19:46:53.380019+00
+2263	2	2014-03-13 19:47:14.454689+00
+2264	2	2014-03-13 19:47:26.100846+00
+2265	2	2014-03-13 19:47:26.153927+00
+2266	2	2014-03-13 19:47:37.822355+00
+2267	2	2014-03-13 19:47:37.913547+00
+2268	2	2014-03-13 19:47:42.192295+00
+2269	2	2014-03-13 19:47:42.221264+00
+2270	2	2014-03-13 19:47:42.308859+00
+2271	2	2014-03-13 19:48:09.105674+00
+2272	2	2014-03-13 19:48:09.170438+00
+2273	2	2014-03-13 19:48:09.310258+00
+2274	2	2014-03-13 20:18:21.355386+00
+2275	2	2014-03-13 20:18:21.451021+00
+2276	2	2014-03-13 20:18:21.559968+00
+2277	2	2014-03-13 20:18:40.679055+00
+2278	2	2014-03-13 20:18:49.43257+00
+2279	2	2014-03-13 20:18:49.481554+00
+2280	2	2014-03-13 20:18:58.074419+00
+2281	2	2014-03-13 20:18:58.099869+00
+2282	2	2014-03-13 20:18:58.194466+00
+2283	2	2014-03-13 20:24:11.331741+00
+2284	2	2014-03-13 20:24:11.386722+00
+2285	2	2014-03-13 20:24:11.559768+00
+2286	2	2014-03-13 20:24:31.869403+00
+2287	2	2014-03-13 20:24:42.994975+00
+2288	2	2014-03-13 20:24:43.051101+00
+2289	2	2014-03-13 20:24:51.901397+00
+2290	2	2014-03-13 20:24:51.931131+00
+2291	2	2014-03-13 20:24:52.019895+00
+2292	2	2014-03-13 20:32:12.894599+00
+2293	2	2014-03-13 20:32:12.971471+00
+2294	2	2014-03-13 20:32:13.101608+00
+2295	2	2014-03-13 20:32:39.530498+00
+2296	2	2014-03-13 20:32:50.906381+00
+2297	2	2014-03-13 20:32:50.960491+00
+2298	2	2014-03-13 22:18:59.440016+00
+2299	2	2014-03-13 22:18:59.440534+00
+2300	2	2014-03-13 22:19:21.500707+00
+2301	2	2014-03-13 22:19:28.370554+00
+2302	2	2014-03-13 22:19:28.721415+00
+2303	2	2014-03-13 22:19:42.092771+00
+2304	2	2014-03-13 22:19:43.613508+00
+2305	2	2014-03-13 22:19:43.686968+00
+2306	2	2014-03-13 22:19:43.994915+00
+2307	2	2014-03-13 22:19:47.229024+00
+2308	2	2014-03-13 22:19:47.312677+00
+2309	2	2014-03-13 22:19:47.349529+00
+2310	2	2014-03-13 22:19:47.570903+00
+2311	2	2014-03-13 22:19:48.851689+00
+2312	2	2014-03-13 22:19:51.247017+00
+2313	2	2014-03-13 22:19:59.039057+00
+2314	2	2014-03-13 22:19:59.068763+00
+2315	2	2014-03-13 22:19:59.159034+00
+2316	2	2014-03-13 22:21:56.167517+00
+2317	2	2014-03-13 22:21:56.313767+00
+2318	2	2014-03-13 22:34:53.401845+00
+2319	2	2014-03-13 22:34:53.438196+00
+2320	2	2014-03-13 22:34:53.581698+00
+2321	2	2014-03-13 22:35:14.850414+00
+2322	2	2014-03-13 22:35:22.678965+00
+2323	2	2014-03-13 22:35:22.726159+00
+2324	2	2014-03-15 05:48:45.447213+00
+2325	2	2014-03-15 05:48:45.591933+00
+2326	2	2014-03-15 05:48:48.750021+00
+2327	2	2014-03-15 05:48:53.00332+00
+2328	2	2014-03-15 05:49:16.562496+00
+2329	2	2014-03-15 05:49:16.588265+00
+2330	2	2014-03-15 05:49:16.81023+00
+2331	2	2014-03-15 05:49:33.946076+00
+2332	2	2014-03-15 05:49:34.81543+00
+2333	2	2014-03-15 12:36:03.025929+00
+2334	2	2014-03-15 12:36:03.144508+00
+2335	2	2014-03-15 12:36:03.421011+00
+2336	2	2014-03-15 12:36:03.704624+00
+2337	2	2014-03-15 12:36:06.879772+00
+2338	2	2014-03-15 12:36:07.060938+00
+2339	2	2014-03-15 12:36:11.758071+00
+2340	2	2014-03-15 12:36:13.67504+00
+2341	2	2014-03-15 12:36:13.779686+00
+2342	2	2014-03-15 12:36:14.900502+00
+2343	2	2014-03-15 12:36:15.034711+00
+2344	2	2014-03-15 12:36:42.265559+00
+2345	2	2014-03-15 12:36:42.325035+00
+2346	2	2014-03-15 12:36:42.429473+00
+2347	2	2014-03-15 12:36:44.3532+00
+2348	2	2014-03-15 12:36:44.435763+00
+2349	2	2014-03-15 12:36:49.521887+00
+2350	2	2014-03-15 12:36:49.595537+00
+2351	2	2014-03-15 12:36:50.446901+00
+2352	2	2014-03-15 12:36:50.528061+00
+2353	2	2014-03-15 12:37:01.276533+00
+2354	2	2014-03-15 12:37:01.322813+00
+2355	2	2014-03-15 12:37:01.411538+00
+2356	2	2014-03-15 12:37:03.089+00
+2357	2	2014-03-15 12:37:03.111068+00
+2358	2	2014-03-15 12:37:03.287794+00
+2359	2	2014-03-15 12:37:10.176634+00
+2360	2	2014-03-15 12:39:51.118889+00
+2361	2	2014-03-15 12:39:56.679683+00
+2362	2	2014-03-15 12:39:56.752697+00
+2363	2	2014-03-15 12:40:51.719072+00
+2364	2	2014-03-15 12:40:57.13557+00
+2365	2	2014-03-15 12:40:57.210525+00
+2366	2	2014-03-15 13:00:44.716738+00
+2367	2	2014-03-15 13:00:44.858984+00
+2368	2	2014-03-15 13:00:46.797367+00
+2369	2	2014-03-15 13:00:46.873446+00
+2370	2	2014-03-15 13:04:43.240421+00
+2371	2	2014-03-15 13:04:59.952487+00
+2372	2	2014-03-15 13:13:37.588349+00
+2373	2	2014-03-15 13:13:38.80277+00
+2374	2	2014-03-15 13:14:01.43895+00
+2375	2	2014-03-15 13:14:07.310904+00
+2376	2	2014-03-15 13:14:21.470107+00
+2377	2	2014-03-15 13:14:22.600585+00
+2378	2	2014-03-15 13:16:13.51011+00
+2379	2	2014-03-15 13:16:15.152532+00
+2380	2	2014-03-15 13:16:17.149985+00
+2381	2	2014-03-15 13:16:47.112384+00
+2382	2	2014-03-15 13:16:48.297358+00
+2383	2	2014-03-15 13:16:49.042891+00
+2384	2	2014-03-15 13:16:51.688281+00
+2385	2	2014-03-15 13:17:53.536369+00
+2386	2	2014-03-15 13:17:55.287558+00
+2387	2	2014-03-15 13:17:56.813106+00
+2388	2	2014-03-15 13:17:56.837991+00
+2389	2	2014-03-15 13:17:56.936833+00
+2390	2	2014-03-15 13:17:59.511805+00
+2391	2	2014-03-15 13:18:48.347359+00
+2392	2	2014-03-15 13:18:48.370407+00
+2393	2	2014-03-15 13:18:48.490412+00
+2394	2	2014-03-15 13:18:50.592617+00
+2395	2	2014-03-15 13:18:50.620999+00
+2396	2	2014-03-15 13:18:50.646283+00
+2397	2	2014-03-15 13:18:50.741401+00
+2398	2	2014-03-15 13:18:52.562783+00
+2440	2	2014-03-15 18:49:38.550096+00
+2441	2	2014-03-15 18:49:40.877917+00
+2442	2	2014-03-15 18:49:40.974785+00
+2443	2	2014-03-15 18:49:49.565032+00
+2444	2	2014-03-15 18:49:59.161264+00
+2445	2	2014-03-15 18:49:59.240596+00
+2446	2	2014-03-15 18:50:04.305388+00
+2447	2	2014-03-15 18:50:10.122836+00
+2448	2	2014-03-15 18:50:39.360829+00
+2449	2	2014-03-15 18:50:40.293148+00
+2450	2	2014-03-15 18:50:42.083222+00
+2451	2	2014-03-15 18:50:42.160878+00
+2452	2	2014-03-15 18:50:45.97414+00
+2453	2	2014-03-15 18:50:48.655502+00
+2454	2	2014-03-15 18:50:49.44581+00
+2455	2	2014-03-15 18:51:37.60846+00
+2456	2	2014-03-15 18:51:37.759137+00
+2457	2	2014-03-15 18:51:41.962578+00
+2458	2	2014-03-15 18:51:46.549491+00
+2459	2	2014-03-15 18:51:46.713499+00
+2460	2	2014-03-15 18:51:46.792375+00
+2461	2	2014-03-15 18:51:48.243402+00
+2462	2	2014-03-15 18:51:48.820503+00
+2463	2	2014-03-15 18:51:51.017472+00
+2464	2	2014-03-15 18:51:51.088419+00
+2465	2	2014-03-15 18:51:53.453384+00
+2466	2	2014-03-15 18:51:53.527802+00
+2467	2	2014-03-15 18:51:53.667855+00
+2468	2	2014-03-15 18:51:58.459965+00
+2469	2	2014-03-15 19:11:04.903931+00
+2470	2	2014-03-15 19:12:32.200492+00
+2471	2	2014-03-15 19:12:39.921301+00
+2472	2	2014-03-15 19:12:42.680905+00
+2473	2	2014-03-15 19:15:11.307814+00
+2474	2	2014-03-15 19:15:14.594113+00
+2475	2	2014-03-15 19:15:39.85063+00
+2476	2	2014-03-15 19:15:40.55799+00
+2477	2	2014-03-15 19:15:41.094684+00
+2478	2	2014-03-15 19:15:52.732211+00
+2479	2	2014-03-15 19:15:54.625263+00
+2480	2	2014-03-15 19:19:08.56709+00
+2481	2	2014-03-15 19:19:09.657769+00
+2482	2	2014-03-15 19:19:10.541677+00
+2483	2	2014-03-15 19:19:11.792434+00
+2484	2	2014-03-15 19:19:13.783057+00
+2485	2	2014-03-15 19:19:53.521522+00
+2486	2	2014-03-15 19:20:21.749498+00
+2487	2	2014-03-15 19:20:27.970039+00
+2488	2	2014-03-15 19:20:33.986404+00
+2489	2	2014-03-15 19:22:07.019635+00
+2490	2	2014-03-15 19:26:35.947257+00
+2491	2	2014-03-15 19:26:36.844624+00
+2492	2	2014-03-15 19:26:48.199424+00
+2493	2	2014-03-15 19:26:49.159318+00
+2494	2	2014-03-15 19:26:49.927808+00
+2495	2	2014-03-15 19:27:03.280242+00
+2496	2	2014-03-15 19:27:04.181964+00
+2497	2	2014-03-15 19:27:21.059901+00
+2498	2	2014-03-15 19:27:23.346232+00
+2499	2	2014-03-15 19:28:59.847423+00
+2500	2	2014-03-15 19:29:04.055308+00
+2501	2	2014-03-15 19:29:09.025521+00
+2502	2	2014-03-15 19:29:23.464022+00
+2503	2	2014-03-15 19:46:38.013208+00
+2504	2	2014-03-15 19:46:48.698934+00
+2505	2	2014-03-15 19:47:05.670628+00
+2506	2	2014-03-15 19:47:06.739794+00
+2507	2	2014-03-15 19:47:07.540446+00
+2508	2	2014-03-15 19:47:09.577262+00
+2509	2	2014-03-15 19:47:27.311581+00
+2510	2	2014-03-15 19:47:31.8846+00
+2511	2	2014-03-15 19:47:49.028639+00
+2512	2	2014-03-15 19:48:07.286794+00
+2513	2	2014-03-15 19:48:09.43202+00
+2514	2	2014-03-15 19:48:14.075266+00
+2515	2	2014-03-15 19:48:18.955952+00
+2516	2	2014-03-15 19:48:32.45645+00
+2517	2	2014-03-15 19:49:03.52555+00
+2518	2	2014-03-15 19:49:04.875657+00
+2519	2	2014-03-15 19:49:06.201742+00
+2520	2	2014-03-15 19:49:33.143704+00
+2521	2	2014-03-15 19:49:48.050382+00
+2522	2	2014-03-15 19:49:48.98444+00
+2523	2	2014-03-15 19:50:20.95711+00
+2524	2	2014-03-15 19:50:38.321666+00
+2525	2	2014-03-15 19:50:43.527063+00
+2526	6	2014-03-15 19:51:28.602682+00
+2527	6	2014-03-15 19:51:28.631376+00
+2528	6	2014-03-15 19:51:28.750895+00
+2529	6	2014-03-15 19:51:34.134085+00
+2530	6	2014-03-15 19:51:35.227255+00
+2531	6	2014-03-15 19:51:41.117099+00
+2532	6	2014-03-15 19:51:42.496109+00
+2533	6	2014-03-15 19:51:52.838023+00
+2534	6	2014-03-15 19:52:38.77616+00
+2535	6	2014-03-15 19:52:40.69235+00
+2536	2	2014-03-15 19:52:43.647564+00
+2537	2	2014-03-15 19:52:43.670577+00
+2538	2	2014-03-15 19:52:43.778764+00
+2539	2	2014-03-15 19:58:56.914641+00
+2540	2	2014-03-15 19:58:57.228564+00
+2541	2	2014-03-15 19:58:59.109435+00
+2542	2	2014-03-15 19:59:57.11185+00
+2543	2	2014-03-15 20:02:56.450957+00
+2544	2	2014-03-15 20:03:09.052023+00
+2545	2	2014-03-15 20:03:39.683516+00
+2546	2	2014-03-15 20:03:41.838555+00
+2547	2	2014-03-15 20:03:44.392157+00
+2548	6	2014-03-15 20:03:47.196732+00
+2549	6	2014-03-15 20:03:47.221189+00
+2550	6	2014-03-15 20:03:47.33994+00
+2551	6	2014-03-15 20:03:50.355845+00
+2552	6	2014-03-15 20:04:13.731511+00
+2553	6	2014-03-15 20:04:14.863611+00
+2554	6	2014-03-15 20:04:21.45066+00
+2555	6	2014-03-15 20:04:35.477916+00
+2556	6	2014-03-15 20:04:38.381915+00
+2557	6	2014-03-15 20:04:48.753243+00
+2558	6	2014-03-15 20:04:52.88168+00
+2559	2	2014-03-15 20:04:53.009366+00
+2560	2	2014-03-15 20:05:11.676861+00
+2561	2	2014-03-15 20:05:14.356436+00
+2562	2	2014-03-15 20:05:30.389583+00
+2563	2	2014-03-15 20:05:43.262361+00
+2564	2	2014-03-15 20:06:09.125593+00
+2565	2	2014-03-15 20:06:09.304897+00
+2566	2	2014-03-15 20:06:23.255781+00
+2567	2	2014-03-15 20:06:23.423849+00
+2568	2	2014-03-15 20:06:27.529034+00
+2569	2	2014-03-15 20:06:28.70591+00
+2570	2	2014-03-15 20:06:28.751466+00
+2571	2	2014-03-15 20:06:28.81539+00
+2572	2	2014-03-15 20:06:31.050401+00
+2573	2	2014-03-15 20:06:34.521305+00
+2574	2	2014-03-15 20:06:43.106235+00
+2575	2	2014-03-15 20:06:45.200945+00
+2576	2	2014-03-15 20:06:46.686896+00
+2577	2	2014-03-15 20:06:46.784962+00
+2578	2	2014-03-15 20:06:48.274453+00
+2579	2	2014-03-15 20:06:48.359113+00
+2580	2	2014-03-15 20:06:51.433628+00
+2581	2	2014-03-15 20:06:54.093435+00
+2582	2	2014-03-15 20:07:02.293617+00
+2583	2	2014-03-15 20:07:04.672592+00
+2584	2	2014-03-15 20:07:04.736535+00
+2585	2	2014-03-15 20:07:04.886332+00
+2586	2	2014-03-15 20:07:10.548834+00
+2587	2	2014-03-15 20:07:12.105088+00
+2588	2	2014-03-15 20:07:12.192837+00
+2589	2	2014-03-15 20:07:13.887144+00
+2590	2	2014-03-15 20:07:13.994273+00
+2591	2	2014-03-15 20:07:15.114258+00
+2592	2	2014-03-15 20:07:16.351884+00
+2593	2	2014-03-15 20:07:16.392219+00
+2594	2	2014-03-15 20:07:16.45884+00
+2595	2	2014-03-15 20:07:18.408118+00
+2596	2	2014-03-15 20:07:18.431696+00
+2597	2	2014-03-15 20:07:18.561452+00
+2598	2	2014-03-15 20:07:22.773671+00
+2599	2	2014-03-15 20:07:23.997693+00
+2600	2	2014-03-15 20:07:25.717992+00
+2601	2	2014-03-15 20:07:26.766368+00
+2602	2	2014-03-15 20:07:27.614053+00
+2603	2	2014-03-15 20:07:54.619909+00
+2604	2	2014-03-15 20:07:56.940624+00
+2605	2	2014-03-15 20:07:59.771822+00
+2606	2	2014-03-15 20:08:23.434595+00
+2607	2	2014-03-15 20:08:30.203137+00
+2608	2	2014-03-15 20:08:31.693145+00
+2609	2	2014-03-15 20:08:31.777252+00
+2610	2	2014-03-15 20:08:32.864062+00
+2611	2	2014-03-15 20:08:32.95953+00
+2612	2	2014-03-15 20:08:35.896018+00
+2613	2	2014-03-15 20:08:35.951282+00
+2614	2	2014-03-15 20:08:36.025871+00
+2615	2	2014-03-15 20:08:37.78214+00
+2616	2	2014-03-15 20:08:39.228961+00
+2617	2	2014-03-15 20:08:42.111412+00
+2618	2	2014-03-15 20:08:42.186983+00
+2619	2	2014-03-15 20:08:43.248255+00
+2620	2	2014-03-15 20:08:43.338878+00
+2621	2	2014-03-15 20:08:56.579402+00
+2622	2	2014-03-15 20:08:56.689047+00
+2623	2	2014-03-15 20:09:01.107071+00
+2624	2	2014-03-15 20:09:01.169367+00
+2625	2	2014-03-15 20:09:01.285296+00
+2626	2	2014-03-15 20:09:02.491848+00
+2627	2	2014-03-15 20:09:02.578405+00
+2628	2	2014-03-15 20:09:04.45487+00
+2629	2	2014-03-15 20:09:04.514237+00
+2630	2	2014-03-15 20:09:04.585608+00
+2631	2	2014-03-15 20:09:05.590262+00
+2632	2	2014-03-15 20:09:05.681596+00
+2633	2	2014-03-15 20:09:08.273393+00
+2634	2	2014-03-15 20:09:08.34992+00
+2635	2	2014-03-15 20:09:09.606329+00
+2636	2	2014-03-15 20:09:09.700681+00
+2637	2	2014-03-15 20:09:11.177713+00
+2638	2	2014-03-15 20:09:11.250124+00
+2639	2	2014-03-15 20:09:12.86103+00
+2640	2	2014-03-15 20:09:12.949661+00
+2641	2	2014-03-15 20:09:16.27692+00
+2642	2	2014-03-15 20:09:16.299156+00
+2643	2	2014-03-15 20:09:16.43687+00
+2644	2	2014-03-15 20:09:20.138111+00
+2645	2	2014-03-15 20:09:23.666955+00
+2646	2	2014-03-15 20:09:25.570617+00
+2647	2	2014-03-15 20:09:26.937706+00
+2648	2	2014-03-15 20:09:33.305923+00
+2649	2	2014-03-15 20:09:35.757531+00
+2650	2	2014-03-15 20:09:35.83884+00
+2651	2	2014-03-15 20:09:38.056566+00
+2652	2	2014-03-15 20:09:39.34505+00
+2653	2	2014-03-15 20:09:39.3898+00
+2654	2	2014-03-15 20:09:39.457512+00
+2655	2	2014-03-15 20:09:40.182123+00
+2656	2	2014-03-22 04:10:25.19402+00
+2657	2	2014-03-22 04:10:25.338494+00
+2658	2	2014-03-22 04:10:25.730951+00
+2659	2	2014-03-22 04:10:44.967769+00
+2660	2	2014-03-22 04:10:47.695269+00
+2661	2	2014-03-22 04:10:50.670268+00
+2662	2	2014-03-22 04:10:59.418477+00
+2663	2	2014-03-22 04:11:01.202864+00
+2664	2	2014-03-22 04:11:02.858142+00
+2665	2	2014-03-22 04:11:02.885135+00
+2666	2	2014-03-22 04:11:03.024353+00
+2667	2	2014-03-22 04:11:07.103026+00
+2668	2	2014-03-22 04:11:09.575731+00
+2669	2	2014-03-22 04:12:22.187803+00
+2670	2	2014-03-22 04:12:24.417684+00
+2671	2	2014-03-22 20:41:50.514609+00
+2672	2	2014-03-22 20:41:50.635852+00
+2673	2	2014-03-22 20:41:50.869359+00
+2674	2	2014-03-22 20:41:51.116716+00
+2675	2	2014-03-22 20:41:54.550804+00
+2676	2	2014-03-22 20:41:59.186658+00
+2677	2	2014-03-22 20:43:07.157546+00
+2678	2	2014-03-23 03:49:21.793947+00
+2679	2	2014-03-23 03:49:21.937036+00
+2680	2	2014-03-23 03:49:22.19683+00
+2681	2	2014-03-23 03:58:05.548866+00
+2682	2	2014-03-23 03:58:05.795605+00
+2683	2	2014-03-23 03:58:20.47229+00
+2684	2	2014-03-23 03:58:20.643469+00
+2685	2	2014-03-23 04:00:27.242898+00
+2686	2	2014-03-23 04:00:27.472193+00
+2687	2	2014-03-23 04:00:54.878817+00
+2688	2	2014-03-23 04:00:55.058714+00
+2689	2	2014-03-23 04:02:20.488446+00
+2690	2	2014-03-23 04:02:20.728615+00
+2691	2	2014-03-23 04:02:21.878086+00
+2692	2	2014-03-23 04:02:22.041097+00
+2693	2	2014-03-23 04:02:22.652891+00
+2694	2	2014-03-23 04:02:22.8514+00
+2695	2	2014-03-23 04:02:23.640114+00
+2696	2	2014-03-23 04:02:23.813138+00
+2697	2	2014-03-23 04:03:00.035431+00
+2698	2	2014-03-23 04:03:00.259337+00
+2699	2	2014-03-23 04:03:01.157962+00
+2700	2	2014-03-23 04:03:01.33434+00
+2701	2	2014-03-23 04:03:36.70734+00
+2702	2	2014-03-23 04:03:36.910502+00
+2703	2	2014-03-23 04:03:56.221793+00
+2704	2	2014-03-23 04:03:56.436414+00
+2705	2	2014-03-23 04:04:07.820915+00
+2706	2	2014-03-23 04:04:07.977984+00
+2707	2	2014-03-23 04:04:31.01992+00
+2708	2	2014-03-23 04:04:31.301893+00
+2709	2	2014-03-23 04:04:50.62545+00
+2710	2	2014-03-23 04:04:50.776488+00
+2711	2	2014-03-23 04:05:01.626039+00
+2712	2	2014-03-23 04:05:01.785177+00
+2713	2	2014-03-23 04:05:05.731162+00
+2714	2	2014-03-23 04:05:05.883975+00
+2715	2	2014-03-23 04:05:17.877008+00
+2716	2	2014-03-23 04:05:18.268837+00
+2717	2	2014-03-23 04:05:21.948515+00
+2718	2	2014-03-23 04:05:22.253363+00
+2719	2	2014-03-23 04:05:26.05393+00
+2720	2	2014-03-23 04:05:26.260076+00
+2721	2	2014-03-23 04:05:30.409174+00
+2722	2	2014-03-23 04:05:30.584679+00
+2723	2	2014-03-23 04:05:58.54727+00
+2724	2	2014-03-23 04:05:58.802083+00
+2725	2	2014-03-23 04:06:11.492851+00
+2726	2	2014-03-23 04:06:11.641737+00
+2727	2	2014-03-23 04:06:30.359342+00
+2728	2	2014-03-23 04:06:30.542067+00
+2729	2	2014-03-23 04:06:41.424579+00
+2730	2	2014-03-23 04:06:41.585294+00
+2731	2	2014-03-23 04:06:51.54573+00
+2732	2	2014-03-23 04:06:51.705483+00
+2733	2	2014-03-23 04:06:54.765046+00
+2734	2	2014-03-23 04:06:55.026303+00
+2735	2	2014-03-23 04:07:02.282411+00
+2736	2	2014-03-23 04:07:02.440279+00
+2737	2	2014-03-23 04:07:08.387385+00
+2738	2	2014-03-23 04:07:08.569673+00
+2739	2	2014-03-23 04:07:15.931765+00
+2740	2	2014-03-23 04:07:16.150231+00
+2741	2	2014-03-23 04:07:27.261067+00
+2742	2	2014-03-23 04:07:27.432188+00
+2743	2	2014-03-23 04:07:39.260437+00
+2744	2	2014-03-23 04:07:39.591036+00
+2745	2	2014-03-23 04:07:43.21207+00
+2746	2	2014-03-23 04:07:43.560728+00
+2747	2	2014-03-23 04:07:50.878222+00
+2748	2	2014-03-23 04:07:51.02835+00
+2749	2	2014-03-23 04:07:55.20666+00
+2750	2	2014-03-23 04:07:55.375567+00
+2751	2	2014-03-23 04:08:01.132338+00
+2752	2	2014-03-23 04:08:01.3042+00
+2753	2	2014-03-23 04:08:11.337042+00
+2754	2	2014-03-23 04:08:11.529353+00
+2755	2	2014-03-23 04:08:19.419174+00
+2756	2	2014-03-23 04:08:19.569869+00
+2757	2	2014-03-23 04:08:30.089972+00
+2758	2	2014-03-23 04:08:30.241938+00
+2759	2	2014-03-23 04:08:36.484803+00
+2760	2	2014-03-23 04:08:36.716441+00
+2761	2	2014-03-23 04:08:47.851508+00
+2762	2	2014-03-23 04:08:48.002993+00
+2763	2	2014-03-23 04:08:58.293016+00
+2764	2	2014-03-23 04:08:58.460284+00
+2765	2	2014-03-23 04:09:02.277088+00
+2766	2	2014-03-23 04:09:02.504508+00
+2767	2	2014-03-23 04:09:06.47282+00
+2768	2	2014-03-23 04:09:06.825889+00
+2769	2	2014-03-23 04:09:10.61252+00
+2770	2	2014-03-23 04:09:10.796728+00
+2771	2	2014-03-23 04:09:17.746876+00
+2772	2	2014-03-23 04:09:17.900967+00
+2773	2	2014-03-23 04:09:20.855626+00
+2774	2	2014-03-23 04:09:21.011426+00
+2775	2	2014-03-23 04:27:35.996092+00
+2776	2	2014-03-23 04:27:36.429629+00
+2777	2	2014-03-23 04:27:42.807078+00
+2778	6	2014-03-23 04:33:46.6498+00
+2779	6	2014-03-23 04:33:46.680201+00
+2780	6	2014-03-23 04:33:46.821494+00
+2781	6	2014-03-23 04:33:54.104902+00
+2782	6	2014-03-23 04:34:23.284644+00
+2783	6	2014-03-23 04:34:27.514184+00
+2784	2	2014-03-23 04:34:27.599051+00
+2785	2	2014-03-23 04:34:33.438157+00
+2786	2	2014-03-23 04:34:33.561046+00
+2787	2	2014-03-23 04:34:37.420919+00
+2788	2	2014-03-23 04:34:38.487051+00
+2789	2	2014-03-23 04:34:38.531828+00
+2790	2	2014-03-23 04:34:38.621752+00
+2791	2	2014-03-23 04:34:42.407571+00
+2792	2	2014-03-23 04:34:44.519178+00
+2793	2	2014-03-23 04:34:44.546087+00
+2794	2	2014-03-23 04:34:44.730344+00
+2795	2	2014-03-23 04:35:00.859591+00
+2796	2	2014-03-23 04:35:02.75151+00
+2797	2	2014-03-23 04:35:05.727939+00
+2798	6	2014-03-23 04:35:10.046986+00
+2799	6	2014-03-23 04:35:10.073427+00
+2800	6	2014-03-23 04:35:10.18715+00
+2801	6	2014-03-23 04:36:25.991508+00
+2802	6	2014-03-23 04:36:26.378037+00
+2803	6	2014-03-23 04:36:34.072454+00
+2804	6	2014-03-23 04:36:34.46679+00
+2805	6	2014-03-23 04:36:35.367785+00
+2806	6	2014-03-23 04:36:35.531196+00
+2807	6	2014-03-23 04:36:49.535648+00
+2808	6	2014-03-23 04:36:49.872011+00
+2809	6	2014-03-23 04:36:57.291284+00
+2810	6	2014-03-23 04:36:57.494876+00
+2811	6	2014-03-23 06:28:21.166126+00
+2812	6	2014-03-23 06:28:28.94946+00
+2813	6	2014-03-23 06:28:29.626009+00
+2814	6	2014-03-23 06:28:40.61249+00
+2815	6	2014-03-23 06:28:48.819303+00
+2816	2	2014-03-23 06:28:48.916394+00
+2817	2	2014-03-23 06:28:51.181544+00
+2818	2	2014-03-23 06:28:51.277609+00
+2819	2	2014-03-23 06:28:52.201969+00
+2820	2	2014-03-23 06:28:52.317176+00
+2821	2	2014-03-23 06:28:55.088255+00
+2822	2	2014-03-23 06:28:55.384732+00
+2823	2	2014-03-23 06:29:06.344028+00
+2824	2	2014-03-23 06:29:56.417304+00
+2825	2	2014-03-23 06:30:01.522944+00
+2826	2	2014-03-23 06:30:07.738245+00
+2827	2	2014-03-23 06:30:12.072831+00
+2828	2	2014-03-23 06:30:19.100851+00
+2829	2	2014-03-23 06:30:22.500343+00
+2830	2	2014-03-23 06:30:24.519516+00
+2831	2	2014-03-23 06:30:27.117381+00
+2832	2	2014-03-23 06:31:01.838314+00
+2833	2	2014-03-23 06:31:14.089981+00
+2834	2	2014-03-23 06:31:15.244955+00
+2835	2	2014-03-23 06:31:15.825655+00
+2836	2	2014-03-23 06:31:37.55183+00
+2837	2	2014-03-23 06:31:51.378277+00
+2838	2	2014-03-23 06:31:53.953358+00
+2839	2	2014-03-23 06:31:56.260878+00
+2840	2	2014-03-23 06:31:59.529157+00
+2841	2	2014-03-23 06:32:08.459224+00
+2842	2	2014-03-23 06:32:24.985666+00
+2843	2	2014-03-23 06:32:29.308305+00
+2844	2	2014-03-23 06:32:36.662362+00
+2845	2	2014-03-23 06:32:39.589466+00
+2846	2	2014-03-23 06:32:44.850929+00
+2847	2	2014-03-23 06:32:48.610619+00
+2848	2	2014-03-23 06:32:56.547162+00
+2849	2	2014-03-23 06:32:56.573037+00
+2850	2	2014-03-23 06:32:56.697294+00
+2851	2	2014-03-23 06:32:59.332839+00
+2852	6	2014-03-23 06:34:34.062053+00
+2853	6	2014-03-23 06:34:34.085401+00
+2854	6	2014-03-23 06:34:34.215004+00
+2855	6	2014-03-23 06:34:46.792711+00
+2856	6	2014-03-23 06:34:56.74564+00
+2857	6	2014-03-23 06:34:56.773856+00
+2858	6	2014-03-23 06:34:56.877642+00
+2859	6	2014-03-23 06:35:01.732112+00
+2860	6	2014-03-23 06:35:03.831868+00
+2861	6	2014-03-23 06:35:03.858155+00
+2862	6	2014-03-23 06:35:03.957318+00
+2863	6	2014-03-23 06:35:15.838977+00
+2864	6	2014-03-23 06:42:41.97386+00
+2865	6	2014-03-23 06:42:45.935211+00
+2866	2	2014-03-23 06:42:46.017535+00
+2867	2	2014-03-23 06:42:47.2203+00
+2868	2	2014-03-23 06:43:09.987273+00
+2869	2	2014-03-23 06:43:10.180935+00
+2870	2	2014-03-23 06:43:20.86631+00
+2871	2	2014-03-23 06:43:21.077912+00
+2872	2	2014-03-23 06:43:21.990772+00
+2873	2	2014-03-23 06:43:22.113404+00
+2874	2	2014-03-23 06:43:27.465141+00
+2875	2	2014-03-23 06:43:28.536188+00
+2876	2	2014-03-23 06:43:28.58866+00
+2877	2	2014-03-23 06:43:28.657683+00
+2878	2	2014-03-23 06:43:29.820763+00
+2879	2	2014-03-23 06:43:34.505474+00
+2880	2	2014-03-23 06:43:37.106672+00
+2881	2	2014-03-23 06:43:37.190708+00
+2882	2	2014-03-23 06:43:37.934691+00
+2883	2	2014-03-23 06:43:38.03533+00
+2884	2	2014-03-23 06:43:43.903097+00
+2885	2	2014-03-23 06:43:44.030047+00
+2886	2	2014-03-23 06:44:58.388154+00
+2887	2	2014-03-23 06:44:58.479169+00
+2888	2	2014-03-23 06:44:58.661372+00
+2889	2	2014-03-23 06:45:00.037328+00
+2890	2	2014-03-23 06:45:00.126391+00
+2891	2	2014-03-23 06:45:01.631983+00
+2892	2	2014-03-23 06:45:02.339164+00
+2893	2	2014-03-23 06:45:02.423661+00
+2894	2	2014-03-23 06:45:04.412006+00
+2895	2	2014-03-23 06:45:04.470543+00
+2896	2	2014-03-23 06:45:04.550108+00
+2897	2	2014-03-23 06:45:06.787845+00
+2898	2	2014-03-23 06:45:07.441004+00
+2899	2	2014-03-23 06:45:16.114757+00
+2900	2	2014-03-23 06:45:16.187139+00
+2901	2	2014-03-23 06:45:22.732231+00
+2902	2	2014-03-23 06:45:25.124946+00
+2903	2	2014-03-23 06:45:28.428498+00
+2904	2	2014-03-23 06:45:31.245933+00
+2905	2	2014-03-23 06:45:32.352358+00
+2906	2	2014-03-23 06:45:35.267978+00
+2907	6	2014-03-23 06:45:39.079112+00
+2908	6	2014-03-23 06:45:39.100893+00
+2909	6	2014-03-23 06:45:39.235351+00
+2910	6	2014-03-23 06:55:10.564296+00
+2911	6	2014-03-23 06:55:10.957499+00
+2912	6	2014-03-23 06:55:13.938512+00
+2913	6	2014-03-23 06:55:14.111412+00
+2914	6	2014-03-23 06:55:16.337458+00
+2915	6	2014-03-23 06:55:16.477244+00
+2916	6	2014-03-23 06:55:29.412861+00
+2917	6	2014-03-23 06:55:29.603346+00
+2918	6	2014-03-23 06:56:08.715984+00
+2919	6	2014-03-23 06:56:08.96389+00
+2920	6	2014-03-23 07:04:48.523974+00
+2921	6	2014-03-23 07:04:48.730096+00
+2922	6	2014-03-23 07:05:57.613308+00
+2923	6	2014-03-23 07:05:58.649407+00
+2924	6	2014-03-23 07:06:08.517978+00
+2925	6	2014-03-23 07:06:09.752402+00
+2926	6	2014-03-23 07:06:17.069875+00
+2927	6	2014-03-23 07:06:18.307688+00
+2928	6	2014-03-23 07:06:24.49218+00
+2929	6	2014-03-23 07:06:25.762095+00
+2930	6	2014-03-23 07:06:47.534338+00
+2931	6	2014-03-23 07:06:48.661678+00
+2932	6	2014-03-23 07:06:57.762857+00
+2933	6	2014-03-23 07:06:59.272786+00
+2934	6	2014-03-23 07:07:10.38231+00
+2935	6	2014-03-23 07:07:11.536781+00
+2936	6	2014-03-23 07:07:44.338889+00
+2937	6	2014-03-23 07:07:45.475384+00
+2938	6	2014-03-23 07:08:17.658517+00
+2939	6	2014-03-23 07:08:18.711219+00
+2940	6	2014-03-23 07:08:50.642187+00
+2941	6	2014-03-23 07:16:16.98022+00
+2942	6	2014-03-23 07:16:17.419076+00
+2943	6	2014-03-23 07:17:15.022706+00
+2944	6	2014-03-23 07:17:15.297864+00
+2945	6	2014-03-23 07:17:20.06828+00
+2946	6	2014-03-23 07:18:24.085092+00
+2947	6	2014-03-23 07:18:24.330721+00
+2948	6	2014-03-23 07:18:28.736854+00
+2949	6	2014-03-23 07:18:36.462182+00
+2950	6	2014-03-23 07:18:36.699084+00
+2951	6	2014-03-23 07:18:39.276203+00
+2952	6	2014-03-23 07:18:52.85001+00
+2953	6	2014-03-23 07:18:53.286166+00
+2954	6	2014-03-23 07:18:55.837063+00
+2955	6	2014-03-23 07:19:35.864328+00
+2956	6	2014-03-23 07:19:36.119596+00
+2957	6	2014-03-23 07:19:56.333229+00
+2958	6	2014-03-23 07:19:56.692069+00
+2959	6	2014-03-23 07:20:37.892659+00
+2960	6	2014-03-23 07:20:38.390058+00
+2961	6	2014-03-23 07:20:40.956444+00
+2962	6	2014-03-23 07:20:46.950103+00
+2963	6	2014-03-23 07:20:47.236506+00
+2964	6	2014-03-23 07:20:59.217258+00
+2965	6	2014-03-23 07:21:01.658522+00
+2966	6	2014-03-23 07:21:09.138297+00
+2967	6	2014-03-23 07:21:12.398838+00
+2968	6	2014-03-23 07:21:13.704507+00
+2969	6	2014-03-23 07:21:15.886514+00
+2970	2	2014-03-23 07:21:15.974556+00
+2971	2	2014-03-23 07:21:18.029302+00
+2972	2	2014-03-23 07:21:19.228452+00
+2973	2	2014-03-23 07:21:19.366091+00
+2974	2	2014-03-23 07:21:21.11972+00
+2975	2	2014-03-23 07:21:21.802035+00
+2976	2	2014-03-23 07:21:26.061886+00
+2977	2	2014-03-23 07:21:26.165762+00
+2978	2	2014-03-23 07:21:27.666099+00
+2979	2	2014-03-23 07:21:27.846032+00
+2980	2	2014-03-23 07:21:30.449828+00
+2981	2	2014-03-23 07:21:30.545622+00
+2982	2	2014-03-23 07:21:34.131454+00
+2983	2	2014-03-23 07:21:34.224912+00
+2984	2	2014-03-23 07:21:37.085533+00
+2985	2	2014-03-23 07:21:37.143656+00
+2986	2	2014-03-23 07:21:37.265747+00
+2987	2	2014-03-23 07:21:38.604318+00
+2988	2	2014-03-23 07:21:38.698096+00
+2989	2	2014-03-23 07:21:40.140476+00
+2990	2	2014-03-23 07:21:40.998259+00
+2991	2	2014-03-23 07:21:41.114093+00
+2992	2	2014-03-23 07:21:46.091305+00
+2993	2	2014-03-23 07:21:46.190179+00
+2994	2	2014-03-23 07:21:50.787212+00
+2995	2	2014-03-23 07:21:50.893517+00
+2996	2	2014-03-23 07:22:07.260734+00
+2997	2	2014-03-23 07:22:07.342219+00
+2998	2	2014-03-23 07:22:07.507292+00
+2999	2	2014-03-23 07:22:08.611193+00
+3000	2	2014-03-23 07:22:08.751762+00
+3001	2	2014-03-23 07:22:10.263424+00
+3002	2	2014-03-23 07:22:10.343361+00
+3003	2	2014-03-23 07:22:10.996957+00
+3004	2	2014-03-23 07:22:11.112432+00
+3005	2	2014-03-23 07:22:12.766354+00
+3006	2	2014-03-23 07:22:12.892153+00
+3007	2	2014-03-23 07:22:13.798808+00
+3008	2	2014-03-23 07:22:13.899126+00
+3009	2	2014-03-23 07:22:14.982135+00
+3010	2	2014-03-23 07:22:15.092872+00
+3011	2	2014-03-23 07:22:59.075753+00
+3012	2	2014-03-23 07:22:59.161954+00
+3013	2	2014-03-23 07:23:19.613143+00
+3014	2	2014-03-23 07:23:21.142241+00
+3015	2	2014-03-23 07:23:23.259248+00
+3016	2	2014-03-23 07:23:23.347184+00
+3017	2	2014-03-23 07:23:25.808543+00
+3018	2	2014-03-23 07:23:26.686398+00
+3019	2	2014-03-23 07:23:26.734967+00
+3020	2	2014-03-23 07:23:26.806434+00
+3021	2	2014-03-23 07:23:29.915804+00
+3022	2	2014-03-23 07:23:29.985714+00
+3023	2	2014-03-23 07:23:30.18868+00
+3024	2	2014-03-23 07:24:24.239912+00
+3025	2	2014-03-23 07:24:24.544804+00
+3026	2	2014-03-23 07:24:33.397202+00
+3027	2	2014-03-23 07:24:36.062775+00
+3028	2	2014-03-23 07:24:37.19956+00
+3029	2	2014-03-23 07:24:38.831328+00
+3030	6	2014-03-23 07:24:43.018737+00
+3031	6	2014-03-23 07:24:43.04565+00
+3032	6	2014-03-23 07:24:43.216344+00
+3033	6	2014-03-23 07:24:46.989197+00
+3034	6	2014-03-23 07:24:52.014007+00
+3035	6	2014-03-23 07:24:57.405766+00
+3036	6	2014-03-23 07:26:39.119038+00
+3037	6	2014-03-23 07:26:40.197038+00
+3038	6	2014-03-23 07:26:41.014514+00
+3039	6	2014-03-23 07:26:51.857443+00
+3040	6	2014-03-23 07:27:35.466753+00
+3041	6	2014-03-23 07:28:19.494753+00
+3042	6	2014-03-23 07:28:22.62231+00
+3043	6	2014-03-23 07:28:22.649391+00
+3044	6	2014-03-23 07:28:22.8317+00
+3045	6	2014-03-23 07:28:29.791998+00
+3046	6	2014-03-23 07:28:33.178813+00
+3047	2	2014-03-23 07:28:33.266454+00
+3048	2	2014-03-23 07:28:34.640614+00
+3049	2	2014-03-23 07:28:34.727506+00
+3050	2	2014-03-23 07:28:37.693493+00
+3051	2	2014-03-23 07:28:38.710656+00
+3052	2	2014-03-23 07:28:38.761868+00
+3053	2	2014-03-23 07:28:38.843498+00
+3054	2	2014-03-23 07:28:39.482969+00
+3055	2	2014-03-23 07:28:40.786535+00
+3056	2	2014-03-23 07:28:44.011083+00
+3057	2	2014-03-23 07:28:44.098896+00
+3058	2	2014-03-23 07:28:45.37962+00
+3059	2	2014-03-23 07:28:45.494563+00
+3060	2	2014-03-23 07:28:47.490095+00
+3061	2	2014-03-23 07:28:47.536376+00
+3062	2	2014-03-23 07:28:47.612897+00
+3063	2	2014-03-23 07:28:48.899614+00
+3064	2	2014-03-23 07:28:49.024353+00
+3065	2	2014-03-23 07:28:50.607093+00
+3066	2	2014-03-23 07:28:52.539329+00
+3067	2	2014-03-23 07:28:52.566823+00
+3068	2	2014-03-23 07:28:52.724068+00
+3069	2	2014-03-23 07:28:58.191469+00
+3070	2	2014-03-23 07:28:59.850787+00
+3071	2	2014-03-23 07:29:01.45098+00
+3072	6	2014-03-23 07:29:06.053763+00
+3073	6	2014-03-23 07:29:06.07709+00
+3074	6	2014-03-23 07:29:06.249215+00
+3075	6	2014-03-23 07:29:09.624878+00
+3076	6	2014-03-23 07:29:10.465225+00
+3077	6	2014-03-23 07:29:10.687615+00
+3078	6	2014-03-23 07:29:17.765579+00
+3079	6	2014-03-23 07:29:22.087922+00
+3080	6	2014-03-23 07:29:25.0587+00
+3081	2	2014-03-23 07:29:25.13806+00
+3082	2	2014-03-23 07:29:32.749177+00
+3083	2	2014-03-23 07:29:32.843556+00
+3084	2	2014-03-23 07:29:35.934455+00
+3085	2	2014-03-23 07:29:36.034309+00
+3086	2	2014-03-23 07:29:38.831981+00
+3087	2	2014-03-23 07:29:42.190715+00
+3088	2	2014-03-23 07:29:42.233542+00
+3089	2	2014-03-23 07:29:42.305979+00
+3090	2	2014-03-23 07:29:44.460516+00
+3091	2	2014-03-23 07:29:47.560048+00
+3092	2	2014-03-23 07:29:56.813352+00
+3093	2	2014-03-23 07:29:56.908882+00
+3094	2	2014-03-23 07:29:58.069985+00
+3095	2	2014-03-23 07:29:58.213419+00
+3096	2	2014-03-23 07:29:59.611977+00
+3097	2	2014-03-23 08:10:35.120291+00
+3098	2	2014-03-23 08:10:35.155432+00
+3099	2	2014-03-23 08:10:35.352103+00
+3100	2	2014-03-23 08:33:49.677513+00
+3101	2	2014-03-23 08:33:49.768941+00
+3102	2	2014-03-23 08:33:50.0371+00
+3103	2	2014-03-23 08:34:06.548738+00
+3104	2	2014-03-23 08:34:23.273788+00
+3105	2	2014-03-23 08:35:00.69824+00
+3106	2	2014-03-23 08:39:57.215136+00
+3107	2	2014-03-23 08:40:03.440668+00
+3108	2	2014-03-23 08:40:03.545166+00
+3109	2	2014-03-23 08:40:15.855208+00
+3110	2	2014-03-23 08:40:19.114419+00
+3111	2	2014-03-23 08:40:19.181824+00
+3112	2	2014-03-23 18:04:43.718805+00
+3113	2	2014-03-23 21:08:10.617369+00
+3114	2	2014-03-23 21:08:10.983415+00
+3115	2	2014-03-23 21:08:17.607046+00
+3116	2	2014-03-23 21:42:22.083012+00
+3117	2	2014-03-23 21:42:22.214036+00
+3118	2	2014-03-23 21:42:22.54642+00
+3119	2	2014-03-23 21:42:30.446439+00
+3120	2	2014-03-23 21:47:18.7232+00
+3121	2	2014-03-23 21:47:31.815211+00
+3122	2	2014-03-23 21:47:33.386144+00
+3123	2	2014-03-23 21:47:55.005696+00
+3124	2	2014-03-23 21:48:04.602228+00
+3125	2	2014-03-23 21:48:06.554806+00
+3126	2	2014-03-23 21:48:10.682284+00
+3127	2	2014-03-23 21:48:12.573287+00
+3128	2	2014-03-23 21:48:20.373095+00
+3129	2	2014-03-23 21:48:35.816178+00
+3130	2	2014-03-23 21:48:45.931016+00
+3131	2	2014-03-23 21:48:47.655702+00
+3132	2	2014-03-23 21:48:48.503623+00
+3133	2	2014-03-23 21:49:11.845078+00
+3134	2	2014-03-23 21:49:22.763342+00
+3135	2	2014-03-23 21:49:23.875232+00
+3136	2	2014-03-23 21:49:45.256575+00
+3137	2	2014-03-23 21:49:48.900885+00
+3138	2	2014-03-23 21:49:48.986629+00
+3139	2	2014-03-23 21:49:49.199653+00
+3140	2	2014-03-23 21:49:53.778208+00
+3141	2	2014-03-23 21:49:57.779207+00
+3142	2	2014-03-23 21:49:59.671611+00
+3143	2	2014-03-23 21:49:59.774889+00
+3144	2	2014-03-23 21:50:00.740275+00
+3145	6	2014-03-23 21:50:04.565117+00
+3146	6	2014-03-23 21:50:04.58851+00
+3147	6	2014-03-23 21:50:04.684769+00
+3148	6	2014-03-23 21:50:07.531321+00
+3149	6	2014-03-23 21:50:12.405511+00
+3150	6	2014-03-23 21:50:14.825846+00
+3151	6	2014-03-23 21:50:23.062955+00
+3152	6	2014-03-23 21:50:32.35924+00
+3153	6	2014-03-23 21:50:38.786693+00
+3154	6	2014-03-23 21:50:39.824724+00
+3155	6	2014-03-23 21:52:22.594104+00
+3156	6	2014-03-23 21:52:22.618506+00
+3157	6	2014-03-23 21:52:22.802586+00
+3158	6	2014-03-24 18:56:27.98948+00
+3159	6	2014-03-24 18:56:28.124649+00
+3160	6	2014-03-24 18:56:28.365478+00
+3161	6	2014-03-24 18:56:34.60762+00
+3162	6	2014-03-24 18:56:36.516152+00
+3163	6	2014-03-24 18:56:36.54151+00
+3164	6	2014-03-24 18:56:36.632019+00
+3165	6	2014-03-24 18:56:38.351313+00
+3166	2	2014-03-24 18:56:41.560762+00
+3167	2	2014-03-24 18:56:41.587156+00
+3168	2	2014-03-24 18:56:41.707101+00
+3169	2	2014-03-24 18:56:46.298833+00
+3170	2	2014-03-24 18:56:49.873855+00
+3171	6	2014-03-24 18:56:57.856894+00
+3172	6	2014-03-24 18:56:57.87918+00
+3173	6	2014-03-24 18:56:57.99751+00
+3174	6	2014-03-24 18:56:58.767808+00
+3175	6	2014-03-24 18:57:01.636664+00
+3176	6	2014-03-24 18:57:01.688096+00
+3177	6	2014-03-24 18:57:04.159488+00
+3178	6	2014-03-24 18:57:04.260486+00
+3179	6	2014-03-24 18:57:07.023121+00
+3180	6	2014-03-24 18:57:19.095967+00
+3181	6	2014-03-24 18:57:19.880602+00
+3182	6	2014-03-24 18:57:55.478353+00
+3183	6	2014-03-24 18:57:56.757177+00
+3184	6	2014-03-24 18:57:58.594513+00
+3185	6	2014-03-24 18:58:56.023345+00
+3186	6	2014-03-24 18:59:34.38504+00
+3187	6	2014-03-24 19:00:00.411294+00
+3188	6	2014-03-24 19:01:44.077802+00
+3189	6	2014-03-24 19:01:58.408068+00
+3190	6	2014-03-24 19:03:31.494245+00
+3191	6	2014-03-24 19:04:53.088307+00
+3192	6	2014-03-24 19:05:05.048159+00
+3193	6	2014-03-24 19:37:58.254695+00
+3194	6	2014-03-24 19:38:09.685429+00
+3195	6	2014-03-24 19:38:21.722656+00
+3196	6	2014-03-24 19:39:12.890695+00
+3197	6	2014-03-24 19:39:19.39218+00
+3198	6	2014-03-24 19:40:22.18036+00
+3199	6	2014-03-24 19:40:41.704708+00
+3200	6	2014-03-24 19:40:48.022433+00
+3201	6	2014-03-24 19:40:52.918505+00
+3202	6	2014-03-24 19:40:57.19202+00
+3203	6	2014-03-24 19:40:57.88954+00
+3204	6	2014-03-24 19:41:01.326476+00
+3205	6	2014-03-24 19:41:01.991689+00
+3206	6	2014-03-24 19:41:03.326243+00
+3207	6	2014-03-24 19:41:03.800108+00
+3208	6	2014-03-24 19:41:52.928083+00
+3209	6	2014-03-24 19:41:57.967423+00
+3210	6	2014-03-24 19:41:59.276225+00
+3211	6	2014-03-24 19:43:36.528991+00
+3212	6	2014-03-24 19:43:37.505162+00
+3213	6	2014-03-24 19:43:44.479699+00
+3214	6	2014-03-24 19:43:50.811534+00
+3215	6	2014-03-24 19:43:50.835359+00
+3216	6	2014-03-24 19:43:51.018337+00
+3217	6	2014-03-24 19:44:12.976835+00
+3218	6	2014-03-24 19:45:12.852825+00
+3219	6	2014-03-24 19:45:12.879793+00
+3220	6	2014-03-24 19:45:13.031599+00
+3221	6	2014-03-24 19:45:14.822069+00
+3222	6	2014-03-24 19:45:16.508613+00
+3223	6	2014-03-24 19:45:16.569798+00
+3224	6	2014-03-24 19:45:17.778075+00
+3225	6	2014-03-24 19:45:17.805589+00
+3226	6	2014-03-24 19:45:17.963605+00
+3227	6	2014-03-24 19:45:27.449304+00
+3228	6	2014-03-24 19:45:49.41793+00
+3229	6	2014-03-24 19:46:36.948403+00
+3230	6	2014-03-24 19:46:37.950442+00
+3231	6	2014-03-24 19:46:38.586088+00
+3232	6	2014-03-24 19:46:39.377037+00
+3233	6	2014-03-24 19:46:46.018864+00
+3234	6	2014-03-24 19:46:46.171911+00
+3235	6	2014-03-24 19:46:47.164847+00
+3236	6	2014-03-24 19:46:50.2983+00
+3237	6	2014-03-24 19:46:50.38101+00
+3238	6	2014-03-24 19:46:55.494399+00
+3239	6	2014-03-24 19:47:14.529451+00
+3240	6	2014-03-24 19:47:14.554042+00
+3241	6	2014-03-24 19:47:14.742271+00
+3242	6	2014-03-24 20:18:38.712026+00
+3243	6	2014-03-24 20:18:38.823741+00
+3244	6	2014-03-24 20:18:39.169339+00
+3245	6	2014-03-24 20:18:41.949724+00
+3246	6	2014-03-24 20:18:50.545465+00
+3247	6	2014-03-24 20:18:51.511538+00
+3248	6	2014-03-24 20:18:52.360778+00
+3249	6	2014-03-24 20:19:00.3456+00
+3250	6	2014-03-24 20:19:01.47967+00
+3251	6	2014-03-24 20:19:15.903157+00
+3252	6	2014-03-24 20:19:47.509175+00
+3253	6	2014-03-24 21:30:27.546434+00
+3254	6	2014-03-24 21:30:39.14573+00
+3255	6	2014-03-24 21:34:28.750168+00
+3256	6	2014-03-24 21:34:51.673937+00
+3257	6	2014-03-24 21:35:13.75971+00
+3258	6	2014-03-24 21:35:21.092698+00
+3259	6	2014-03-24 21:35:22.225998+00
+3260	6	2014-03-24 21:35:23.117053+00
+3261	6	2014-03-24 23:21:43.740722+00
+3262	6	2014-03-24 23:21:58.362112+00
+3263	6	2014-03-24 23:22:05.540954+00
+3264	6	2014-03-24 23:22:05.566444+00
+3265	6	2014-03-24 23:22:05.67823+00
+3266	6	2014-03-24 23:22:08.459864+00
+3267	7	2014-03-24 23:22:41.899596+00
+3268	7	2014-03-24 23:22:41.924957+00
+3269	7	2014-03-24 23:22:42.021576+00
+3270	7	2014-03-24 23:22:56.475669+00
+3271	7	2014-03-24 23:22:59.667823+00
+3272	7	2014-03-24 23:23:01.697036+00
+3273	7	2014-03-24 23:23:04.698252+00
+3274	7	2014-03-24 23:23:11.097508+00
+3275	7	2014-03-24 23:23:11.119578+00
+3276	7	2014-03-24 23:23:11.215095+00
+3277	2	2014-03-24 23:23:15.510442+00
+3278	2	2014-03-24 23:23:15.537598+00
+3279	2	2014-03-24 23:23:15.811016+00
+3280	2	2014-03-24 23:23:16.237814+00
+3281	2	2014-03-24 23:23:23.810589+00
+3282	2	2014-03-24 23:23:25.759527+00
+3283	2	2014-03-24 23:23:25.949265+00
+3284	7	2014-03-24 23:23:27.788109+00
+3285	7	2014-03-24 23:23:27.949982+00
+3286	7	2014-03-24 23:23:34.040251+00
+3287	7	2014-03-24 23:23:38.776408+00
+3288	7	2014-03-24 23:23:44.595157+00
+3289	7	2014-03-24 23:23:50.731525+00
+3290	7	2014-03-24 23:23:50.756994+00
+3291	7	2014-03-24 23:23:50.85962+00
+3292	7	2014-03-24 23:23:51.80862+00
+3293	7	2014-03-24 23:23:53.857296+00
+3294	7	2014-03-24 23:23:53.898787+00
+3295	7	2014-03-24 23:23:55.448436+00
+3296	7	2014-03-24 23:23:55.493231+00
+3297	7	2014-03-24 23:23:55.612699+00
+3298	7	2014-03-24 23:23:57.763254+00
+3299	7	2014-03-24 23:24:00.263388+00
+3300	7	2014-03-24 23:24:00.285274+00
+3301	7	2014-03-24 23:24:00.371166+00
+3302	7	2014-03-24 23:24:01.032625+00
+3303	7	2014-03-24 23:24:03.086441+00
+3304	7	2014-03-24 23:24:03.145152+00
+3305	7	2014-03-24 23:24:05.151969+00
+3306	7	2014-03-24 23:24:05.207791+00
+3307	2	2014-03-24 23:24:12.553634+00
+3308	2	2014-03-24 23:25:50.287398+00
+3309	2	2014-03-24 23:25:50.366186+00
+3310	7	2014-03-25 05:28:32.963359+00
+3311	7	2014-03-25 05:28:33.128917+00
+3312	7	2014-03-25 05:28:33.417515+00
+3313	7	2014-03-25 05:29:06.538984+00
+3314	7	2014-03-25 05:29:06.824336+00
+3315	7	2014-03-25 05:29:08.017758+00
+3316	7	2014-03-25 05:29:08.039729+00
+3317	7	2014-03-25 05:29:08.14524+00
+3318	7	2014-03-25 05:29:11.018094+00
+3319	7	2014-03-25 05:29:12.31377+00
+3320	7	2014-03-25 05:29:17.407362+00
+3321	7	2014-03-25 05:29:21.291855+00
+3322	7	2014-03-25 05:29:30.535872+00
+3323	7	2014-03-25 05:29:45.717397+00
+3324	7	2014-03-25 05:29:52.84008+00
+3325	7	2014-03-25 05:30:15.271209+00
+3326	7	2014-03-25 05:30:16.261696+00
+3327	7	2014-03-25 05:30:27.531922+00
+3328	7	2014-03-25 05:30:28.416702+00
+3329	7	2014-03-25 05:32:06.360207+00
+3330	7	2014-03-25 05:32:07.177428+00
+3331	7	2014-03-25 05:32:13.153533+00
+3332	7	2014-03-25 05:32:14.095244+00
+3333	7	2014-03-25 05:33:05.752609+00
+3334	7	2014-03-25 05:33:19.727884+00
+3335	7	2014-03-25 05:33:22.397668+00
+3336	7	2014-03-25 05:33:22.502812+00
+3337	7	2014-03-25 05:33:25.456072+00
+3338	7	2014-03-25 05:33:27.57262+00
+3339	7	2014-03-25 05:33:27.604897+00
+3340	7	2014-03-25 05:33:27.703955+00
+3341	7	2014-03-25 05:33:31.901263+00
+3342	7	2014-03-25 05:33:47.233806+00
+3343	7	2014-03-25 05:33:52.144474+00
+3344	7	2014-03-25 05:34:23.102929+00
+3345	7	2014-03-25 05:34:24.068242+00
+3346	7	2014-03-25 05:34:30.569207+00
+3347	7	2014-03-25 05:34:51.488325+00
+3348	7	2014-03-25 05:41:11.151896+00
+3349	7	2014-03-25 05:41:38.634544+00
+3350	7	2014-03-25 05:41:42.960718+00
+3351	7	2014-03-25 05:42:01.240189+00
+3352	7	2014-03-25 05:50:38.598624+00
+3353	7	2014-03-25 06:05:33.398837+00
+3354	7	2014-03-25 06:05:36.247408+00
+3355	7	2014-03-25 06:05:39.489127+00
+3356	7	2014-03-25 06:05:39.551812+00
+3357	7	2014-03-25 06:05:41.153451+00
+3358	7	2014-03-25 06:05:41.18032+00
+3359	7	2014-03-25 06:05:41.297001+00
+3360	7	2014-03-25 06:05:45.554684+00
+3361	7	2014-03-25 06:05:55.412315+00
+3362	7	2014-03-25 06:06:28.460007+00
+3363	7	2014-03-25 06:06:36.860029+00
+3364	7	2014-03-25 06:06:45.668595+00
+3365	7	2014-03-25 06:06:48.806303+00
+3366	7	2014-03-25 06:07:13.118358+00
+3367	7	2014-03-25 06:07:17.012262+00
+3368	7	2014-03-25 06:07:24.056389+00
+3369	7	2014-03-25 06:07:25.848104+00
+3370	7	2014-03-25 06:07:41.452362+00
+3371	7	2014-03-25 06:08:58.670728+00
+3372	7	2014-03-25 06:09:34.87137+00
+3373	7	2014-03-25 06:09:45.722521+00
+3374	7	2014-03-25 06:09:49.009423+00
+3375	7	2014-03-25 06:10:05.090448+00
+3376	7	2014-03-25 06:10:10.805057+00
+3377	7	2014-03-25 06:10:16.569114+00
+3378	7	2014-03-25 06:10:19.003509+00
+3379	7	2014-03-25 06:10:21.163057+00
+3380	7	2014-03-25 06:10:26.321792+00
+3381	7	2014-03-25 06:10:34.310298+00
+3382	7	2014-03-25 06:10:36.514358+00
+3383	7	2014-03-25 06:10:58.89627+00
+3384	7	2014-03-25 06:10:59.797581+00
+3385	7	2014-03-25 06:11:20.853402+00
+3386	7	2014-03-25 06:11:25.59185+00
+3387	7	2014-03-25 06:11:55.514416+00
+3388	7	2014-03-25 06:11:56.649777+00
+3389	7	2014-03-25 06:12:00.51408+00
+3390	7	2014-03-25 06:12:04.759389+00
+3391	7	2014-03-25 06:12:12.516605+00
+3392	7	2014-03-25 06:12:16.77634+00
+3393	7	2014-03-25 06:17:24.413366+00
+3394	7	2014-03-25 06:17:48.097216+00
+3395	7	2014-03-25 06:17:49.142349+00
+3396	7	2014-03-25 06:18:44.001023+00
+3397	7	2014-03-25 06:18:50.924097+00
+3398	7	2014-03-25 06:19:04.949913+00
+3399	7	2014-03-25 06:19:15.140786+00
+3400	7	2014-03-25 06:19:23.567501+00
+3401	7	2014-03-25 06:19:39.521243+00
+3402	7	2014-03-25 06:19:48.101646+00
+3403	7	2014-03-25 06:19:51.067436+00
+3404	7	2014-03-25 06:39:42.596596+00
+3405	7	2014-03-25 06:40:25.554795+00
+3406	7	2014-03-25 06:41:19.640192+00
+3407	7	2014-03-25 06:41:20.719465+00
+3408	7	2014-03-25 06:41:47.262193+00
+3409	7	2014-03-25 06:42:01.069267+00
+3410	7	2014-03-25 06:42:14.57329+00
+3411	7	2014-03-25 06:42:38.267553+00
+3412	7	2014-03-25 06:42:39.379003+00
+3413	7	2014-03-25 06:42:55.417088+00
+3414	7	2014-03-25 06:43:03.141461+00
+3415	7	2014-03-25 06:43:07.513998+00
+3416	7	2014-03-25 06:43:13.64758+00
+3417	7	2014-03-25 06:43:30.544427+00
+3418	7	2014-03-25 06:43:39.614241+00
+3419	7	2014-03-25 06:45:04.214519+00
+3420	7	2014-03-25 06:45:04.248325+00
+3421	7	2014-03-25 06:45:04.46325+00
+3422	7	2014-03-25 17:44:15.424429+00
+3423	7	2014-03-25 17:44:15.54984+00
+3424	7	2014-03-25 17:44:15.887781+00
+3425	7	2014-03-25 17:44:16.210108+00
+3426	7	2014-03-25 17:44:19.046199+00
+3427	7	2014-03-25 17:45:03.561807+00
+3428	7	2014-03-25 17:45:03.662987+00
+3429	7	2014-03-25 17:45:06.680688+00
+3430	7	2014-03-25 17:47:18.859646+00
+3431	7	2014-03-25 17:47:53.939808+00
+3432	7	2014-03-25 17:48:14.456176+00
+3433	7	2014-03-25 17:48:34.451373+00
+3434	7	2014-03-25 17:48:55.875361+00
+3435	7	2014-03-25 17:49:00.600437+00
+3436	7	2014-03-25 17:49:54.653299+00
+3437	7	2014-03-25 17:49:56.353665+00
+3438	7	2014-03-25 17:50:02.157209+00
+3439	7	2014-03-25 17:50:03.489441+00
+3440	7	2014-03-25 17:57:31.115275+00
+3441	7	2014-03-25 17:57:46.676121+00
+3442	7	2014-03-25 17:57:47.682185+00
+3443	7	2014-03-25 17:57:49.344481+00
+3444	7	2014-03-25 17:57:49.718464+00
+3445	7	2014-03-25 17:59:21.774635+00
+3446	7	2014-03-25 17:59:21.953184+00
+3447	7	2014-03-25 17:59:22.685192+00
+3448	7	2014-03-25 17:59:22.841232+00
+3449	7	2014-03-25 17:59:38.2301+00
+3450	7	2014-03-25 17:59:38.385883+00
+3451	7	2014-03-25 17:59:40.92626+00
+3452	7	2014-03-25 17:59:41.074804+00
+3453	7	2014-03-25 17:59:53.478121+00
+3454	7	2014-03-25 17:59:53.620697+00
+3455	7	2014-03-25 18:00:49.553572+00
+3456	7	2014-03-25 18:00:49.735276+00
+3457	7	2014-03-25 18:01:26.799281+00
+3458	7	2014-03-25 18:01:26.995691+00
+3459	7	2014-03-25 18:01:37.248951+00
+3460	7	2014-03-25 18:01:37.429363+00
+3461	7	2014-03-25 18:01:39.794994+00
+3462	7	2014-03-25 18:01:39.953105+00
+3463	7	2014-03-25 18:01:41.889632+00
+3464	7	2014-03-25 18:01:42.032533+00
+3465	7	2014-03-25 18:01:48.013699+00
+3466	7	2014-03-25 18:01:48.17182+00
+3467	7	2014-03-25 18:01:50.765259+00
+3468	7	2014-03-25 18:01:50.912617+00
+3469	7	2014-03-25 18:01:52.418933+00
+3470	7	2014-03-25 18:01:52.57639+00
+3471	7	2014-03-25 18:01:58.118022+00
+3472	7	2014-03-25 18:01:58.318381+00
+3473	7	2014-03-25 18:02:08.780717+00
+3474	7	2014-03-25 18:02:08.988045+00
+3475	7	2014-03-25 18:02:11.521768+00
+3476	7	2014-03-25 18:02:11.67634+00
+3477	7	2014-03-25 18:02:20.311618+00
+3478	7	2014-03-25 18:02:20.467495+00
+3479	7	2014-03-25 18:02:26.122366+00
+3480	7	2014-03-25 18:02:26.292257+00
+3481	7	2014-03-25 18:02:30.37185+00
+3482	7	2014-03-25 18:02:30.520406+00
+3483	7	2014-03-25 18:03:40.255633+00
+3484	7	2014-03-25 18:03:40.460953+00
+3485	7	2014-03-25 18:04:32.146511+00
+3486	7	2014-03-25 18:04:32.348214+00
+3487	7	2014-03-25 18:06:37.431851+00
+3488	7	2014-03-25 18:06:37.688408+00
+3489	7	2014-03-25 18:07:15.183229+00
+3490	7	2014-03-25 18:07:15.400382+00
+3491	7	2014-03-25 18:08:14.048854+00
+3492	7	2014-03-25 18:08:24.412922+00
+3493	7	2014-03-25 18:08:24.601192+00
+3494	7	2014-03-25 18:08:51.385568+00
+3495	7	2014-03-25 18:08:51.591343+00
+3496	7	2014-03-25 18:08:55.797979+00
+3497	7	2014-03-25 18:08:55.95768+00
+3498	7	2014-03-25 18:09:00.001529+00
+3499	7	2014-03-25 18:09:00.156374+00
+3500	7	2014-03-25 18:09:51.22443+00
+3501	7	2014-03-25 18:09:51.46181+00
+3502	7	2014-03-25 18:09:52.545896+00
+3503	7	2014-03-25 18:09:52.72927+00
+3504	7	2014-03-25 18:10:00.271908+00
+3505	7	2014-03-25 18:10:00.446623+00
+3506	7	2014-03-25 18:10:32.224867+00
+3507	7	2014-03-25 18:10:32.41446+00
+3508	7	2014-03-25 18:34:18.733747+00
+3509	7	2014-03-25 18:34:36.718582+00
+3510	7	2014-03-25 18:34:37.05999+00
+3511	7	2014-03-25 18:34:49.51927+00
+3512	7	2014-03-25 18:34:49.797152+00
+3513	7	2014-03-25 18:35:14.100632+00
+3514	7	2014-03-25 18:35:14.406916+00
+3515	7	2014-03-25 18:35:22.00551+00
+3516	7	2014-03-25 18:35:22.26426+00
+3517	7	2014-03-25 18:35:29.626899+00
+3518	7	2014-03-25 18:35:29.916306+00
+3519	7	2014-03-25 18:35:43.585256+00
+3520	7	2014-03-25 18:35:43.847703+00
+3521	7	2014-03-25 18:35:48.889085+00
+3522	7	2014-03-25 18:35:49.177555+00
+3523	7	2014-03-25 18:35:53.648771+00
+3524	7	2014-03-25 18:35:53.94015+00
+3525	7	2014-03-25 18:35:54.668947+00
+3526	7	2014-03-25 18:35:55.011406+00
+3527	7	2014-03-25 18:35:58.007745+00
+3528	7	2014-03-25 18:35:58.345404+00
+3529	7	2014-03-25 18:36:00.240124+00
+3530	7	2014-03-25 18:36:00.584458+00
+3531	7	2014-03-25 18:36:04.152114+00
+3532	7	2014-03-25 18:36:04.425144+00
+3533	7	2014-03-25 18:37:00.067064+00
+3534	7	2014-03-25 18:37:00.477528+00
+3535	7	2014-03-25 18:38:31.899317+00
+3536	7	2014-03-25 18:38:32.365104+00
+3537	7	2014-03-25 18:38:35.495133+00
+3538	7	2014-03-25 18:38:35.809348+00
+3539	7	2014-03-25 18:39:18.92605+00
+3540	7	2014-03-25 18:39:19.296585+00
+3541	7	2014-03-25 18:39:39.213494+00
+3542	7	2014-03-25 18:39:39.568493+00
+3543	7	2014-03-25 18:40:02.958734+00
+3544	7	2014-03-25 18:40:03.468433+00
+3545	7	2014-03-25 18:40:03.91089+00
+3546	7	2014-03-25 18:40:04.462828+00
+3547	7	2014-03-25 18:40:11.214554+00
+3548	7	2014-03-25 18:40:11.552311+00
+3549	7	2014-03-25 18:40:17.652131+00
+3550	7	2014-03-25 18:40:17.988092+00
+3551	7	2014-03-25 18:49:35.060417+00
+3552	7	2014-03-25 18:49:39.931513+00
+3553	7	2014-03-25 18:49:41.001068+00
+3554	7	2014-03-25 18:49:47.326979+00
+3555	7	2014-03-25 18:50:16.036607+00
+3556	7	2014-03-25 18:50:16.618456+00
+3557	7	2014-03-25 18:51:13.790828+00
+3558	7	2014-03-25 18:51:14.137619+00
+3559	7	2014-03-25 18:51:41.284536+00
+3560	7	2014-03-25 18:51:41.622508+00
+3561	7	2014-03-25 18:51:57.929726+00
+3562	7	2014-03-25 18:51:58.35058+00
+3563	7	2014-03-25 18:52:44.394396+00
+3564	7	2014-03-25 18:52:44.79616+00
+3565	7	2014-03-25 18:52:54.890262+00
+3566	7	2014-03-25 18:52:55.391809+00
+3567	7	2014-03-25 18:53:27.119477+00
+3568	7	2014-03-25 18:53:39.456354+00
+3569	7	2014-03-25 18:53:39.741721+00
+3570	7	2014-03-25 18:53:59.921101+00
+3571	7	2014-03-25 18:54:00.293042+00
+3572	7	2014-03-25 18:54:12.016898+00
+3573	7	2014-03-25 18:54:12.392536+00
+3574	7	2014-03-25 18:54:17.942979+00
+3575	7	2014-03-25 18:54:18.28108+00
+3576	7	2014-03-25 18:54:26.272871+00
+3577	7	2014-03-25 18:54:26.602879+00
+3578	7	2014-03-25 18:54:30.413785+00
+3579	7	2014-03-25 18:54:30.789835+00
+3580	7	2014-03-25 18:54:34.872939+00
+3581	7	2014-03-25 18:54:35.221725+00
+3582	7	2014-03-25 18:54:45.666372+00
+3583	7	2014-03-25 18:54:45.970487+00
+3584	7	2014-03-25 18:55:59.09813+00
+3585	7	2014-03-25 18:56:20.566109+00
+3586	7	2014-03-25 18:56:21.139558+00
+3587	7	2014-03-25 19:10:04.106168+00
+3588	7	2014-03-25 19:10:04.723001+00
+3589	7	2014-03-25 19:10:18.48064+00
+3590	7	2014-03-25 19:10:18.827328+00
+3591	7	2014-03-25 19:10:27.171366+00
+3592	7	2014-03-25 19:10:27.538191+00
+3593	7	2014-03-25 19:10:36.42282+00
+3594	7	2014-03-25 19:10:36.759469+00
+3595	7	2014-03-25 19:12:12.12954+00
+3596	7	2014-03-25 19:12:22.533687+00
+3597	7	2014-03-25 19:12:22.887813+00
+3598	7	2014-03-25 19:12:40.6539+00
+3599	7	2014-03-25 19:12:41.046556+00
+3600	7	2014-03-25 19:13:42.61785+00
+3601	7	2014-03-25 19:13:43.22529+00
+3602	7	2014-03-25 19:14:33.515518+00
+3603	7	2014-03-25 19:14:34.047206+00
+3604	7	2014-03-25 19:14:39.104077+00
+3605	7	2014-03-25 19:14:39.449218+00
+3606	7	2014-03-25 19:14:44.193839+00
+3607	7	2014-03-25 19:14:44.556878+00
+3608	7	2014-03-25 19:14:50.921657+00
+3609	7	2014-03-25 19:14:51.279054+00
+3610	7	2014-03-25 19:15:05.302399+00
+3611	7	2014-03-25 19:15:05.746982+00
+3612	7	2014-03-25 19:15:24.034824+00
+3613	7	2014-03-25 19:15:24.382911+00
+3614	7	2014-03-25 19:15:33.875712+00
+3615	7	2014-03-25 19:15:34.237732+00
+3616	7	2014-03-25 19:15:37.794167+00
+3617	7	2014-03-25 19:16:04.04066+00
+3618	7	2014-03-25 19:16:04.289275+00
+3619	7	2014-03-25 19:16:35.945505+00
+3620	7	2014-03-25 19:16:36.270638+00
+3621	7	2014-03-25 19:16:40.343745+00
+3622	7	2014-03-25 19:16:40.616966+00
+3623	7	2014-03-25 19:16:42.455073+00
+3624	7	2014-03-25 19:30:14.483495+00
+3625	7	2014-03-25 19:32:03.116306+00
+3626	7	2014-03-25 19:35:03.490323+00
+3627	7	2014-03-25 19:37:07.380292+00
+3628	7	2014-03-25 19:38:00.947014+00
+3629	7	2014-03-25 19:38:04.196667+00
+3630	7	2014-03-25 19:38:04.509844+00
+3631	7	2014-03-25 19:39:32.238106+00
+3632	7	2014-03-25 19:40:13.031693+00
+3633	7	2014-03-25 19:40:33.196054+00
+3634	7	2014-03-25 19:40:57.124965+00
+3635	7	2014-03-25 19:40:57.8353+00
+3636	7	2014-03-25 19:41:40.034337+00
+3637	7	2014-03-25 19:42:19.530359+00
+3638	7	2014-03-25 19:42:23.361504+00
+3639	7	2014-03-25 19:43:01.218498+00
+3640	7	2014-03-25 19:43:54.152192+00
+3641	7	2014-03-25 19:43:55.274773+00
+3642	7	2014-03-25 19:43:56.069043+00
+3643	7	2014-03-25 19:44:02.979708+00
+3644	7	2014-03-25 19:44:07.918968+00
+3645	7	2014-03-25 19:44:28.186941+00
+3646	7	2014-03-25 19:44:29.250713+00
+3647	7	2014-03-25 19:44:32.535577+00
+3648	7	2014-03-25 19:44:47.464049+00
+3649	7	2014-03-25 19:44:48.478893+00
+3650	7	2014-03-25 19:44:53.518333+00
+3651	7	2014-03-25 19:44:59.368287+00
+3652	7	2014-03-25 19:45:00.223334+00
+3653	7	2014-03-25 19:45:01.166115+00
+3654	7	2014-03-25 19:45:08.078609+00
+3655	7	2014-03-25 19:45:08.835218+00
+3656	7	2014-03-25 19:45:09.523878+00
+3657	7	2014-03-25 19:45:30.952625+00
+3658	7	2014-03-25 19:45:32.884409+00
+3659	7	2014-03-25 19:45:34.583051+00
+3660	7	2014-03-25 19:45:43.147154+00
+3661	7	2014-03-25 19:45:53.787629+00
+3662	7	2014-03-25 19:45:54.972465+00
+3663	7	2014-03-25 19:45:55.75764+00
+3664	7	2014-03-25 19:46:09.403976+00
+3665	7	2014-03-25 19:46:22.818852+00
+3666	7	2014-03-25 19:46:27.74008+00
+3667	7	2014-03-25 19:46:29.765934+00
+3668	7	2014-03-25 19:46:30.51453+00
+3669	7	2014-03-25 19:46:32.40545+00
+3670	7	2014-03-25 19:46:42.224546+00
+3671	7	2014-03-25 19:47:02.588526+00
+3672	7	2014-03-25 19:47:03.392451+00
+3673	7	2014-03-25 19:47:19.754718+00
+3674	7	2014-03-25 19:47:50.400291+00
+3675	7	2014-03-25 19:48:02.440598+00
+3676	7	2014-03-25 19:48:07.944542+00
+3677	7	2014-03-25 19:48:07.983822+00
+3678	7	2014-03-25 19:49:10.464462+00
+3679	7	2014-03-25 19:49:12.047991+00
+3680	7	2014-03-25 19:49:18.013814+00
+3681	7	2014-03-25 19:49:32.17703+00
+3682	7	2014-03-25 19:49:34.906281+00
+3683	7	2014-03-25 19:49:47.280875+00
+3684	7	2014-03-25 19:50:11.845826+00
+3685	7	2014-03-25 19:50:16.641601+00
+3686	7	2014-03-25 19:50:16.896075+00
+3687	7	2014-03-25 19:50:29.213496+00
+3688	7	2014-03-25 19:50:29.351213+00
+3689	7	2014-03-25 19:50:32.75073+00
+3690	7	2014-03-25 19:50:32.95407+00
+3691	7	2014-03-25 19:50:34.473933+00
+3692	7	2014-03-25 19:50:48.429065+00
+3693	2	2014-03-25 19:50:52.230712+00
+3694	2	2014-03-25 19:50:52.257292+00
+3695	2	2014-03-25 19:50:55.73603+00
+3696	2	2014-03-25 19:50:55.8902+00
+3697	2	2014-03-25 19:50:57.545663+00
+3698	2	2014-03-25 19:52:19.170817+00
+3699	2	2014-03-25 19:52:19.377533+00
+3700	2	2014-03-25 19:53:22.046516+00
+3701	2	2014-03-25 19:53:23.218768+00
+3702	2	2014-03-25 19:53:56.767511+00
+3703	2	2014-03-25 19:54:05.64709+00
+3704	2	2014-03-25 19:54:07.47887+00
+3705	2	2014-03-25 19:54:15.962497+00
+3706	2	2014-03-25 19:54:46.259459+00
+3707	6	2014-03-25 19:54:52.558731+00
+3708	6	2014-03-25 19:54:52.584419+00
+3709	6	2014-03-25 19:54:56.71389+00
+3710	6	2014-03-25 19:54:56.981211+00
+3711	6	2014-03-25 19:55:09.891409+00
+3712	2	2014-03-25 19:55:13.095331+00
+3713	2	2014-03-25 19:55:13.123307+00
+3714	2	2014-03-25 19:55:15.019542+00
+3715	2	2014-03-25 19:55:15.248236+00
+3716	2	2014-03-25 19:55:17.525323+00
+3717	2	2014-03-25 19:57:14.004378+00
+3718	2	2014-03-25 19:57:14.501561+00
+3719	2	2014-03-25 20:12:23.728057+00
+3720	2	2014-03-25 20:12:28.609067+00
+3721	2	2014-03-25 20:12:28.725903+00
+3722	2	2014-03-25 20:12:32.40335+00
+3723	2	2014-03-25 20:12:33.403433+00
+3724	2	2014-03-25 20:12:33.463756+00
+3725	2	2014-03-25 20:12:33.537609+00
+3726	2	2014-03-25 20:12:34.992833+00
+3727	2	2014-03-25 20:12:36.774734+00
+3728	2	2014-03-25 20:12:39.700686+00
+3729	2	2014-03-25 20:12:39.783399+00
+3730	2	2014-03-25 20:12:40.576472+00
+3731	2	2014-03-25 20:12:40.769653+00
+3732	2	2014-03-25 20:12:45.96373+00
+3733	2	2014-03-25 20:12:46.054766+00
+3734	2	2014-03-25 20:12:46.167099+00
+3735	2	2014-03-25 20:12:47.083793+00
+3736	2	2014-03-25 20:12:47.20327+00
+3737	2	2014-03-25 20:12:48.754747+00
+3738	2	2014-03-25 20:12:48.810099+00
+3739	2	2014-03-25 20:12:48.897904+00
+3740	2	2014-03-25 20:12:49.716942+00
+3741	2	2014-03-25 20:12:49.898874+00
+3742	2	2014-03-25 20:12:51.330734+00
+3743	2	2014-03-25 20:12:51.44755+00
+3744	2	2014-03-25 20:12:54.744503+00
+3745	2	2014-03-25 20:12:54.800653+00
+3746	2	2014-03-25 20:12:54.896953+00
+3747	2	2014-03-25 20:12:55.993601+00
+3748	2	2014-03-25 20:12:56.099754+00
+3749	2	2014-03-25 20:13:03.640054+00
+3750	2	2014-03-25 20:13:04.209324+00
+3751	2	2014-03-25 20:14:33.681457+00
+3752	2	2014-03-25 20:14:34.178661+00
+3753	2	2014-03-25 20:14:51.461767+00
+3754	2	2014-03-25 20:14:51.824214+00
+3755	2	2014-03-25 20:15:12.557269+00
+3756	2	2014-03-25 20:15:12.877611+00
+3757	2	2014-03-25 20:15:23.068323+00
+3758	2	2014-03-25 20:15:23.099873+00
+3759	2	2014-03-25 20:15:29.797072+00
+3760	2	2014-03-25 20:15:29.965912+00
+3761	2	2014-03-25 20:15:49.468877+00
+3762	2	2014-03-25 20:15:49.821674+00
+3763	2	2014-03-25 20:15:51.656962+00
+3764	2	2014-03-25 20:16:13.145396+00
+3765	2	2014-03-25 20:16:13.500401+00
+3766	2	2014-03-25 20:16:20.255159+00
+3767	6	2014-03-25 20:16:25.472597+00
+3768	6	2014-03-25 20:16:25.494009+00
+3769	6	2014-03-25 20:16:35.427074+00
+3770	6	2014-03-25 20:16:38.859174+00
+3771	6	2014-03-25 20:16:39.055965+00
+3772	6	2014-03-25 20:16:40.754949+00
+3773	6	2014-03-25 20:16:42.322653+00
+3774	6	2014-03-25 20:16:42.678017+00
+3775	6	2014-03-25 20:16:43.301581+00
+3776	6	2014-03-25 20:16:43.733109+00
+3777	6	2014-03-25 20:16:49.950036+00
+3778	2	2014-03-25 20:16:53.065105+00
+3779	2	2014-03-25 20:16:53.088511+00
+3780	2	2014-03-25 20:16:55.867031+00
+3781	2	2014-03-25 20:16:58.660918+00
+3782	2	2014-03-25 20:17:00.575556+00
+3783	6	2014-03-25 20:17:03.569645+00
+3784	6	2014-03-25 20:17:03.596787+00
+3785	6	2014-03-25 20:17:08.620187+00
+3786	6	2014-03-25 20:17:09.679515+00
+3787	6	2014-03-25 20:17:30.594957+00
+3788	6	2014-03-25 20:17:55.217541+00
+3789	6	2014-03-25 20:17:55.396614+00
+3790	6	2014-03-25 20:17:56.483271+00
+3791	6	2014-03-25 20:17:58.393462+00
+3792	7	2014-03-25 20:18:02.408338+00
+3793	7	2014-03-25 20:18:02.434088+00
+3794	7	2014-03-25 20:18:08.098983+00
+3795	7	2014-03-25 20:18:08.258747+00
+3796	7	2014-03-25 20:19:08.548342+00
+3797	7	2014-03-25 20:19:09.020787+00
+3798	7	2014-03-25 20:19:09.523046+00
+3799	7	2014-03-25 20:19:09.790819+00
+3800	7	2014-03-25 20:19:11.027974+00
+3801	7	2014-03-25 20:19:13.71765+00
+3802	7	2014-03-25 20:19:13.964409+00
+3803	7	2014-03-25 20:19:37.438522+00
+3804	7	2014-03-25 20:19:37.599135+00
+3805	7	2014-03-25 20:19:42.220085+00
+3806	7	2014-03-25 20:19:42.42609+00
+3807	7	2014-03-25 20:19:46.137291+00
+3808	7	2014-03-25 20:19:49.69708+00
+3809	2	2014-03-25 20:19:49.810375+00
+3810	2	2014-03-25 20:19:51.340143+00
+3811	2	2014-03-25 20:19:51.461813+00
+3812	2	2014-03-25 20:19:53.285071+00
+3813	2	2014-03-25 20:19:54.9804+00
+3814	2	2014-03-25 20:19:55.107314+00
+3815	2	2014-03-25 20:19:56.570823+00
+3816	2	2014-03-25 20:19:56.715766+00
+3817	2	2014-03-25 20:20:03.96968+00
+3818	2	2014-03-25 20:20:06.000936+00
+3819	2	2014-03-25 20:20:06.084841+00
+3820	2	2014-03-25 20:20:07.154421+00
+3821	2	2014-03-25 20:20:07.254969+00
+3822	2	2014-03-25 20:20:17.105211+00
+3823	2	2014-03-25 20:20:17.302992+00
+3824	2	2014-03-25 20:20:20.61997+00
+3825	2	2014-03-25 20:20:22.533125+00
+3826	7	2014-03-25 20:20:27.744152+00
+3827	7	2014-03-25 20:20:27.769196+00
+3828	7	2014-03-25 20:20:33.408529+00
+3829	7	2014-03-25 20:20:33.671755+00
+3830	7	2014-03-25 20:20:37.492391+00
+3831	7	2014-03-25 20:20:40.207553+00
+3832	7	2014-03-25 20:20:40.496899+00
+3833	7	2014-03-25 20:21:15.22412+00
+3834	7	2014-03-25 20:21:15.694405+00
+3835	7	2014-03-25 20:21:20.500864+00
+3836	7	2014-03-25 20:21:20.80705+00
+3837	7	2014-03-25 20:21:28.20406+00
+3838	7	2014-03-25 20:21:28.545972+00
+3839	7	2014-03-25 20:21:32.126253+00
+3840	7	2014-03-25 20:21:32.576222+00
+3841	7	2014-03-25 20:21:47.491156+00
+3842	7	2014-03-25 20:21:47.767947+00
+3843	7	2014-03-25 20:21:58.131514+00
+3844	7	2014-03-25 20:21:58.411813+00
+3845	7	2014-03-25 20:22:07.253693+00
+3846	7	2014-03-25 20:22:07.606599+00
+3847	7	2014-03-25 20:22:23.485405+00
+3848	7	2014-03-25 20:22:23.530616+00
+3849	7	2014-03-25 20:23:03.343131+00
+3850	7	2014-03-25 20:23:08.663509+00
+3851	7	2014-03-25 20:23:08.813805+00
+3852	7	2014-03-25 20:23:10.049488+00
+3853	7	2014-03-25 20:23:10.198676+00
+3854	7	2014-03-25 20:23:11.374901+00
+3855	7	2014-03-25 20:23:11.561701+00
+3856	7	2014-03-25 20:23:18.219339+00
+3857	7	2014-03-25 20:23:18.247257+00
+3858	7	2014-03-25 20:23:20.714837+00
+3859	7	2014-03-25 20:23:46.343321+00
+3860	7	2014-03-25 20:23:46.449767+00
+3861	7	2014-03-25 20:24:05.395815+00
+3862	7	2014-03-25 20:24:05.595665+00
+3863	7	2014-03-25 20:24:06.961615+00
+3864	7	2014-03-25 20:24:08.344483+00
+3865	7	2014-03-25 20:24:08.367996+00
+3866	7	2014-03-25 20:24:34.937608+00
+3867	7	2014-03-25 20:29:29.177817+00
+3868	7	2014-03-25 20:29:38.169091+00
+3869	7	2014-03-25 20:29:40.889309+00
+3870	7	2014-03-25 20:29:54.732443+00
+3871	7	2014-03-25 20:29:55.939598+00
+3872	7	2014-03-25 20:30:12.077297+00
+3873	7	2014-03-25 20:30:27.250504+00
+3874	7	2014-03-25 20:30:27.329866+00
+3875	7	2014-03-25 20:30:28.528666+00
+3876	7	2014-03-25 20:50:58.93613+00
+3877	7	2014-03-25 20:51:15.026444+00
+3878	7	2014-03-25 20:52:04.443199+00
+3879	7	2014-03-25 20:52:39.812855+00
+3880	7	2014-03-25 20:52:39.905364+00
+3881	7	2014-03-25 20:53:01.911385+00
+3882	7	2014-03-25 20:53:06.942335+00
+3883	7	2014-03-25 20:53:07.188011+00
+3884	7	2014-03-25 20:53:15.934218+00
+3885	7	2014-03-25 20:53:15.959299+00
+3886	7	2014-03-25 20:53:18.34022+00
+3887	7	2014-03-25 20:53:18.521971+00
+3888	7	2014-03-25 20:53:21.957534+00
+3889	7	2014-03-25 20:53:21.987355+00
+3890	7	2014-03-25 20:53:24.63971+00
+3891	7	2014-03-25 20:53:27.749886+00
+3892	7	2014-03-25 20:53:27.815317+00
+3893	7	2014-03-25 20:53:30.86128+00
+3894	7	2014-03-25 20:53:30.921519+00
+3895	7	2014-03-25 20:53:33.110916+00
+3896	7	2014-03-25 20:53:37.115374+00
+3897	7	2014-03-25 20:53:37.354036+00
+3898	7	2014-03-25 20:53:48.332753+00
+3899	7	2014-03-25 20:53:48.361798+00
+3900	7	2014-03-26 02:48:16.074863+00
+3901	7	2014-03-26 02:48:16.180011+00
+3902	7	2014-03-26 02:48:18.879925+00
+3903	7	2014-03-26 02:48:19.125078+00
+3904	7	2014-03-26 02:48:27.365384+00
+3905	7	2014-03-26 02:48:27.391176+00
+3906	7	2014-03-26 02:48:59.799968+00
+3907	7	2014-03-26 02:48:59.944251+00
+3908	7	2014-03-27 20:02:56.017389+00
+3909	7	2014-03-27 20:02:56.238565+00
+3910	7	2014-03-27 20:03:09.937705+00
+3911	7	2014-03-27 20:03:10.460478+00
+3912	7	2014-03-27 20:03:24.981797+00
+3913	7	2014-03-27 20:03:25.224852+00
+3914	7	2014-03-27 20:03:40.698188+00
+3915	7	2014-03-27 20:03:41.092203+00
+3916	7	2014-03-27 22:19:17.71745+00
+3917	7	2014-03-27 22:19:17.813352+00
+3918	7	2014-03-27 22:19:34.332121+00
+3919	7	2014-03-27 22:19:34.547481+00
+3920	7	2014-03-27 22:19:42.151661+00
+3921	7	2014-03-27 22:19:42.177696+00
+3922	7	2014-03-27 22:19:58.842191+00
+3923	7	2014-03-27 22:19:59.036893+00
+3924	7	2014-03-27 22:20:21.130925+00
+3925	7	2014-03-27 22:20:21.264614+00
+3926	7	2014-03-27 22:20:26.76713+00
+3927	7	2014-03-27 22:20:26.791697+00
+3928	7	2014-03-27 22:21:32.739783+00
+3929	7	2014-03-27 22:21:32.942376+00
+3930	7	2014-03-27 22:21:51.040108+00
+3931	7	2014-03-27 22:21:51.066244+00
+3932	7	2014-03-27 22:21:57.708974+00
+3933	7	2014-03-27 22:21:57.904922+00
+3934	7	2014-03-27 22:41:58.064486+00
+3935	7	2014-03-27 22:41:58.090584+00
+3936	7	2014-03-27 22:42:05.42566+00
+3937	7	2014-03-27 22:42:05.596047+00
+3938	7	2014-03-27 22:42:18.594154+00
+3939	7	2014-03-27 22:42:18.631987+00
+3940	7	2014-03-29 05:03:35.098192+00
+3941	7	2014-03-29 05:03:35.312357+00
+3942	7	2014-03-29 05:03:48.947884+00
+3943	7	2014-03-29 05:03:52.011016+00
+3944	7	2014-03-29 05:03:52.128732+00
+3945	7	2014-03-29 05:03:53.768733+00
+3946	7	2014-03-29 05:03:53.803497+00
+3947	7	2014-03-30 17:29:33.7671+00
+3948	7	2014-03-30 17:29:33.873852+00
+3949	7	2014-03-30 17:29:51.047347+00
+3950	7	2014-03-30 17:29:52.013241+00
+3951	7	2014-03-30 17:29:54.484286+00
+3952	7	2014-03-30 17:31:26.734845+00
+3953	2	2014-03-30 17:32:30.645324+00
+3954	7	2014-03-30 17:32:33.204118+00
+3955	7	2014-03-30 17:32:37.902463+00
+3956	7	2014-03-30 17:32:37.924222+00
+3957	7	2014-03-30 17:32:39.149647+00
+3958	7	2014-03-30 17:32:43.587698+00
+3959	7	2014-03-30 17:32:46.165156+00
+3960	7	2014-03-30 17:32:46.233966+00
+3961	7	2014-03-30 17:32:48.315375+00
+3962	7	2014-03-30 17:32:48.339129+00
+3963	7	2014-03-30 17:32:49.614785+00
+3964	7	2014-03-30 17:32:51.742523+00
+3965	7	2014-03-30 17:32:51.767808+00
+3966	7	2014-03-30 17:33:37.955048+00
+3967	2	2014-03-30 17:33:54.251418+00
+3968	2	2014-03-30 17:34:05.013864+00
+3969	2	2014-03-30 17:34:05.062762+00
+3970	2	2014-03-30 17:34:08.294303+00
+3971	2	2014-03-30 17:34:08.486472+00
+3972	2	2014-03-30 17:34:19.141049+00
+3973	2	2014-03-30 17:34:19.288625+00
+3974	2	2014-03-30 17:34:28.154845+00
+3975	2	2014-03-30 17:34:28.185099+00
+3976	2	2014-03-30 17:35:35.717365+00
+3977	2	2014-03-30 17:35:42.055821+00
+3978	2	2014-03-30 17:35:42.109782+00
+3979	2	2014-03-30 17:44:33.409506+00
+3980	2	2014-03-30 17:44:33.433519+00
+\.
+
+
+--
+-- Name: profiles_visit_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('profiles_visit_id_seq', 3980, true);
+
+
+--
+-- Data for Name: social_friendrequest; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY social_friendrequest (id, requester_id, target_id, time_requested, time_responded, accepted) FROM stdin;
+4	6	2	2014-03-25 20:16:40.760609+00	\N	t
+3	2	6	2014-03-25 20:15:51.66671+00	\N	t
+5	6	7	2014-03-25 20:17:56.490961+00	\N	t
+6	2	7	2014-03-25 20:20:20.62428+00	\N	t
+\.
+
+
+--
+-- Name: social_friendrequest_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('social_friendrequest_id_seq', 6, true);
+
+
+--
+-- Data for Name: south_migrationhistory; Type: TABLE DATA; Schema: public; Owner: moocs_with_friends
+--
+
+COPY south_migrationhistory (id, app_name, migration, applied) FROM stdin;
+1	core	0001_initial	2014-02-05 04:57:47.05083+00
+2	courses	0001_initial	2014-02-05 04:57:54.283888+00
+3	profiles	0001_initial	2014-02-05 04:58:04.701683+00
+4	courses	0002_auto__add_assignmentcompletion__add_assignmentstart__add_assignment	2014-02-05 04:58:22.943102+00
+5	courses	0003_auto__chg_field_assignment_parent__add_unique_assignment_parent	2014-02-05 05:07:35.526419+00
+6	profiles	0002_auto__add_field_student_phone	2014-02-13 04:44:15.379553+00
+7	profiles	0003_auto__add_field_student_sex__chg_field_student_phone	2014-02-16 18:18:02.844408+00
+8	courses	0004_auto__add_field_assignment_points	2014-02-16 20:38:10.986516+00
+9	courses	0005_auto__add_field_assignment_required	2014-02-16 20:39:45.425946+00
+10	courses	0006_auto__add_week__del_field_assignment_week__add_field_assignment_week_o	2014-02-16 21:10:02.158799+00
+11	courses	0007_auto__del_field_assignment_week_old	2014-02-16 21:10:55.681916+00
+12	courses	0008_auto__add_field_assignment_week	2014-02-16 21:13:58.08895+00
+13	courses	0009_auto__chg_field_week_description	2014-02-16 21:19:52.348685+00
+14	courses	0010_auto__add_field_week_parent	2014-02-16 21:52:30.479165+00
+15	profiles	0004_auto__add_visit	2014-03-02 21:29:10.428411+00
+16	profiles	0005_auto__del_field_visit_date__add_field_visit_time	2014-03-02 22:06:59.468166+00
+17	courses	0011_auto__chg_field_week_description	2014-03-02 22:33:16.367055+00
+18	courses	0012_auto__add_field_course_description__add_field_course_cover_photo	2014-03-09 19:07:04.749554+00
+19	courses	0013_auto__chg_field_course_cover_photo	2014-03-09 19:10:07.492764+00
+20	courses	0014_auto__chg_field_week_description	2014-03-12 04:15:37.212044+00
+21	profiles	0006_auto__add_friendrequest	2014-03-15 19:09:50.51437+00
+22	profiles	0007_auto__del_friendrequest	2014-03-23 21:45:53.569258+00
+23	social	0001_initial	2014-03-23 21:47:16.135852+00
+\.
+
+
+--
+-- Name: south_migrationhistory_id_seq; Type: SEQUENCE SET; Schema: public; Owner: moocs_with_friends
+--
+
+SELECT pg_catalog.setval('south_migrationhistory_id_seq', 23, true);
+
+
+--
+-- Name: auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- Name: auth_group_permissions_group_id_permission_id_key; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_permission_id_key UNIQUE (group_id, permission_id);
+
+
+--
+-- Name: auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_permission_content_type_id_codename_key; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_codename_key UNIQUE (content_type_id, codename);
+
+
+--
+-- Name: auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_groups_user_id_group_id_key; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_group_id_key UNIQUE (user_id, group_id);
+
+
+--
+-- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id_permission_id_key; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_permission_id_key UNIQUE (user_id, permission_id);
+
+
+--
+-- Name: auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- Name: courses_assignment_parent_id_uniq; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY courses_assignment
+    ADD CONSTRAINT courses_assignment_parent_id_uniq UNIQUE (parent_id);
+
+
+--
+-- Name: courses_assignment_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY courses_assignment
+    ADD CONSTRAINT courses_assignment_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: courses_assignmentcompletion_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY courses_assignmentcompletion
+    ADD CONSTRAINT courses_assignmentcompletion_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: courses_assignmentstart_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY courses_assignmentstart
+    ADD CONSTRAINT courses_assignmentstart_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: courses_course_instructors_course_id_73b5bb4db0ce51b1_uniq; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY courses_course_instructors
+    ADD CONSTRAINT courses_course_instructors_course_id_73b5bb4db0ce51b1_uniq UNIQUE (course_id, instructor_id);
+
+
+--
+-- Name: courses_course_instructors_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY courses_course_instructors
+    ADD CONSTRAINT courses_course_instructors_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: courses_course_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY courses_course
+    ADD CONSTRAINT courses_course_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: courses_instructor_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY courses_instructor
+    ADD CONSTRAINT courses_instructor_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: courses_week_parent_id_key; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY courses_week
+    ADD CONSTRAINT courses_week_parent_id_key UNIQUE (parent_id);
+
+
+--
+-- Name: courses_week_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY courses_week
+    ADD CONSTRAINT courses_week_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_content_type_app_label_model_key; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_app_label_model_key UNIQUE (app_label, model);
+
+
+--
+-- Name: django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- Name: profiles_student_courses_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY profiles_student_courses
+    ADD CONSTRAINT profiles_student_courses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: profiles_student_courses_student_id_5f696065a04f3cbc_uniq; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY profiles_student_courses
+    ADD CONSTRAINT profiles_student_courses_student_id_5f696065a04f3cbc_uniq UNIQUE (student_id, course_id);
+
+
+--
+-- Name: profiles_student_friends_from_student_id_4fff20c31809b3f3_uniq; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY profiles_student_friends
+    ADD CONSTRAINT profiles_student_friends_from_student_id_4fff20c31809b3f3_uniq UNIQUE (from_student_id, to_student_id);
+
+
+--
+-- Name: profiles_student_friends_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY profiles_student_friends
+    ADD CONSTRAINT profiles_student_friends_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: profiles_student_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY profiles_student
+    ADD CONSTRAINT profiles_student_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: profiles_student_user_id_key; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY profiles_student
+    ADD CONSTRAINT profiles_student_user_id_key UNIQUE (user_id);
+
+
+--
+-- Name: profiles_visit_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY profiles_visit
+    ADD CONSTRAINT profiles_visit_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: social_friendrequest_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY social_friendrequest
+    ADD CONSTRAINT social_friendrequest_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: south_migrationhistory_pkey; Type: CONSTRAINT; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+ALTER TABLE ONLY south_migrationhistory
+    ADD CONSTRAINT south_migrationhistory_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: auth_group_name_like; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX auth_group_name_like ON auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- Name: auth_group_permissions_group_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_group_id ON auth_group_permissions USING btree (group_id);
+
+
+--
+-- Name: auth_group_permissions_permission_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_permission_id ON auth_group_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_permission_content_type_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX auth_permission_content_type_id ON auth_permission USING btree (content_type_id);
+
+
+--
+-- Name: auth_user_groups_group_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_group_id ON auth_user_groups USING btree (group_id);
+
+
+--
+-- Name: auth_user_groups_user_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_user_id ON auth_user_groups USING btree (user_id);
+
+
+--
+-- Name: auth_user_user_permissions_permission_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_permission_id ON auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- Name: auth_user_user_permissions_user_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_user_id ON auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: auth_user_username_like; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX auth_user_username_like ON auth_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- Name: courses_assignment_course_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX courses_assignment_course_id ON courses_assignment USING btree (course_id);
+
+
+--
+-- Name: courses_assignment_parent_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX courses_assignment_parent_id ON courses_assignment USING btree (parent_id);
+
+
+--
+-- Name: courses_assignment_week_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX courses_assignment_week_id ON courses_assignment USING btree (week_id);
+
+
+--
+-- Name: courses_assignmentcompletion_assignment_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX courses_assignmentcompletion_assignment_id ON courses_assignmentcompletion USING btree (assignment_id);
+
+
+--
+-- Name: courses_assignmentcompletion_student_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX courses_assignmentcompletion_student_id ON courses_assignmentcompletion USING btree (student_id);
+
+
+--
+-- Name: courses_assignmentstart_assignment_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX courses_assignmentstart_assignment_id ON courses_assignmentstart USING btree (assignment_id);
+
+
+--
+-- Name: courses_assignmentstart_student_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX courses_assignmentstart_student_id ON courses_assignmentstart USING btree (student_id);
+
+
+--
+-- Name: courses_course_instructors_course_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX courses_course_instructors_course_id ON courses_course_instructors USING btree (course_id);
+
+
+--
+-- Name: courses_course_instructors_instructor_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX courses_course_instructors_instructor_id ON courses_course_instructors USING btree (instructor_id);
+
+
+--
+-- Name: courses_week_course_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX courses_week_course_id ON courses_week USING btree (course_id);
+
+
+--
+-- Name: django_admin_log_content_type_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_content_type_id ON django_admin_log USING btree (content_type_id);
+
+
+--
+-- Name: django_admin_log_user_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_user_id ON django_admin_log USING btree (user_id);
+
+
+--
+-- Name: django_session_expire_date; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX django_session_expire_date ON django_session USING btree (expire_date);
+
+
+--
+-- Name: django_session_session_key_like; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX django_session_session_key_like ON django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- Name: profiles_student_courses_course_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX profiles_student_courses_course_id ON profiles_student_courses USING btree (course_id);
+
+
+--
+-- Name: profiles_student_courses_student_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX profiles_student_courses_student_id ON profiles_student_courses USING btree (student_id);
+
+
+--
+-- Name: profiles_student_friends_from_student_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX profiles_student_friends_from_student_id ON profiles_student_friends USING btree (from_student_id);
+
+
+--
+-- Name: profiles_student_friends_to_student_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX profiles_student_friends_to_student_id ON profiles_student_friends USING btree (to_student_id);
+
+
+--
+-- Name: profiles_visit_student_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX profiles_visit_student_id ON profiles_visit USING btree (student_id);
+
+
+--
+-- Name: social_friendrequest_requester_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX social_friendrequest_requester_id ON social_friendrequest USING btree (requester_id);
+
+
+--
+-- Name: social_friendrequest_target_id; Type: INDEX; Schema: public; Owner: moocs_with_friends; Tablespace: 
+--
+
+CREATE INDEX social_friendrequest_target_id ON social_friendrequest USING btree (target_id);
+
+
+--
+-- Name: assignment_id_refs_id_d9f48eea; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY courses_assignmentcompletion
+    ADD CONSTRAINT assignment_id_refs_id_d9f48eea FOREIGN KEY (assignment_id) REFERENCES courses_assignment(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: assignment_id_refs_id_e0c38077; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY courses_assignmentstart
+    ADD CONSTRAINT assignment_id_refs_id_e0c38077 FOREIGN KEY (assignment_id) REFERENCES courses_assignment(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_group_permissions_permission_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_permission_id_fkey FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_groups_group_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_fkey FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: auth_user_user_permissions_permission_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_permission_id_fkey FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: content_type_id_refs_id_93d2d1f8; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT content_type_id_refs_id_93d2d1f8 FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: content_type_id_refs_id_d043b34a; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT content_type_id_refs_id_d043b34a FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: course_id_refs_id_9a43c237; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY profiles_student_courses
+    ADD CONSTRAINT course_id_refs_id_9a43c237 FOREIGN KEY (course_id) REFERENCES courses_course(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: course_id_refs_id_a09cc4ed; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY courses_week
+    ADD CONSTRAINT course_id_refs_id_a09cc4ed FOREIGN KEY (course_id) REFERENCES courses_course(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: course_id_refs_id_cc5d0958; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY courses_course_instructors
+    ADD CONSTRAINT course_id_refs_id_cc5d0958 FOREIGN KEY (course_id) REFERENCES courses_course(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: course_id_refs_id_dde4ea36; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY courses_assignment
+    ADD CONSTRAINT course_id_refs_id_dde4ea36 FOREIGN KEY (course_id) REFERENCES courses_course(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: from_student_id_refs_id_b2f00575; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY profiles_student_friends
+    ADD CONSTRAINT from_student_id_refs_id_b2f00575 FOREIGN KEY (from_student_id) REFERENCES profiles_student(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: group_id_refs_id_f4b32aac; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT group_id_refs_id_f4b32aac FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: instructor_id_refs_id_a5a44abe; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY courses_course_instructors
+    ADD CONSTRAINT instructor_id_refs_id_a5a44abe FOREIGN KEY (instructor_id) REFERENCES courses_instructor(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: parent_id_refs_id_424bfd54; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY courses_assignment
+    ADD CONSTRAINT parent_id_refs_id_424bfd54 FOREIGN KEY (parent_id) REFERENCES courses_assignment(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: parent_id_refs_id_fb37a91e; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY courses_week
+    ADD CONSTRAINT parent_id_refs_id_fb37a91e FOREIGN KEY (parent_id) REFERENCES courses_week(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: requester_id_refs_id_47c9e720; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY social_friendrequest
+    ADD CONSTRAINT requester_id_refs_id_47c9e720 FOREIGN KEY (requester_id) REFERENCES profiles_student(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: student_id_refs_id_70c98a34; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY courses_assignmentcompletion
+    ADD CONSTRAINT student_id_refs_id_70c98a34 FOREIGN KEY (student_id) REFERENCES profiles_student(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: student_id_refs_id_799fb788; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY courses_assignmentstart
+    ADD CONSTRAINT student_id_refs_id_799fb788 FOREIGN KEY (student_id) REFERENCES profiles_student(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: student_id_refs_id_9ffaf036; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY profiles_student_courses
+    ADD CONSTRAINT student_id_refs_id_9ffaf036 FOREIGN KEY (student_id) REFERENCES profiles_student(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: student_id_refs_id_eae68369; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY profiles_visit
+    ADD CONSTRAINT student_id_refs_id_eae68369 FOREIGN KEY (student_id) REFERENCES profiles_student(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: target_id_refs_id_47c9e720; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY social_friendrequest
+    ADD CONSTRAINT target_id_refs_id_47c9e720 FOREIGN KEY (target_id) REFERENCES profiles_student(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: to_student_id_refs_id_b2f00575; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY profiles_student_friends
+    ADD CONSTRAINT to_student_id_refs_id_b2f00575 FOREIGN KEY (to_student_id) REFERENCES profiles_student(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: user_id_refs_id_40c41112; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT user_id_refs_id_40c41112 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: user_id_refs_id_4dc23c39; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT user_id_refs_id_4dc23c39 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: user_id_refs_id_5db5c0ab; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY profiles_student
+    ADD CONSTRAINT user_id_refs_id_5db5c0ab FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: user_id_refs_id_c0d12874; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT user_id_refs_id_c0d12874 FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: week_id_refs_id_95ceb7b2; Type: FK CONSTRAINT; Schema: public; Owner: moocs_with_friends
+--
+
+ALTER TABLE ONLY courses_assignment
+    ADD CONSTRAINT week_id_refs_id_95ceb7b2 FOREIGN KEY (week_id) REFERENCES courses_week(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

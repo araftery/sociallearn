@@ -18,10 +18,15 @@ Personal dashboard view
 	How you stack up vs. friends
 Social/Friends
 	Leaderboard
-	"Friending" in context of classes
+	> Notifications backend
+	Facebook integration
+	Assignment feedback (time taken and rating)
+	Track separate parts of assignments
 	Scheduling assignments w/ friends
 		GCal integration
 		Twilio integration
+
+
 Multiple Courses
 	Add/drop courses
 	Course searching

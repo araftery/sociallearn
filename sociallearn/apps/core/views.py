@@ -34,6 +34,7 @@ def register(request):
 
 	return render(request, 'registration/register.html', { 'form': form })
 
+@login_required
 def dashboard(request):
 
 	active_courses = request.user.student.active_courses

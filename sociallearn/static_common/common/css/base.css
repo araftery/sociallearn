@@ -1,0 +1,45 @@
+body {
+  padding-top: 90px;
+  padding-bottom:30px;
+}
+
+
+
+/*** Displaying Level in Header ***/
+.canvas-container
+{
+	width:45px;
+	height:45px;
+	position:relative;
+    margin-top:8px;
+}
+.level {
+    display: block;
+    position: absolute;
+    top: 38%;
+    left: 62%;
+    width: 30%;
+    height: 0;
+    padding-top: 12%;
+    padding-bottom: 18%;
+    color: #fff;
+    margin-top: -15%;
+    margin-left: -15%;
+    font-size: 18px;
+
+    text-align: center;
+
+}
+
+/*** DISPLAYING NOTIFICATIONS IN THE HEADER ***/
+
+.notif-badge
+{
+    font-size:12px !important;
+}
+
+.fa-notanicon {
+    font-family: Arial, Helvetica, Geneva, SansSerif;
+    font-weight: bold;
+    color:black;
+}
